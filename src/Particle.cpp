@@ -2,7 +2,7 @@
 #include <iostream>
 
 Particle::Particle(Vector3f pos, bool stable = false)
-	:position(pos), oldPosition(pos), initPos(position), mass(1.0f), stable(stable)
+	:position(pos), oldPosition(pos), initPos(position), mass(1.0f), stable(stable), selected(false)
 {
 	
 	this->shape.setPosition(Vector2f(this->position.x, this->position.y));
@@ -35,6 +35,7 @@ void Particle::Update(float dt, Vector3f gravity)
 		//    }
 		//}
 		//particle->Accelerate(gravity);
+
 	if (stable)
 	{
 		this->SetPosition(GetInitPosition().x, GetInitPosition().y, GetInitPosition().z);

@@ -21,8 +21,8 @@ int main()
 
     sf::Clock clock;
 
-    Cloth cloth(50.0f, 1870.0f, 50.0f, 515.0f, 20.0f);
-    //std::this_thread::sleep_for(0.5s);  // pause for 1 second
+    Cloth cloth(50.0f, 1870.0f, 50.0f, 580.0f, 10.0f);
+
     while (window.isOpen())
     {
         EventHandler::HandleInputEvents(window);

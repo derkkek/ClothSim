@@ -1,6 +1,7 @@
 #pragma once
 #include "Line.h"
 #include "Particle.h"
+#include "EventHandler.h"
 using namespace sf;
 class Cloth
 {
@@ -10,6 +11,7 @@ public:
 
 	void Update(float dt);
 	void Render(RenderWindow& window);
+	void ParticleGrabber();
 	std::vector<Particle*> GetNeighbors(int i, int j);
 
 private:

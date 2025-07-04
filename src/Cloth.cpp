@@ -49,21 +49,26 @@ Cloth::Cloth(float left, float right, float top, float bottom, float step)
 
 void Cloth::Update(float dt)
 {
-    for each(Particle* particle in particles)
+  
+    ParticleGrabber();
+
+    for (Particle* particle : particles)
     {
-        particle->AddForce(gravity);
-        particle->Update(dt, gravity);
-        particle->ZeroForce();
+        if (!particle->selected)
+        {
+            particle->AddForce(gravity);
+            particle->Update(dt, gravity);
+            particle->ZeroForce();
+        }
     }
+
     for (int i = 0; i < 10; i++)
     {
-        for each(Line * line in lines)
+        for (Line* line : lines)
         {
             line->Update();
         }
-
     }
-
 }
 
 void Cloth::Render(RenderWindow& window)
@@ -77,6 +82,46 @@ void Cloth::Render(RenderWindow& window)
     {
         line->UpdateVAO();
         window.draw(line->GetVAO());
+    }
+}
+
+void Cloth::ParticleGrabber()
+{
+    static std::vector<Particle*> grabbedParticles;
+
+
+    if (EventHandler::mousePressed)
+    {
+        if (grabbedParticles.empty())
+        {
+            // Grab all particles within radius
+            for (Particle* particle : particles)
+            {
+                float mouseDistance = Arithmetic::GetMouseDistance(particle, EventHandler::mouseWorld);
+                if (mouseDistance <= 50.0f)
+                {
+                    float offsetX = particle->GetPosition().x - EventHandler::mouseWorld.x;
+                    float offsetY = particle->GetPosition().y - EventHandler::mouseWorld.y;
+
+                    grabbedParticles.push_back(particle);
+                    particle->selected = true;
+                }
+            }
+        }
+        // Move all grabbed particles
+        for (Particle* particle : grabbedParticles)
+        {
+            particle->SetPosition(EventHandler::mouseWorld.x, EventHandler::mouseWorld.y, 0.0f);
+        }
+    }
+    else
+    {
+        // Release all grabbed particles
+        for (Particle* particle : grabbedParticles)
+        {
+            particle->selected = false;
+        }
+        grabbedParticles.clear();
     }
 }
 

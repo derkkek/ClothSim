@@ -25,6 +25,7 @@ public:
 	Vector3f GetInitPosition();
 	Vector3f acceleration;
 	bool stable;
+	bool selected;
 
 private:
 	Vector3f position;
