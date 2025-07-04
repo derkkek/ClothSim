@@ -13,8 +13,10 @@ public:
 
 	void Accelerate(Vector3f acc);
 	void UpdateRenderData();
+	void AddForce(Vector3f force);
+	void ZeroForce();
 
-	void Verlet(float dt, Vector3f gravity);
+	void Verlet(float dt);
 	void KeepInside(float bound_y);
 
 	const CircleShape& Shape();
@@ -31,6 +33,8 @@ private:
 	Vector3f force;
 	CircleShape shape;
 
-	float radius = 4.0f;
+	float radius = 1.75f;
+	float mass;
+
 	Color color = Color::White;
 };

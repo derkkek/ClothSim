@@ -2,7 +2,7 @@
 #include <iostream>
 
 Particle::Particle(Vector3f pos, bool stable = false)
-	:position(pos), oldPosition(pos), initPos(position), stable(stable)
+	:position(pos), oldPosition(pos), initPos(position), mass(1.0f), stable(stable)
 {
 	
 	this->shape.setPosition(Vector2f(this->position.x, this->position.y));
@@ -41,10 +41,9 @@ void Particle::Update(float dt, Vector3f gravity)
 	}
 	else
 	{
-		Verlet(dt, gravity);
+		Verlet(dt);
 	}
-	KeepInside(800.0f); // WINDOW HEIGT
-	UpdateRenderData();
+	KeepInside(1080.0f); // WINDOW HEIGT
 }
 
 
@@ -59,9 +58,20 @@ void Particle::UpdateRenderData()
 	this->shape.setPosition(Vector2f(this->position.x, this->position.y));
 }
 
-void Particle::Verlet(float dt, Vector3f gravity)
+void Particle::AddForce(Vector3f force)
+{
+	this->force += force;
+}
+
+void Particle::ZeroForce()
+{
+	this->force = Vector3f(0.0f, 0.0f,0.0f);
+}
+
+
+void Particle::Verlet(float dt)
 {	
-	Vector3f newPos = position + (position - oldPosition) * (1.0f - 0.01f) + gravity * (1.0f - 0.01f) * dt * dt;
+	Vector3f newPos = position + (position - oldPosition) * (1.0f - 0.01f) + (force / mass) * (1.0f - 0.01f) * dt * dt;
 	oldPosition = position;
 	position = newPos;
 

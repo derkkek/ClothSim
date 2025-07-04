@@ -3,16 +3,16 @@
 #include <set>
 #include <algorithm>
 
-Cloth::Cloth(float start, float end, float step) 
-    :gravity(sf::Vector3f(0.0f, 200.0f, 0.0f)), rows((end - start) / step), cols((end - start) / step)
+Cloth::Cloth(float left, float right, float top, float bottom, float step)
+    :gravity(sf::Vector3f(0.0f, 1000.0f, 0.0f)), rows((right - left) / step), cols((bottom - top) / step)
 {
     for (int row = 0; row < rows; ++row) 
     {
         for (int col = 0; col < cols; ++col) 
         {
-            float x = start + row * step;
-            float y = start + col * step;
-            if (col == 0)
+            float x = left + row * step;
+            float y = top + col * step;
+            if (col == 0 && row % 6 == 0)
             {
                 particles.push_back(new Particle(sf::Vector3f(x, y, 0.0f), true));
             }
@@ -51,24 +51,31 @@ void Cloth::Update(float dt)
 {
     for each(Particle* particle in particles)
     {
+        particle->AddForce(gravity);
         particle->Update(dt, gravity);
+        particle->ZeroForce();
     }
-
-    for each(Line* line in lines)
+    for (int i = 0; i < 10; i++)
     {
-        line->Update();
+        for each(Line * line in lines)
+        {
+            line->Update();
+        }
+
     }
 
 }
 
 void Cloth::Render(RenderWindow& window)
 {
-    for each(Particle * particle in particles)
+    for each(Particle* particle in particles)
     {
+        particle->UpdateRenderData();
         window.draw(particle->Shape());
     }
     for each(Line * line in lines)
     {
+        line->UpdateVAO();
         window.draw(line->GetVAO());
     }
 }

@@ -5,7 +5,7 @@ using namespace sf;
 class Cloth
 {
 public:
-	Cloth(float start, float end, float step);
+	Cloth(float left, float right, float top, float bottom, float step);
 	~Cloth() =default;
 
 	void Update(float dt);
@@ -20,5 +20,6 @@ private:
 	int cols;
 
 	Vector3f gravity;
+	Vector3f wind;
 
 };
