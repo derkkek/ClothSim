@@ -18,6 +18,12 @@ add_executable(${PROJECT_NAME}
     src/Arithmetic.h
     src/Line.h
     src/Line.cpp
+    src/Cloth.cpp
+    src/Cloth.h
+    src/EventHandler.cpp
+    src/EventHandler.h
+    src/Application.cpp
+    src/Application.h
 )
 
 target_include_directories(${PROJECT_NAME} PRIVATE "src")

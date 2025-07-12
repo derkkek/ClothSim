@@ -9,7 +9,7 @@ public:
 	Particle(Vector3f position, bool stable);
 	~Particle();
 
-	void Update(float dt, Vector3f gravity);
+	void Update(float dt);
 
 	void Accelerate(Vector3f acc);
 	void UpdateRenderData();

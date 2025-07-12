@@ -15,27 +15,8 @@ Particle::~Particle()
 {
 }
 
-void Particle::Update(float dt, Vector3f gravity)
+void Particle::Update(float dt)
 {
-	//sf::Vector2i mouseWin = sf::Mouse::getPosition(window);
-		////sf::Mouse::isButtonPressed(sf::Mouse::Button::Left);
-
-		//// For world-relative coordinates (game objects, scene)
-		//sf::Vector2f mouseWorld = window.mapPixelToCoords(mouseWin);
-
-		//if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left) && Arithmetic::GetMouseDistance(particle, mouseWorld) <= 50.0f)
-		//{
-		//    particle->SetPosition(mouseWorld.x, mouseWorld.y, 0.0f);
-		//    for each(Particle * particle in particles)
-		//        particle->acceleration = sf::Vector3f(0.0f, 0.0f, 0.0f);
-
-		//    if (!sf::Mouse::isButtonPressed(sf::Mouse::Button::Left))
-		//    {
-		//        particle->Accelerate(gravity);
-		//    }
-		//}
-		//particle->Accelerate(gravity);
-
 	if (stable)
 	{
 		this->SetPosition(GetInitPosition().x, GetInitPosition().y, GetInitPosition().z);

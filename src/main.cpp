@@ -1,40 +1,12 @@
-#include <SFML/Graphics.hpp>
-#include "Particle.h"
-#include "Line.h"
-#include "Arithmetic.h"
-#include "EventHandler.h"
-#include <iostream>
-#include "Cloth.h"
-#include <chrono>
-#include <thread>
-
-using namespace std::chrono_literals;
-
-
+#include "Application.h"
 
 int main()
 {
-    float width = 1920;
-    float height = 1080;
-    auto window = sf::RenderWindow(sf::VideoMode({ static_cast<unsigned int>(width), static_cast<unsigned int>(height)}), "Cloth Simulation");
-    window.setFramerateLimit(165);
+    Application app;
+   
+    app.Update();
 
-    sf::Clock clock;
-
-    Cloth cloth(50.0f, 1870.0f, 50.0f, 580.0f, 10.0f);
-
-    while (window.isOpen())
-    {
-        EventHandler::HandleInputEvents(window);
-        const float dt = clock.restart().asSeconds();
-
-        window.clear();
-
-        cloth.Update(dt);
-        cloth.Render(window);
-
-        window.display();
-    }
+    app.Terminate();
 
     return 0;
 }

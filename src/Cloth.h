@@ -11,7 +11,8 @@ public:
 
 	void Update(float dt);
 	void Render(RenderWindow& window);
-	void ParticleGrabber();
+	void ParticleGrabber(bool grab);
+	void ConstructUniqueLines();
 	std::vector<Particle*> GetNeighbors(int i, int j);
 
 private:

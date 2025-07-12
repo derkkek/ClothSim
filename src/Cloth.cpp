@@ -4,7 +4,7 @@
 #include <algorithm>
 
 Cloth::Cloth(float left, float right, float top, float bottom, float step)
-    :gravity(sf::Vector3f(0.0f, 1000.0f, 0.0f)), rows((right - left) / step), cols((bottom - top) / step)
+    :gravity(sf::Vector3f(0.0f, 200.0f, 0.0f)), rows((right - left) / step), cols((bottom - top) / step)
 {
     for (int row = 0; row < rows; ++row) 
     {
@@ -25,41 +25,21 @@ Cloth::Cloth(float left, float right, float top, float bottom, float step)
         }
     }
 
-    std::set<std::pair<Particle*, Particle*>> existingLines;
-
-    for (int row = 0; row < rows; ++row) 
-    {
-        for (int col = 0; col < cols; ++col) 
-        {
-            int index = row * cols + col;
-            Particle* a = particles.at(index);
-            std::vector<Particle*> neighbors = GetNeighbors(row, col);
-            for (Particle* b : neighbors) 
-            {
-                auto linePair = std::minmax(a, b);
-                if (existingLines.find(linePair) == existingLines.end()) 
-                {
-                    lines.push_back(new Line(a, b, Arithmetic::GetDistance(a, b)));
-                    existingLines.insert(linePair);
-                }
-            }
-        }
-    }
+    ConstructUniqueLines();
 }
 
 void Cloth::Update(float dt)
 {
   
-    ParticleGrabber();
+    ParticleGrabber(EventHandler::mousePressed);
 
     for (Particle* particle : particles)
     {
-        if (!particle->selected)
-        {
-            particle->AddForce(gravity);
-            particle->Update(dt, gravity);
-            particle->ZeroForce();
-        }
+
+        particle->AddForce(gravity);
+        particle->Update(dt);
+        particle->ZeroForce();
+        
     }
 
     for (int i = 0; i < 10; i++)
@@ -85,12 +65,13 @@ void Cloth::Render(RenderWindow& window)
     }
 }
 
-void Cloth::ParticleGrabber()
+void Cloth::ParticleGrabber(bool grab)
 {
     static std::vector<Particle*> grabbedParticles;
+    float offsetX;
+    float offsetY;
 
-
-    if (EventHandler::mousePressed)
+    if (grab)
     {
         if (grabbedParticles.empty())
         {
@@ -100,8 +81,7 @@ void Cloth::ParticleGrabber()
                 float mouseDistance = Arithmetic::GetMouseDistance(particle, EventHandler::mouseWorld);
                 if (mouseDistance <= 50.0f)
                 {
-                    float offsetX = particle->GetPosition().x - EventHandler::mouseWorld.x;
-                    float offsetY = particle->GetPosition().y - EventHandler::mouseWorld.y;
+
 
                     grabbedParticles.push_back(particle);
                     particle->selected = true;
@@ -111,7 +91,9 @@ void Cloth::ParticleGrabber()
         // Move all grabbed particles
         for (Particle* particle : grabbedParticles)
         {
-            particle->SetPosition(EventHandler::mouseWorld.x, EventHandler::mouseWorld.y, 0.0f);
+            //offsetX = particle->GetPosition().x - EventHandler::mouseWorld.x;
+            //offsetY = particle->GetPosition().y - EventHandler::mouseWorld.y;
+            particle->SetPosition(EventHandler::mouseWorld.x + offsetX, EventHandler::mouseWorld.y + offsetY, 0.0f);
         }
     }
     else
@@ -123,6 +105,34 @@ void Cloth::ParticleGrabber()
         }
         grabbedParticles.clear();
     }
+}
+
+void Cloth::ConstructUniqueLines()
+{
+    std::set<std::pair<Particle*, Particle*>> existingLines;
+
+    for (int row = 0; row < rows; ++row)
+    {
+        for (int col = 0; col < cols; ++col)
+        {
+            int index = row * cols + col;
+
+            Particle* a = particles.at(index);
+
+            std::vector<Particle*> neighbors = GetNeighbors(row, col);
+
+            for (Particle* b : neighbors)
+            {
+                auto linePair = std::minmax(a, b);
+                if (existingLines.find(linePair) == existingLines.end()) //if the unique pair doesn't exists in our set. 
+                {
+                    lines.push_back(new Line(a, b, Arithmetic::GetDistance(a, b)));
+                    existingLines.insert(linePair);
+                }
+            }
+        }
+    }
+    existingLines.clear();
 }
 
 std::vector<Particle*> Cloth::GetNeighbors(int i, int j) 
