@@ -23,8 +23,16 @@ void Line::Update()
 	float offsetX = diff.x * diffFactor * softness;
 	float offsetY = diff.y * diffFactor * softness;
 
-	GetP1()->SetPosition(GetP1()->GetPosition().x + offsetX, GetP1()->GetPosition().y + offsetY, 0.0f);
-	GetP2()->SetPosition(GetP2()->GetPosition().x - offsetX, GetP2()->GetPosition().y - offsetY, 0.0f);
+	Particle* p1 = GetP1();
+	Particle* p2 = GetP2();
+
+	Vector3f p1_Pos = p1->GetPosition();
+	Vector3f p2_Pos = p2->GetPosition();
+
+	p1->SetPosition(p1_Pos.x + offsetX, p1_Pos.y + offsetY, 0.0f);
+	p2->SetPosition(p2_Pos.x - offsetX, p2_Pos.y - offsetY, 0.0f);
+
+	UpdateVAO();
 }
 
 void Line::UpdateVAO()

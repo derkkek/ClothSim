@@ -51,20 +51,6 @@ void Cloth::Update(float dt)
     }
 }
 
-void Cloth::Render(RenderWindow& window)
-{
-    for each(Particle* particle in particles)
-    {
-        particle->UpdateRenderData();
-        window.draw(particle->Shape());
-    }
-    for each(Line * line in lines)
-    {
-        line->UpdateVAO();
-        window.draw(line->GetVAO());
-    }
-}
-
 void Cloth::ParticleGrabber(bool grab)
 {
     static std::vector<Particle*> grabbedParticles;
@@ -133,6 +119,16 @@ void Cloth::ConstructUniqueLines()
         }
     }
     existingLines.clear();
+}
+
+std::vector<Particle*> Cloth::Particles()
+{
+    return particles;
+}
+
+std::vector<Line*> Cloth::Lines()
+{
+    return lines;
 }
 
 std::vector<Particle*> Cloth::GetNeighbors(int i, int j) 

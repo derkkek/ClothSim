@@ -19,13 +19,15 @@ void Particle::Update(float dt)
 {
 	if (stable)
 	{
-		this->SetPosition(GetInitPosition().x, GetInitPosition().y, GetInitPosition().z);
+		Vector3f initPos = this->GetInitPosition();
+		this->SetPosition(initPos.x, initPos.y, initPos.z);
 	}
 	else
 	{
 		Verlet(dt);
 	}
 	KeepInside(1080.0f); // WINDOW HEIGT
+	UpdateRenderData();
 }
 
 

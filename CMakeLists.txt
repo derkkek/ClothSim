@@ -24,6 +24,8 @@ add_executable(${PROJECT_NAME}
     src/EventHandler.h
     src/Application.cpp
     src/Application.h
+    src/Renderer.cpp
+    src/Renderer.h
 )
 
 target_include_directories(${PROJECT_NAME} PRIVATE "src")

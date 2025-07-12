@@ -4,6 +4,7 @@
 #include "Line.h"
 #include "Arithmetic.h"
 #include "EventHandler.h"
+#include "Renderer.h"
 #include <iostream>
 #include "Cloth.h"
 #include <chrono>
@@ -23,6 +24,8 @@ public:
 
 private:
 	Cloth* cloth;
+
+	Renderer* renderer;
 
 	sf::RenderWindow window;
 	sf::Clock clock;

@@ -2,7 +2,7 @@
 Application::Application(float width, float height)
     :width(width), height(height), 
     window(sf::RenderWindow(sf::VideoMode({ static_cast<unsigned int>(width), static_cast<unsigned int>(height) }), "Cloth Simulation")),
-    clock()
+    renderer(new Renderer)
 {
     Init();
 }
@@ -31,8 +31,7 @@ void Application::Update()
         window.clear();
 
         cloth->Update(dt);
-        cloth->Render(window);
-
+        renderer->DrawGeometry(cloth->Particles(), cloth->Lines(), window);
         window.display();
     }
 }
@@ -40,4 +39,7 @@ void Application::Terminate()
 {
     delete cloth;
     cloth = nullptr;
+
+    delete renderer;
+    renderer = nullptr;
 }

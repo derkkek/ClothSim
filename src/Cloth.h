@@ -10,9 +10,12 @@ public:
 	~Cloth() =default;
 
 	void Update(float dt);
-	void Render(RenderWindow& window);
 	void ParticleGrabber(bool grab);
 	void ConstructUniqueLines();
+
+	std::vector<Particle*> Particles();
+	std::vector<Line*> Lines();
+
 	std::vector<Particle*> GetNeighbors(int i, int j);
 
 private:
