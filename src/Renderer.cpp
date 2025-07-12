@@ -10,7 +10,7 @@ void Renderer::DrawLine(Line* line, sf::RenderWindow& window)
 	window.draw(line->GetVAO());
 }
 
-void Renderer::DrawGeometry(std::vector<Particle*> particles, std::vector<Line*> lines, sf::RenderWindow& window)
+void Renderer::DrawGeometry(std::vector<Particle*> &particles, std::vector<Line*> &lines, sf::RenderWindow& window)
 {
 	for each(Particle* particle in particles)
 	{
