@@ -1,6 +1,7 @@
 #include "EventHandler.h"
 #include <iostream>
 sf::Vector2f EventHandler::mouseWorld = sf::Vector2f(0.f, 0.f);
+float EventHandler::chooseRadius = 20.0f;
 bool EventHandler::mouseLeftPressed = false;
 bool EventHandler::mouseRightPressed = false;
 void EventHandler::HandleInputEvents(RenderWindow& window)
@@ -28,6 +29,23 @@ void EventHandler::HandleInputEvents(RenderWindow& window)
         else if (event.type == sf::Event::MouseButtonReleased && event.mouseButton.button == sf::Mouse::Right)
         {
             EventHandler::mouseRightPressed = false;
+        }
+        else if (event.type == sf::Event::MouseWheelScrolled)
+        {
+            if (event.mouseWheelScroll.delta > 0) 
+            {
+                // Scrolled up
+                EventHandler::chooseRadius += 5.0f;
+            }
+            else if (event.mouseWheelScroll.delta < 0) 
+            {
+                // Scrolled down
+                EventHandler::chooseRadius -= 5.0f;
+                if (EventHandler::chooseRadius < 10.0f)
+                {
+                    EventHandler::chooseRadius = 10.0f;
+                }
+            }
         }
     }
     // Always update mouseWorld to current position

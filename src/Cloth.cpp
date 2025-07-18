@@ -98,21 +98,53 @@ void Cloth::ParticleGrabber(bool grab)
 
 void Cloth::DestroyLine(bool destroy)
 {
-
     if (destroy)
     {
-        Line* firstLine = lines.at(0);
+        // 1. Delete lines based on distance condition
         for (auto it = lines.begin(); it != lines.end(); )
         {
-            if (*it == firstLine)
+            Particle* p1 = (*it)->GetP1();
+            Particle* p2 = (*it)->GetP2();
+
+            float distanceP1 = Arithmetic::GetMouseDistance(p1, EventHandler::mouseWorld);
+            float distanceP2 = Arithmetic::GetMouseDistance(p2, EventHandler::mouseWorld);
+
+            if ((distanceP1 + distanceP2) / 2.0f < EventHandler::chooseRadius)
             {
-                delete* it;
-                it = lines.erase(it);
+                delete *it;                // Free memory
+                it = lines.erase(it);      // Remove from vector, get next iterator
             }
             else
             {
                 ++it;
             }
+        }
+
+        DestroyUnreferencedParticles();
+    }
+}
+
+void Cloth::DestroyUnreferencedParticles()
+{
+    // 2. Build set of referenced particles
+    std::set<Particle*> referencedParticles;
+    for (const auto& line : lines)
+    {
+        referencedParticles.insert(line->GetP1());
+        referencedParticles.insert(line->GetP2());
+    }
+
+    // 3. Delete orphaned particles
+    for (auto it = particles.begin(); it != particles.end(); )
+    {
+        if (referencedParticles.find(*it) == referencedParticles.end())
+        {
+            delete* it;
+            it = particles.erase(it);
+        }
+        else
+        {
+            ++it;
         }
     }
 }

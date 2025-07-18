@@ -11,6 +11,7 @@ public:
 	static Vector2f mouseWorld;
 	static bool mouseLeftPressed;
 	static bool mouseRightPressed;
+	static float chooseRadius;
 
 
 private:
