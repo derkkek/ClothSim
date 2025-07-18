@@ -1,6 +1,3 @@
-cmake_minimum_required(VERSION 3.16)
-project(ClothSimulation LANGUAGES CXX)
-
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 option(BUILD_SHARED_LIBS "Build shared libraries" OFF)
 
@@ -9,6 +6,14 @@ FetchContent_Declare(SFML
     GIT_REPOSITORY https://github.com/SFML/SFML.git
     GIT_TAG 2.6.x)
 FetchContent_MakeAvailable(SFML)
+
+# Add Editor library
+file(GLOB EDITOR_SOURCES "Editor/src/*.cpp" "Editor/src/*.h")
+add_library(Editor STATIC ${EDITOR_SOURCES})
+target_include_directories(Editor PUBLIC "Editor/src")
+
+cmake_minimum_required(VERSION 3.16)
+project(ClothSimulation LANGUAGES CXX)
 
 add_executable(${PROJECT_NAME}
     src/main.cpp
@@ -28,8 +33,9 @@ add_executable(${PROJECT_NAME}
     src/Renderer.h
 )
 
-target_include_directories(${PROJECT_NAME} PRIVATE "src")
+target_include_directories(${PROJECT_NAME} PRIVATE "src" "Editor/src")
 target_link_libraries(${PROJECT_NAME} PRIVATE sfml-graphics)
+target_link_libraries(${PROJECT_NAME} PRIVATE Editor)
 target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_17)
 
 if(WIN32)

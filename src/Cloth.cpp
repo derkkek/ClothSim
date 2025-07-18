@@ -79,7 +79,7 @@ void Cloth::ParticleGrabber(bool grab)
         {
             //offsetX = particle->GetPosition().x - EventHandler::mouseWorld.x;
             //offsetY = particle->GetPosition().y - EventHandler::mouseWorld.y;
-            particle->SetPosition(EventHandler::mouseWorld.x + offsetX, EventHandler::mouseWorld.y + offsetY, 0.0f);
+            particle->SetPosition(EventHandler::mouseWorld.x, EventHandler::mouseWorld.y, 0.0f);
         }
     }
     else
