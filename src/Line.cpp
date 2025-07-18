@@ -37,8 +37,10 @@ void Line::Update()
 
 void Line::UpdateVAO()
 {
-	lineVA[0] = sf::Vertex(sf::Vector2f(p1->GetPosition().x, p1->GetPosition().y), sf::Color::White);
-	lineVA[1] = sf::Vertex(sf::Vector2f(p2->GetPosition().x, p2->GetPosition().y), sf::Color::White);
+	Vector3f p1Pos = p1->GetPosition();
+	Vector3f p2Pos = p2->GetPosition();
+	lineVA[0] = sf::Vertex(sf::Vector2f(p1Pos.x, p1Pos.y), sf::Color::White);
+	lineVA[1] = sf::Vertex(sf::Vector2f(p2Pos.x, p2Pos.y), sf::Color::White);
 }
 
 Particle* Line::GetP1()

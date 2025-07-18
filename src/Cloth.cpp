@@ -31,7 +31,8 @@ Cloth::Cloth(float left, float right, float top, float bottom, float step)
 void Cloth::Update(float dt)
 {
   
-    ParticleGrabber(EventHandler::mousePressed);
+    ParticleGrabber(EventHandler::mouseLeftPressed);
+    DestroyLine(EventHandler::mouseRightPressed);
 
     for (Particle* particle : particles)
     {
@@ -49,6 +50,7 @@ void Cloth::Update(float dt)
             line->Update();
         }
     }
+
 }
 
 void Cloth::ParticleGrabber(bool grab)
@@ -59,6 +61,7 @@ void Cloth::ParticleGrabber(bool grab)
 
     if (grab)
     {
+
         if (grabbedParticles.empty())
         {
             // Grab all particles within radius
@@ -79,7 +82,7 @@ void Cloth::ParticleGrabber(bool grab)
         {
             //offsetX = particle->GetPosition().x - EventHandler::mouseWorld.x;
             //offsetY = particle->GetPosition().y - EventHandler::mouseWorld.y;
-            particle->SetPosition(EventHandler::mouseWorld.x + offsetX, EventHandler::mouseWorld.y + offsetY, 0.0f);
+            particle->SetPosition(EventHandler::mouseWorld.x, EventHandler::mouseWorld.y, 0.0f);
         }
     }
     else
@@ -90,6 +93,27 @@ void Cloth::ParticleGrabber(bool grab)
             particle->selected = false;
         }
         grabbedParticles.clear();
+    }
+}
+
+void Cloth::DestroyLine(bool destroy)
+{
+
+    if (destroy)
+    {
+        Line* firstLine = lines.at(0);
+        for (auto it = lines.begin(); it != lines.end(); )
+        {
+            if (*it == firstLine)
+            {
+                delete* it;
+                it = lines.erase(it);
+            }
+            else
+            {
+                ++it;
+            }
+        }
     }
 }
 

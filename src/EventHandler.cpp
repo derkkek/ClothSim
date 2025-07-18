@@ -1,7 +1,8 @@
 #include "EventHandler.h"
 #include <iostream>
 sf::Vector2f EventHandler::mouseWorld = sf::Vector2f(0.f, 0.f);
-bool EventHandler::mousePressed = false;
+bool EventHandler::mouseLeftPressed = false;
+bool EventHandler::mouseRightPressed = false;
 void EventHandler::HandleInputEvents(RenderWindow& window)
 {
     sf::Event event;
@@ -14,11 +15,19 @@ void EventHandler::HandleInputEvents(RenderWindow& window)
         }
         else if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left)
         {
-            EventHandler::mousePressed = true;
+            EventHandler::mouseLeftPressed = true;
         }
         else if (event.type == sf::Event::MouseButtonReleased && event.mouseButton.button == sf::Mouse::Left)
         {
-            EventHandler::mousePressed = false;
+            EventHandler::mouseLeftPressed = false;
+        }
+        else if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Right)
+        {
+            EventHandler::mouseRightPressed = true;
+        }
+        else if (event.type == sf::Event::MouseButtonReleased && event.mouseButton.button == sf::Mouse::Right)
+        {
+            EventHandler::mouseRightPressed = false;
         }
     }
     // Always update mouseWorld to current position
