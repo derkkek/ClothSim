@@ -4,7 +4,7 @@
 #include <algorithm>
 
 Cloth::Cloth(float left, float right, float top, float bottom, float step)
-    :gravity(sf::Vector3f(0.0f, 200.0f, 0.0f)), rows((right - left) / step), cols((bottom - top) / step)
+    :gravity(sf::Vector3f(0.0f, 500.0f, 0.0f)), rows((right - left) / step), cols((bottom - top) / step)
 {
     for (int row = 0; row < rows; ++row) 
     {
