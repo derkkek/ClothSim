@@ -9,6 +9,7 @@
 #include "Cloth.h"
 #include <chrono>
 #include <thread>
+#include "Editor.h"
 using namespace std::chrono_literals;
 
 
@@ -27,6 +28,8 @@ private:
 
 	Renderer* renderer;
 
+	Editor* editor;
+	sf::Clock deltaClock;
 	sf::RenderWindow window;
 	sf::Clock clock;
 	float width;

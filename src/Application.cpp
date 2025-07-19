@@ -3,7 +3,7 @@
 Application::Application(float width, float height)
     :width(width), height(height), 
     window(sf::RenderWindow(sf::VideoMode({ static_cast<unsigned int>(width), static_cast<unsigned int>(height) }), "Cloth Simulation")),
-    renderer(new Renderer)
+    renderer(new Renderer), editor(new Editor), deltaClock()
 {
     Init();
 }
@@ -20,11 +20,11 @@ void Application::Init()
     clock;{}
 
     cloth = new Cloth(50.0f, 1870.0f, 50.0f, 580.0f, 10.0f);
-    Editor::CallEditor();
 }
 
 void Application::Update()
 {
+
     while (window.isOpen())
     {
         const float dt = clock.restart().asSeconds();
@@ -37,6 +37,8 @@ void Application::Update()
 
         renderer->DrawGeometry(cloth->Particles(), cloth->Lines(), window);
 
+        //editor->DrawUI();
+
         window.display();
     }
 }
@@ -47,4 +49,8 @@ void Application::Terminate()
 
     delete renderer;
     renderer = nullptr;
+
+    delete editor;
+    editor = nullptr;
+
 }

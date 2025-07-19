@@ -1,6 +1,12 @@
 #pragma once
-
-namespace Editor
+class Editor
 {
-	void CallEditor();
-}
+public:
+	void DrawUI();
+	Editor() = default;
+	~Editor() = default;
+
+private:
+
+};
+
