@@ -43,7 +43,7 @@ void Cloth::Update(float dt)
         
     }
 
-    for (int i = 0; i < 10; i++)
+    for (int i = 0; i < 5; i++)
     {
         for (Line* line : lines)
         {
@@ -68,10 +68,9 @@ void Cloth::ParticleGrabber(bool grab)
             for (Particle* particle : particles)
             {
                 float mouseDistance = Arithmetic::GetMouseDistance(particle, EventHandler::mouseWorld);
-                if (mouseDistance <= 50.0f)
+
+                if (mouseDistance <= 5.0f)
                 {
-
-
                     grabbedParticles.push_back(particle);
                     particle->selected = true;
                 }
