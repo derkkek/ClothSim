@@ -11,6 +11,9 @@ public:
 
 	void Update(float dt);
 	void ParticleGrabber(bool grab);
+	void DestroyLine(bool destroy);
+	void DestroyUnreferencedParticles();
+
 	void ConstructUniqueLines();
 
 	std::vector<Particle*> Particles();

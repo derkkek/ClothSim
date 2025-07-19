@@ -9,7 +9,9 @@ public:
 	~EventHandler() = default;
 	static void HandleInputEvents(RenderWindow& window);
 	static Vector2f mouseWorld;
-	static bool mousePressed;
+	static bool mouseLeftPressed;
+	static bool mouseRightPressed;
+	static float chooseRadius;
 
 
 private:

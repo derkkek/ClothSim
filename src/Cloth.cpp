@@ -4,7 +4,7 @@
 #include <algorithm>
 
 Cloth::Cloth(float left, float right, float top, float bottom, float step)
-    :gravity(sf::Vector3f(0.0f, 200.0f, 0.0f)), rows((right - left) / step), cols((bottom - top) / step)
+    :gravity(sf::Vector3f(0.0f, 500.0f, 0.0f)), rows((right - left) / step), cols((bottom - top) / step)
 {
     for (int row = 0; row < rows; ++row) 
     {
@@ -31,7 +31,8 @@ Cloth::Cloth(float left, float right, float top, float bottom, float step)
 void Cloth::Update(float dt)
 {
   
-    ParticleGrabber(EventHandler::mousePressed);
+    ParticleGrabber(EventHandler::mouseLeftPressed);
+    DestroyLine(EventHandler::mouseRightPressed);
 
     for (Particle* particle : particles)
     {
@@ -42,13 +43,14 @@ void Cloth::Update(float dt)
         
     }
 
-    for (int i = 0; i < 10; i++)
+    for (int i = 0; i < 5; i++)
     {
         for (Line* line : lines)
         {
             line->Update();
         }
     }
+
 }
 
 void Cloth::ParticleGrabber(bool grab)
@@ -59,16 +61,16 @@ void Cloth::ParticleGrabber(bool grab)
 
     if (grab)
     {
+
         if (grabbedParticles.empty())
         {
             // Grab all particles within radius
             for (Particle* particle : particles)
             {
                 float mouseDistance = Arithmetic::GetMouseDistance(particle, EventHandler::mouseWorld);
-                if (mouseDistance <= 50.0f)
+
+                if (mouseDistance <= 5.0f)
                 {
-
-
                     grabbedParticles.push_back(particle);
                     particle->selected = true;
                 }
@@ -90,6 +92,59 @@ void Cloth::ParticleGrabber(bool grab)
             particle->selected = false;
         }
         grabbedParticles.clear();
+    }
+}
+
+void Cloth::DestroyLine(bool destroy)
+{
+    if (destroy)
+    {
+        // 1. Delete lines based on distance condition
+        for (auto it = lines.begin(); it != lines.end(); )
+        {
+            Particle* p1 = (*it)->GetP1();
+            Particle* p2 = (*it)->GetP2();
+
+            float distanceP1 = Arithmetic::GetMouseDistance(p1, EventHandler::mouseWorld);
+            float distanceP2 = Arithmetic::GetMouseDistance(p2, EventHandler::mouseWorld);
+
+            if ((distanceP1 + distanceP2) / 2.0f < EventHandler::chooseRadius)
+            {
+                delete *it;                // Free memory
+                it = lines.erase(it);      // Remove from vector, get next iterator
+            }
+            else
+            {
+                ++it;
+            }
+        }
+
+        DestroyUnreferencedParticles();
+    }
+}
+
+void Cloth::DestroyUnreferencedParticles()
+{
+    // 2. Build set of referenced particles
+    std::set<Particle*> referencedParticles;
+    for (const auto& line : lines)
+    {
+        referencedParticles.insert(line->GetP1());
+        referencedParticles.insert(line->GetP2());
+    }
+
+    // 3. Delete orphaned particles
+    for (auto it = particles.begin(); it != particles.end(); )
+    {
+        if (referencedParticles.find(*it) == referencedParticles.end())
+        {
+            delete* it;
+            it = particles.erase(it);
+        }
+        else
+        {
+            ++it;
+        }
     }
 }
 

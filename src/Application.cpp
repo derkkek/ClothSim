@@ -27,13 +27,16 @@ void Application::Update()
 {
     while (window.isOpen())
     {
-        EventHandler::HandleInputEvents(window);
         const float dt = clock.restart().asSeconds();
 
         window.clear();
 
+        EventHandler::HandleInputEvents(window);
+
         cloth->Update(dt);
+
         renderer->DrawGeometry(cloth->Particles(), cloth->Lines(), window);
+
         window.display();
     }
 }
