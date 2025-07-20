@@ -1,9 +1,8 @@
 #include "Application.h"
-#include "Editor.h"
 Application::Application(float width, float height)
     :width(width), height(height), 
     window(sf::RenderWindow(sf::VideoMode({ static_cast<unsigned int>(width), static_cast<unsigned int>(height) }), "Cloth Simulation")),
-    renderer(new Renderer), editor(new Editor), deltaClock()
+    renderer(new Renderer), deltaClock()
 {
     Init();
 }
@@ -37,20 +36,21 @@ void Application::Update()
 
         renderer->DrawGeometry(cloth->Particles(), cloth->Lines(), window);
 
-        //editor->DrawUI();
+
 
         window.display();
+
+        //editor->DrawUI();
+
+        //window.display();
     }
 }
 void Application::Terminate()
 {
+
     delete cloth;
     cloth = nullptr;
 
     delete renderer;
     renderer = nullptr;
-
-    delete editor;
-    editor = nullptr;
-
 }

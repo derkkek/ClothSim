@@ -24,11 +24,11 @@ add_subdirectory(Editor/vendor/imgui-sfml)
 # Add Editor executable
 file(GLOB EDITOR_SOURCES "Editor/src/*.cpp" "Editor/src/*.h")
 add_executable(EditorApp ${EDITOR_SOURCES})
-target_include_directories(EditorApp PRIVATE "Editor/src" "Editor/vendor/imgui" "Editor/vendor/imgui-sfml")
+target_include_directories(EditorApp PRIVATE "Editor/src" "Editor/vendor/imgui" "Editor/vendor/imgui-sfml" "src")
 target_link_libraries(EditorApp PRIVATE imgui ImGui-SFML::ImGui-SFML sfml-graphics sfml-window sfml-system)
 
-# Main application
-add_executable(${PROJECT_NAME}
+# Main application as static library
+add_library(Simulation STATIC
     src/main.cpp
     src/Particle.cpp
     src/Particle.h
@@ -46,14 +46,8 @@ add_executable(${PROJECT_NAME}
     src/Renderer.h
 )
 
-target_include_directories(${PROJECT_NAME} PRIVATE "src" "Editor/src")
-target_link_libraries(${PROJECT_NAME} PRIVATE sfml-graphics sfml-window sfml-system)
-target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_17)
+target_include_directories(Simulation PUBLIC "src" "Editor/src")
+target_compile_features(Simulation PUBLIC cxx_std_17)
 
-if(WIN32)
-    add_custom_command(
-        TARGET ${PROJECT_NAME}
-        COMMENT "Copy OpenAL DLL"
-        PRE_BUILD COMMAND ${CMAKE_COMMAND} -E copy ${SFML_SOURCE_DIR}/extlibs/bin/$<IF:$<EQUAL:${CMAKE_SIZEOF_VOID_P},8>,x64,x86>/openal32.dll $<TARGET_FILE_DIR:${PROJECT_NAME}>
-        VERBATIM)
-endif()
+target_link_libraries(Simulation PUBLIC sfml-graphics sfml-window sfml-system)
+target_link_libraries(EditorApp PRIVATE Simulation)
