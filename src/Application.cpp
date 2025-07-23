@@ -1,8 +1,8 @@
 #include "Application.h"
 Application::Application(float width, float height)
-    :width(width), height(height), 
-    window(sf::RenderWindow(sf::VideoMode({ static_cast<unsigned int>(width), static_cast<unsigned int>(height) }), "Cloth Simulation")),
-    renderer(new Renderer), deltaClock()
+    :width(width), height(height),
+    renderer(new Renderer), window(sf::RenderWindow(sf::VideoMode({ static_cast<unsigned int>(width), static_cast<unsigned int>(height) }), "Cloth Simulation")),
+    deltaClock(), editor(new Editor(window))
 {
     Init();
 }
@@ -31,18 +31,15 @@ void Application::Update()
         window.clear();
 
         EventHandler::HandleInputEvents(window);
+        editor->HandleEvents(window, EventHandler::event);
 
         cloth->Update(dt);
 
         renderer->DrawGeometry(cloth->Particles(), cloth->Lines(), window);
 
-
+        editor->DrawUI(window, deltaClock);
 
         window.display();
-
-        //editor->DrawUI();
-
-        //window.display();
     }
 }
 void Application::Terminate()
@@ -53,4 +50,9 @@ void Application::Terminate()
 
     delete renderer;
     renderer = nullptr;
+
+    editor->Terminate();
+    delete editor;
+    editor = nullptr;
+
 }

@@ -12,8 +12,8 @@ public:
 	static bool mouseLeftPressed;
 	static bool mouseRightPressed;
 	static float chooseRadius;
-
+	static Event event;
 
 private:
-	static Event event;
+
 };

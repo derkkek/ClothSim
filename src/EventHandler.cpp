@@ -4,10 +4,10 @@ sf::Vector2f EventHandler::mouseWorld = sf::Vector2f(0.f, 0.f);
 float EventHandler::chooseRadius = 20.0f;
 bool EventHandler::mouseLeftPressed = false;
 bool EventHandler::mouseRightPressed = false;
+sf::Event EventHandler::event;
+
 void EventHandler::HandleInputEvents(RenderWindow& window)
 {
-    sf::Event event;
-
     while (window.pollEvent(event))
     {
         if (event.type == sf::Event::Closed || sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))

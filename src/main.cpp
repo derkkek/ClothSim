@@ -4,7 +4,7 @@ int main()
 {
     Application app;
    
-    app.Update();
+    //app.Update();
 
     app.Terminate();
 
