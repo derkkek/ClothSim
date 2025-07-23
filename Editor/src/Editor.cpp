@@ -11,7 +11,7 @@ void Editor::Init(sf::RenderWindow& window)
 }
 
 Editor::Editor(sf::RenderWindow& window)
-    :editorGravity(Vector3f(0.0f, 500.0f, 0.0f))
+    :editorGravity(Vector3f(0.0f, 300.0f, 0.0f))
 {
     Init(window);
 }

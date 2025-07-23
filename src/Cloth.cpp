@@ -4,7 +4,7 @@
 #include <algorithm>
 
 Cloth::Cloth(float left, float right, float top, float bottom, float step)
-    :gravity(sf::Vector3f(0.0f, 500.0f, 0.0f)), rows((right - left) / step), cols((bottom - top) / step)
+    :gravity(sf::Vector3f(0.0f, 300.0f, 0.0f)), rows((right - left) / step), cols((bottom - top) / step)
 {
     for (int row = 0; row < rows; ++row) 
     {
@@ -45,7 +45,7 @@ void Cloth::Update(float dt)
         
     }
 
-    for (int i = 0; i < 5; i++)
+    for (int i = 0; i < 10; i++)
     {
         for (Line* line : lines)
         {
@@ -132,7 +132,7 @@ void Cloth::DestroyLineByOffset()
         Line* line = (*it);
         float offsetX = line->GetOffsetX();
         float offsetY = line->GetOffsetY();
-        if (offsetX > 3.0f && offsetY > 3.0f)
+        if (offsetX > 5.0f || offsetX < -5.0f || offsetY > 5.0f || offsetY < -5.0f)
         {
             delete line;
             it = lines.erase(it);
