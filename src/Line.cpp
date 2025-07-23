@@ -1,7 +1,7 @@
 #include "Line.h"
 
 Line::Line(Particle* p1, Particle* p2, float length)
-	:p1(p1), p2(p2), length(length)
+	:p1(p1), p2(p2), length(length), offsetX(0.0f), offsetY(0.0f)
 {
 	lineVA[0] = sf::Vertex(sf::Vector2f(p1->GetPosition().x, p1->GetPosition().y), sf::Color::White);
 	lineVA[1] = sf::Vertex(sf::Vector2f(p2->GetPosition().x, p2->GetPosition().y), sf::Color::White);
@@ -18,10 +18,10 @@ void Line::Update()
 	sf::Vector2f diff = Arithmetic::GetDifference(GetP1(), GetP2());
 	float diffFactor = (GetLength() - Arithmetic::GetLength(diff)) / Arithmetic::GetLength(diff) * 0.5f;
 
-	float softness = 0.5f;
+	float softness = 1.0f;
 
-	float offsetX = diff.x * diffFactor * softness;
-	float offsetY = diff.y * diffFactor * softness;
+	offsetX = diff.x * diffFactor * softness;
+	offsetY = diff.y * diffFactor * softness;
 
 	Particle* p1 = GetP1();
 	Particle* p2 = GetP2();
@@ -55,4 +55,14 @@ Particle* Line::GetP2()
 float Line::GetLength()
 {
 	return length;
+}
+
+float Line::GetOffsetX()
+{
+	return offsetX;
+}
+
+float Line::GetOffsetY()
+{
+	return offsetY;
 }

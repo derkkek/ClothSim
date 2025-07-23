@@ -31,8 +31,10 @@ Cloth::Cloth(float left, float right, float top, float bottom, float step)
 void Cloth::Update(float dt)
 {
   
+
     ParticleGrabber(EventHandler::mouseLeftPressed);
-    DestroyLine(EventHandler::mouseRightPressed);
+    DestroyLineByMouse(EventHandler::mouseRightPressed);
+    DestroyLineByOffset();
 
     for (Particle* particle : particles)
     {
@@ -95,12 +97,12 @@ void Cloth::ParticleGrabber(bool grab)
     }
 }
 
-void Cloth::DestroyLine(bool destroy)
+void Cloth::DestroyLineByMouse(bool destroy)
 {
     if (destroy)
     {
         // 1. Delete lines based on distance condition
-        for (auto it = lines.begin(); it != lines.end(); )
+        for (auto it = lines.begin(); it != lines.end();)
         {
             Particle* p1 = (*it)->GetP1();
             Particle* p2 = (*it)->GetP2();
@@ -120,6 +122,25 @@ void Cloth::DestroyLine(bool destroy)
         }
 
         DestroyUnreferencedParticles();
+    }
+}
+
+void Cloth::DestroyLineByOffset()
+{
+    for (auto it = lines.begin(); it != lines.end();)
+    {
+        Line* line = (*it);
+        float offsetX = line->GetOffsetX();
+        float offsetY = line->GetOffsetY();
+        if (offsetX > 3.0f && offsetY > 3.0f)
+        {
+            delete line;
+            it = lines.erase(it);
+        }
+        else
+        {
+            ++it;
+        }
     }
 }
 

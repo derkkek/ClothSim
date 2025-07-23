@@ -10,8 +10,9 @@ public:
 	~Cloth() =default;
 
 	void Update(float dt);
-	void ParticleGrabber(bool grab);
-	void DestroyLine(bool destroy);
+	void ParticleGrabber(bool grab); // passing bool to a function is a bad practice..
+	void DestroyLineByMouse(bool destroy);
+	void DestroyLineByOffset();
 	void DestroyUnreferencedParticles();
 
 	void ConstructUniqueLines();

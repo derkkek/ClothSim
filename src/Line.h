@@ -13,12 +13,17 @@ public:
 	VertexArray GetVAO();
 	void Update();
 	void UpdateVAO();
+
 	Particle* GetP1();
 	Particle* GetP2();
 	float GetLength();
+	float GetOffsetX();
+	float GetOffsetY();
 private:
 	Particle* p1;
 	Particle* p2;
 	VertexArray lineVA{ sf::Lines, 2 };
 	float length;
+	float offsetX;
+	float offsetY;
 };
