@@ -21,6 +21,8 @@ public:
 
 	std::vector<Particle*> GetNeighbors(int i, int j);
 
+	void SetGravity(Vector3f& gravity);
+
 private:
 	std::vector<Particle*> particles;
 	std::vector<Line*> lines;

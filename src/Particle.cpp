@@ -55,7 +55,7 @@ void Particle::ZeroForce()
 
 void Particle::Verlet(float dt)
 {	
-	Vector3f newPos = position + (position - oldPosition) * (1.0f - 0.01f) + (force / mass) * (1.0f - 0.01f) * dt * dt;
+	Vector3f newPos = position + (position - oldPosition) + (force / mass) * dt * dt;
 	oldPosition = position;
 	position = newPos;
 
@@ -69,6 +69,11 @@ void Particle::KeepInside(float bound_y)
 	{
 	    SetPosition(GetPosition().x, bound_y, 0.0f);
 		acceleration = sf::Vector3f(0.0f, 0.0f, 0.0f);
+	}
+	else if (GetPosition().y < 0.0f)
+	{
+		SetPosition(GetPosition().x, 0.0f, 0.0f);
+		acceleration.y = -acceleration.y;// sf::Vector3f(0.0f, 0.0f, 0.0f);
 	}
 
 }

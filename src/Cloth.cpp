@@ -205,3 +205,8 @@ std::vector<Particle*> Cloth::GetNeighbors(int i, int j)
 
     return neighbors;
 }
+
+void Cloth::SetGravity(Vector3f &gravity)
+{
+    this->gravity = gravity;
+}

@@ -16,9 +16,9 @@ VertexArray Line::GetVAO()
 void Line::Update()
 {
 	sf::Vector2f diff = Arithmetic::GetDifference(GetP1(), GetP2());
-	float diffFactor = (GetLength() - Arithmetic::GetLength(diff)) / Arithmetic::GetLength(diff) * 0.5;
+	float diffFactor = (GetLength() - Arithmetic::GetLength(diff)) / Arithmetic::GetLength(diff) * 0.5f;
 
-	float softness = 1.0f;
+	float softness = 0.5f;
 
 	float offsetX = diff.x * diffFactor * softness;
 	float offsetY = diff.y * diffFactor * softness;

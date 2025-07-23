@@ -31,7 +31,8 @@ void Application::Update()
         window.clear();
 
         EventHandler::HandleInputEvents(window);
-        editor->HandleEvents(window, EventHandler::event);
+
+        InteractByEditor();
 
         cloth->Update(dt);
 
@@ -55,4 +56,11 @@ void Application::Terminate()
     delete editor;
     editor = nullptr;
 
+}
+
+void Application::InteractByEditor()
+{
+    editor->HandleEvents(window, EventHandler::event);
+
+    cloth->SetGravity(editor->editorGravity);
 }

@@ -2,8 +2,11 @@
 #include <memory.h>
 #pragma once
 using namespace sf;
+
 class Editor
 {
+	friend class Application;
+
 public:
 	Editor(sf::RenderWindow& window);
 	void DrawUI(sf::RenderWindow& window, sf::Clock deltaClock);
@@ -14,7 +17,6 @@ public:
 	void Init(sf::RenderWindow& window);
 
 private:
-	float width;
-	float height;
+	Vector3f editorGravity;
 };
 

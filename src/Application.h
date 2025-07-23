@@ -26,6 +26,7 @@ public:
 
 
 private:
+	void InteractByEditor();
 	sf::RenderWindow window;
 	sf::Clock deltaClock;
 
