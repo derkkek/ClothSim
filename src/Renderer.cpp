@@ -11,11 +11,14 @@ void Renderer::DrawLine(Line* line, sf::RenderWindow& window)
 }
 
 void Renderer::DrawGeometry(std::vector<Particle*> &particles, std::vector<Line*> &lines, sf::RenderWindow& window)
-{
-	for each(Particle* particle in particles)
+{	
+	/* DON'T RENDER PARTICLES TO IMPROVE PERFORMANCE.
+	* 	for each(Particle* particle in particles)
 	{
 		DrawParticle(particle, window);
 	}
+	*/
+
 	for each(Line* line in lines)
 	{
 		DrawLine(line, window);

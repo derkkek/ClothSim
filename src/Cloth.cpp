@@ -30,8 +30,6 @@ Cloth::Cloth(float left, float right, float top, float bottom, float step)
 
 void Cloth::Update(float dt)
 {
-  
-
     ParticleGrabber(EventHandler::mouseLeftPressed);
     DestroyLineByMouse(EventHandler::mouseRightPressed);
     DestroyLineByOffset();
@@ -52,7 +50,6 @@ void Cloth::Update(float dt)
             line->Update();
         }
     }
-
 }
 
 void Cloth::ParticleGrabber(bool grab)
@@ -120,8 +117,10 @@ void Cloth::DestroyLineByMouse(bool destroy)
                 ++it;
             }
         }
-
-        DestroyUnreferencedParticles();
+        /*
+            To improve performance just don't render particles
+        */
+        //DestroyUnreferencedParticles();
     }
 }
 
@@ -142,6 +141,7 @@ void Cloth::DestroyLineByOffset()
             ++it;
         }
     }
+
 }
 
 void Cloth::DestroyUnreferencedParticles()
