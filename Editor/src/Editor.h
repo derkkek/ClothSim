@@ -18,5 +18,6 @@ public:
 
 private:
 	Vector3f editorGravity;
+	int editorConstraintsIterationCount;
 };
 

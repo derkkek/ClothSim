@@ -9,7 +9,7 @@ public:
 	Cloth(float left, float right, float top, float bottom, float step);
 	~Cloth() =default;
 
-	void Update(float dt);
+	void Update(float dt, int constraintIteration);
 	void ParticleGrabber(bool grab); // passing bool to a function is a bad practice..
 	void DestroyLineByMouse(bool destroy);
 	void DestroyLineByOffset();

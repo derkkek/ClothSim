@@ -34,9 +34,10 @@ void Application::Update()
 
         InteractByEditor();
 
-        cloth->Update(dt);
+        cloth->Update(dt, editor->editorConstraintsIterationCount);
 
-        renderer->DrawGeometry(cloth->Particles(), cloth->Lines(), window);
+        //renderer->DrawGeometry(cloth->Particles(), cloth->Lines(), window);
+        renderer->DrawLines(cloth->Lines(), window);
 
         editor->DrawUI(window, deltaClock);
 
