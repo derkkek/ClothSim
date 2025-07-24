@@ -10,6 +10,7 @@
 #include <chrono>
 #include <thread>
 #include "Editor.h"
+#include "IScene.h"
 
 using namespace std::chrono_literals;
 
@@ -30,7 +31,7 @@ private:
 	sf::RenderWindow window;
 	sf::Clock deltaClock;
 
-	Cloth* cloth;
+	IScene* cloth;
 	Editor* editor;
 	Renderer* renderer;
 

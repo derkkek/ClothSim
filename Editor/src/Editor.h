@@ -9,15 +9,28 @@ class Editor
 
 public:
 	Editor(sf::RenderWindow& window);
+	~Editor() = default;
+
 	void DrawUI(sf::RenderWindow& window, sf::Clock deltaClock);
 	void HandleEvents(RenderWindow& window, Event event);
-	void Terminate();
-	~Editor() = default;
 	
-	void Init(sf::RenderWindow& window);
 
 private:
+	enum State
+	{
+		EDIT, RUN
+	};
+
+	State state;
 	Vector3f editorGravity;
 	int editorConstraintsIterationCount;
+
+	bool editButtonClicked;
+	bool runButtonClicked;
+
+	void Init(sf::RenderWindow& window);
+	void Terminate();
+
+
 };
 

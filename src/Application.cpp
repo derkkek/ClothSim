@@ -33,8 +33,11 @@ void Application::Update()
         EventHandler::HandleInputEvents(window);
 
         InteractByEditor();
+        if (editor->state == Editor::RUN)
+        {
+            cloth->Update(dt, editor->editorConstraintsIterationCount);
 
-        cloth->Update(dt, editor->editorConstraintsIterationCount);
+        }
 
         //renderer->DrawGeometry(cloth->Particles(), cloth->Lines(), window);
         renderer->DrawLines(cloth->Lines(), window);
@@ -64,4 +67,5 @@ void Application::InteractByEditor()
     editor->HandleEvents(window, EventHandler::event);
 
     cloth->SetGravity(editor->editorGravity);
+
 }

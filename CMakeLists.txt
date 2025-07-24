@@ -44,6 +44,8 @@ add_library(Simulation STATIC
     src/Application.h
     src/Renderer.cpp
     src/Renderer.h
+    src/IScene.cpp
+    src/IScene.h
 )
 
 target_include_directories(Simulation PUBLIC "src" "Editor/src")

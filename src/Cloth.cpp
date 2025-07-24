@@ -4,7 +4,7 @@
 #include <algorithm>
 
 Cloth::Cloth(float left, float right, float top, float bottom, float step)
-    :gravity(sf::Vector3f(0.0f, 500.0f, 0.0f)), rows((right - left) / step), cols((bottom - top) / step)
+    :rows((right - left) / step), cols((bottom - top) / step)
 {
     for (int row = 0; row < rows; ++row) 
     {
@@ -28,7 +28,7 @@ Cloth::Cloth(float left, float right, float top, float bottom, float step)
     ConstructUniqueLines();
 }
 
-void Cloth::Update(float dt, int constraintIteration)
+void  Cloth::Update(float dt, int constraintIteration)
 {
     ParticleGrabber(EventHandler::mouseLeftPressed);
     DestroyLineByMouse(EventHandler::mouseRightPressed);
@@ -197,16 +197,6 @@ void Cloth::ConstructUniqueLines()
     existingLines.clear();
 }
 
-std::vector<Particle*> Cloth::Particles()
-{
-    return particles;
-}
-
-std::vector<Line*> Cloth::Lines()
-{
-    return lines;
-}
-
 std::vector<Particle*> Cloth::GetNeighbors(int i, int j) 
 {
     std::vector<Particle*> neighbors;
@@ -225,9 +215,4 @@ std::vector<Particle*> Cloth::GetNeighbors(int i, int j)
         neighbors.push_back(particles[i * cols + (j + 1)]);
 
     return neighbors;
-}
-
-void Cloth::SetGravity(Vector3f &gravity)
-{
-    this->gravity = gravity;
 }
