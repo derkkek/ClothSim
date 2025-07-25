@@ -11,7 +11,7 @@ public:
 	~Cloth() =default;
 
 	void Update(float dt, int constraintIteration) override;
-
+	void InteractByInput() override;
 
 private:
 

@@ -30,8 +30,6 @@ Cloth::Cloth(float left, float right, float top, float bottom, float step)
 
 void  Cloth::Update(float dt, int constraintIteration)
 {
-    ParticleGrabber(EventHandler::mouseLeftPressed);
-    DestroyLineByMouse(EventHandler::mouseRightPressed);
     DestroyLineByOffset();
 
     for (Particle* particle : particles)
@@ -51,6 +49,13 @@ void  Cloth::Update(float dt, int constraintIteration)
         }
     }
 }
+
+void Cloth::InteractByInput()
+{
+    ParticleGrabber(EventHandler::mouseLeftPressed);
+    DestroyLineByMouse(EventHandler::mouseRightPressed);
+}
+
 
 void Cloth::ParticleGrabber(bool grab)
 {

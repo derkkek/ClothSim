@@ -18,7 +18,7 @@ void Application::Init()
 
     clock;{}
 
-    cloth = new Cloth(50.0f, 1870.0f, 50.0f, 580.0f, 10.0f);
+    scene = new Cloth(50.0f, 1870.0f, 50.0f, 580.0f, 10.0f);
 }
 
 void Application::Update()
@@ -31,16 +31,16 @@ void Application::Update()
         window.clear();
 
         EventHandler::HandleInputEvents(window);
+        editor->HandleEvents(window, EventHandler::event);
 
-        InteractByEditor();
-        if (editor->state == Editor::RUN)
-        {
-            cloth->Update(dt, editor->editorConstraintsIterationCount);
+        InteractSceneByEditor();//encapsulate this into scene
 
-        }
+
+        scene->InteractByInput();
+        scene->Update(dt, editor->editorConstraintsIterationCount);
 
         //renderer->DrawGeometry(cloth->Particles(), cloth->Lines(), window);
-        renderer->DrawLines(cloth->Lines(), window);
+        renderer->DrawLines(scene->Lines(), window);
 
         editor->DrawUI(window, deltaClock);
 
@@ -50,8 +50,8 @@ void Application::Update()
 void Application::Terminate()
 {
 
-    delete cloth;
-    cloth = nullptr;
+    delete scene;
+    scene = nullptr;
 
     delete renderer;
     renderer = nullptr;
@@ -62,10 +62,9 @@ void Application::Terminate()
 
 }
 
-void Application::InteractByEditor()
+void Application::InteractSceneByEditor()
 {
-    editor->HandleEvents(window, EventHandler::event);
 
-    cloth->SetGravity(editor->editorGravity);
+    scene->SetGravity(editor->editorGravity);
 
 }

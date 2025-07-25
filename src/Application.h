@@ -27,11 +27,11 @@ public:
 
 
 private:
-	void InteractByEditor();
+	void InteractSceneByEditor();
 	sf::RenderWindow window;
 	sf::Clock deltaClock;
 
-	IScene* cloth;
+	IScene* scene;
 	Editor* editor;
 	Renderer* renderer;
 
