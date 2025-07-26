@@ -11,6 +11,7 @@
 #include <thread>
 #include "Editor.h"
 #include "IScene.h"
+#include "EmptyScene.h"
 
 using namespace std::chrono_literals;
 
@@ -39,6 +40,7 @@ private:
 	IScene* scene;
 	Editor* editor;
 	Renderer* renderer;
+	EventHandler eventHandler;
 
 	sf::Clock clock;
 	float width;

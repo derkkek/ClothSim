@@ -68,6 +68,7 @@ void Editor::HandleStates(RenderWindow& window, Event event)
     }
     else if (resetButtonClicked)
     {
-
+        state = RUN;
+        resetButtonClicked = false;
     }
 }

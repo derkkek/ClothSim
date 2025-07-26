@@ -1,4 +1,5 @@
 #include "IScene.h"
+#include <iostream>
 IScene::IScene()
 	:gravity(sf::Vector3f(0.0f, 500.0f, 0.0f))
 {
@@ -16,4 +17,13 @@ std::vector<Line*> IScene::Lines()
 std::vector<Particle*> IScene::Particles()
 {
 	return particles;
+}
+void IScene::AddDynamicParticle(sf::Vector3f position)
+{
+	this->particles.push_back(new Particle(position, false));
+}
+
+void IScene::AddStaticParticle(sf::Vector3f position)
+{
+	this->particles.push_back(new Particle(position, true));
 }

@@ -2,7 +2,7 @@
 Application::Application(float width, float height)
     :width(width), height(height),
     renderer(new Renderer), window(sf::RenderWindow(sf::VideoMode({ static_cast<unsigned int>(width), static_cast<unsigned int>(height) }), "Cloth Simulation")),
-    deltaClock(), dt(0.0f), editor(new Editor(window))
+    deltaClock(), dt(0.0f), editor(new Editor(window)), eventHandler()
 {
     Init();
 }
@@ -34,7 +34,8 @@ void Application::Init()
 
     clock;{}
 
-    scene = new Cloth(50.0f, 1870.0f, 50.0f, 580.0f, 10.0f);
+    //scene = new Cloth(50.0f, 1870.0f, 50.0f, 580.0f, 10.0f);
+    scene = new EmptyScene();
 }
 
 void Application::InitFrame()
@@ -54,14 +55,15 @@ void Application::Input()
 
     if (editor->state == Editor::State::RUN)
     {
-        scene->InteractByInput();
+        scene->InteractByInput(eventHandler);
     }
 }
 
 void Application::Render()
 {
     //renderer->DrawGeometry(cloth->Particles(), cloth->Lines(), window);
-    renderer->DrawLines(scene->Lines(), window);
+    //renderer->DrawLines(scene->Lines(), window);
+    renderer->DrawGeometry(scene->Particles(), scene->Lines(), window);
 
     editor->DrawUI(window, deltaClock);
 

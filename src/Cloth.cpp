@@ -50,7 +50,7 @@ void  Cloth::Update(float dt, int constraintIteration)
     }
 }
 
-void Cloth::InteractByInput()
+void Cloth::InteractByInput(EventHandler& eventHandler)
 {
     ParticleGrabber(EventHandler::mouseLeftPressed);
     DestroyLineByMouse(EventHandler::mouseRightPressed);
