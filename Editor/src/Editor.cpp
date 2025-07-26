@@ -12,6 +12,7 @@ void Editor::Init(sf::RenderWindow& window)
 
 Editor::Editor(sf::RenderWindow& window)
     :editorGravity(Vector3f(0.0f, 500.0f, 0.0f)), editorConstraintsIterationCount(10), state(RUN), editButtonClicked(false), runButtonClicked(false)
+    ,gravityChanged(false), resetButtonClicked(false)
 {
     Init(window);
 }
@@ -28,10 +29,17 @@ void Editor::DrawUI(sf::RenderWindow& window, sf::Clock deltaClock)
     ImGui::Text("Hello from the Editor library!");
     editButtonClicked = ImGui::Button("Edit");
     runButtonClicked = ImGui::Button("Run");
+    resetButtonClicked = ImGui::Button("Reset");
+
     if (state == EDIT)
     {
         ImGui::Text("Current State: Edit");
-        ImGui::SliderFloat("Gravity", &editorGravity.y, 0.0f, 2000.0f);
+
+        if (ImGui::SliderFloat("Gravity", &editorGravity.y, 0.0f, 2000.0f))
+        {
+            gravityChanged = true;
+        }
+
         ImGui::SliderInt("Constraint Iteration:", &editorConstraintsIterationCount, 1, 30);
     }
     else
@@ -44,9 +52,9 @@ void Editor::DrawUI(sf::RenderWindow& window, sf::Clock deltaClock)
     ImGui::SFML::Render(window);
 }
 
-void Editor::HandleEvents(RenderWindow& window, Event event)
+void Editor::HandleStates(RenderWindow& window, Event event)
 {
-    ImGui::SFML::ProcessEvent(window, EventHandler::event);
+    ImGui::SFML::ProcessEvent(window, event);
 
     if (editButtonClicked)
     {
@@ -57,5 +65,9 @@ void Editor::HandleEvents(RenderWindow& window, Event event)
     {
         state = RUN;
         runButtonClicked = false;
+    }
+    else if (resetButtonClicked)
+    {
+
     }
 }

@@ -14,6 +14,7 @@ public:
 
 	virtual void InteractByInput() = 0; 
 	virtual void Update(float dt, int constraintIteration) = 0;
+	virtual IScene* Recreate() = 0;
 
 	void SetGravity(sf::Vector3f& Gravity);
 

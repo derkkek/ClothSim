@@ -55,6 +55,11 @@ void Cloth::InteractByInput()
     ParticleGrabber(EventHandler::mouseLeftPressed);
     DestroyLineByMouse(EventHandler::mouseRightPressed);
 }
+IScene* Cloth::Recreate()
+{
+    return new Cloth(50.0f, 1870.0f, 50.0f, 580.0f, 10.0f);
+}
+
 
 
 void Cloth::ParticleGrabber(bool grab)

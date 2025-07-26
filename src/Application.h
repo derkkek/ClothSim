@@ -28,8 +28,13 @@ public:
 
 private:
 	void InteractSceneByEditor();
+	void InitFrame();
+	void Input();
+	void Render();
+
 	sf::RenderWindow window;
 	sf::Clock deltaClock;
+	float dt;
 
 	IScene* scene;
 	Editor* editor;

@@ -12,7 +12,7 @@ public:
 
 	void Update(float dt, int constraintIteration) override;
 	void InteractByInput() override;
-
+	IScene* Recreate() override;
 private:
 
 	void ParticleGrabber(bool grab); // passing bool to a function is bad practice..

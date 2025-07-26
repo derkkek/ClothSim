@@ -12,7 +12,7 @@ public:
 	~Editor() = default;
 
 	void DrawUI(sf::RenderWindow& window, sf::Clock deltaClock);
-	void HandleEvents(RenderWindow& window, Event event);
+	void HandleStates(RenderWindow& window, Event event);
 	
 
 private:
@@ -27,6 +27,10 @@ private:
 
 	bool editButtonClicked;
 	bool runButtonClicked;
+	bool resetButtonClicked;
+
+	bool gravityChanged;
+
 
 	void Init(sf::RenderWindow& window);
 	void Terminate();

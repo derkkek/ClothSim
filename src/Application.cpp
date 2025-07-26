@@ -2,7 +2,7 @@
 Application::Application(float width, float height)
     :width(width), height(height),
     renderer(new Renderer), window(sf::RenderWindow(sf::VideoMode({ static_cast<unsigned int>(width), static_cast<unsigned int>(height) }), "Cloth Simulation")),
-    deltaClock(), editor(new Editor(window))
+    deltaClock(), dt(0.0f), editor(new Editor(window))
 {
     Init();
 }
@@ -10,6 +10,22 @@ Application::Application(float width, float height)
 Application::~Application()
 {
     Terminate();
+}
+
+void Application::InteractSceneByEditor()
+{
+    if (editor->gravityChanged)
+    {
+        scene->SetGravity(editor->editorGravity);
+        editor->gravityChanged = false;
+    }
+
+    else if (editor->resetButtonClicked)
+    {
+        IScene* oldScene = scene;
+        scene = scene->Recreate();
+        delete oldScene;
+    }
 }
 
 void Application::Init()
@@ -21,35 +37,51 @@ void Application::Init()
     scene = new Cloth(50.0f, 1870.0f, 50.0f, 580.0f, 10.0f);
 }
 
+void Application::InitFrame()
+{
+    dt = clock.restart().asSeconds();
+
+    window.clear();
+}
+
+void Application::Input()
+{
+    EventHandler::HandleInputEvents(window);
+    editor->HandleStates(window, EventHandler::event);
+
+    /*This feels off...*/
+    InteractSceneByEditor();
+
+    if (editor->state == Editor::State::RUN)
+    {
+        scene->InteractByInput();
+    }
+}
+
+void Application::Render()
+{
+    //renderer->DrawGeometry(cloth->Particles(), cloth->Lines(), window);
+    renderer->DrawLines(scene->Lines(), window);
+
+    editor->DrawUI(window, deltaClock);
+
+    window.display();
+}
 void Application::Update()
 {
-
     while (window.isOpen())
     {
-        const float dt = clock.restart().asSeconds();
+        InitFrame();
 
-        window.clear();
+        Input();
 
-        EventHandler::HandleInputEvents(window);
-        editor->HandleEvents(window, EventHandler::event);
-
-        InteractSceneByEditor();//encapsulate this into scene
-
-
-        scene->InteractByInput();
         scene->Update(dt, editor->editorConstraintsIterationCount);
-
-        //renderer->DrawGeometry(cloth->Particles(), cloth->Lines(), window);
-        renderer->DrawLines(scene->Lines(), window);
-
-        editor->DrawUI(window, deltaClock);
-
-        window.display();
+        
+        Render();
     }
 }
 void Application::Terminate()
 {
-
     delete scene;
     scene = nullptr;
 
@@ -62,9 +94,5 @@ void Application::Terminate()
 
 }
 
-void Application::InteractSceneByEditor()
-{
 
-    scene->SetGravity(editor->editorGravity);
 
-}
