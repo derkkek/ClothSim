@@ -1,6 +1,12 @@
 #include "EmptyScene.h"
 #include <iostream>
 #include <set>
+#include <algorithm>
+
+EmptyScene::EmptyScene()
+{
+
+}
 
 void EmptyScene::InteractByInput(EventHandler& eventHandler)
 {
@@ -18,7 +24,6 @@ void EmptyScene::Update(float dt, int constraintIteration)
 {
 	for (Particle* particle : particles)
 	{
-
 		particle->AddForce(gravity);
 		particle->Update(dt);
 		particle->ZeroForce();
@@ -35,21 +40,34 @@ void EmptyScene::Update(float dt, int constraintIteration)
 
 IScene* EmptyScene::Recreate()
 {
-	return nullptr;
+	lines.clear();
+	particles.clear();
+	return new EmptyScene();
 }
 
 void EmptyScene::ConstructUniqueLines()
 {
-	std::set<std::pair<Particle*, Particle*>> existingLines;
-	for each(Particle* particle in particles)
-	{
-		for each(Particle* other  in particles)
-		{
-			if(other != particle)
-			lines.push_back(new Line(particle, other, Arithmetic::GetDistance(particle, other)));
-		}
+	//std::set<std::pair<Particle*, Particle*>> existingLines;
+	//for (Particle* particle : particles)
+	//{
+	//	for (Particle* other : particles)
+	//	{
+	//		if (other != particle)
+	//		{
+	//			auto linePair = std::minmax(particle, other);
+	//			if (existingLines.find(linePair) == existingLines.end()) //if the unique pair doesn't exists in our set. 
+	//			{
+	//				lines.push_back(new Line(particle, other, Arithmetic::GetDistance(particle, other)));
+	//				existingLines.insert(linePair);
+	//			}
+	//		}
 
-	}
+	//	}
+
+	//}
+	//existingLines.clear();
+
+	lines.push_back(new Line(particles.back(), particles.at(particles.size() - 2), Arithmetic::GetDistance(particles.back(), particles.at(particles.size() - 2))));
 }
 
 std::vector<Particle*> EmptyScene::GetNeighbors(Particle* particle)

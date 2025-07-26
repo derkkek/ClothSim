@@ -46,9 +46,11 @@ add_library(Simulation STATIC
     src/Renderer.h
     src/IScene.cpp
     src/IScene.h
+    src/EmptyScene.cpp
+    src/EmptyScene.h
 )
 
-target_include_directories(Simulation PUBLIC "src" "Editor/src")
+target_include_directories(Simulation PUBLIC "src" "Editor/src" "Editor/vendor/imgui")
 target_compile_features(Simulation PUBLIC cxx_std_17)
 
 target_link_libraries(Simulation PUBLIC sfml-graphics sfml-window sfml-system)

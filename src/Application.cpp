@@ -25,6 +25,7 @@ void Application::InteractSceneByEditor()
         IScene* oldScene = scene;
         scene = scene->Recreate();
         delete oldScene;
+        editor->resetButtonClicked = false;
     }
 }
 
@@ -53,7 +54,7 @@ void Application::Input()
     /*This feels off...*/
     InteractSceneByEditor();
 
-    if (editor->state == Editor::State::RUN)
+    if (editor->state == Editor::State::RUN && !editor->MouseIsOnUI())
     {
         scene->InteractByInput(eventHandler);
     }

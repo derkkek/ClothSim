@@ -12,7 +12,7 @@ void Editor::Init(sf::RenderWindow& window)
 
 Editor::Editor(sf::RenderWindow& window)
     :editorGravity(Vector3f(0.0f, 500.0f, 0.0f)), editorConstraintsIterationCount(10), state(RUN), editButtonClicked(false), runButtonClicked(false)
-    ,gravityChanged(false), resetButtonClicked(false)
+    ,gravityChanged(false), resetButtonClicked(false), io()
 {
     Init(window);
 }
@@ -24,7 +24,7 @@ void Editor::Terminate()
 void Editor::DrawUI(sf::RenderWindow& window, sf::Clock deltaClock)
 {
     ImGui::SFML::Update(window, deltaClock.restart());
-
+    
     ImGui::Begin("Editor Panel");
     ImGui::Text("Hello from the Editor library!");
     editButtonClicked = ImGui::Button("Edit");
@@ -55,20 +55,26 @@ void Editor::DrawUI(sf::RenderWindow& window, sf::Clock deltaClock)
 void Editor::HandleStates(RenderWindow& window, Event event)
 {
     ImGui::SFML::ProcessEvent(window, event);
+    io = &ImGui::GetIO();
 
     if (editButtonClicked)
     {
         state = EDIT;
-        editButtonClicked = false;
+        //editButtonClicked = false;
     }
     else if (runButtonClicked)
     {
         state = RUN;
-        runButtonClicked = false;
+        //runButtonClicked = false;
     }
     else if (resetButtonClicked)
     {
         state = RUN;
-        resetButtonClicked = false;
+        //resetButtonClicked = false;
     }
+}
+
+bool Editor::MouseIsOnUI()
+{
+    return io->WantCaptureMouse;
 }

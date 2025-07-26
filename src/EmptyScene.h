@@ -3,7 +3,7 @@
 class EmptyScene : public IScene
 {
 public:
-	EmptyScene() = default;
+	EmptyScene();
 	~EmptyScene() = default;
 
 	void InteractByInput(EventHandler& eventHandler) override;

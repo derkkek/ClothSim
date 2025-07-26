@@ -1,8 +1,8 @@
 #include <SFML/Graphics.hpp>
 #include <memory.h>
+#include <imgui.h>
 #pragma once
 using namespace sf;
-
 class Editor
 {
 	friend class Application;
@@ -13,6 +13,7 @@ public:
 
 	void DrawUI(sf::RenderWindow& window, sf::Clock deltaClock);
 	void HandleStates(RenderWindow& window, Event event);
+	bool MouseIsOnUI();
 	
 
 private:
@@ -28,7 +29,7 @@ private:
 	bool editButtonClicked;
 	bool runButtonClicked;
 	bool resetButtonClicked;
-
+	ImGuiIO* io;
 	bool gravityChanged;
 
 
