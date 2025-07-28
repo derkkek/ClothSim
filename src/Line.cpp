@@ -18,10 +18,10 @@ void Line::Update()
 	sf::Vector2f diff = Arithmetic::GetDifference(GetP1(), GetP2());
 	float diffFactor = (GetLength() - Arithmetic::GetLength(diff)) / Arithmetic::GetLength(diff) * 0.5f;
 
-	float softness = 0.5f;
+	//float softness = 0.5f;
 
-	offsetX = diff.x * diffFactor * softness;
-	offsetY = diff.y * diffFactor * softness;
+	offsetX = diff.x * diffFactor;
+	offsetY = diff.y * diffFactor;
 
 	Particle* p1 = GetP1();
 	Particle* p2 = GetP2();

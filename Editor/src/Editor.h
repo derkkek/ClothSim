@@ -19,7 +19,7 @@ public:
 private:
 	enum State
 	{
-		EDIT, RUN
+		EDIT, RUN, BUILD
 	};
 
 	State state;
@@ -29,6 +29,8 @@ private:
 	bool editButtonClicked;
 	bool runButtonClicked;
 	bool resetButtonClicked;
+	bool buildButtonClicked;
+
 	ImGuiIO* io;
 	bool gravityChanged;
 

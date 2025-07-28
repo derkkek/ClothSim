@@ -12,7 +12,7 @@ void Editor::Init(sf::RenderWindow& window)
 
 Editor::Editor(sf::RenderWindow& window)
     :editorGravity(Vector3f(0.0f, 500.0f, 0.0f)), editorConstraintsIterationCount(10), state(RUN), editButtonClicked(false), runButtonClicked(false)
-    ,gravityChanged(false), resetButtonClicked(false), io()
+    ,gravityChanged(false), resetButtonClicked(false), buildButtonClicked(false), io()
 {
     Init(window);
 }
@@ -30,6 +30,7 @@ void Editor::DrawUI(sf::RenderWindow& window, sf::Clock deltaClock)
     editButtonClicked = ImGui::Button("Edit");
     runButtonClicked = ImGui::Button("Run");
     resetButtonClicked = ImGui::Button("Reset");
+    buildButtonClicked = ImGui::Button("Build");
 
     if (state == EDIT)
     {
@@ -42,9 +43,15 @@ void Editor::DrawUI(sf::RenderWindow& window, sf::Clock deltaClock)
 
         ImGui::SliderInt("Constraint Iteration:", &editorConstraintsIterationCount, 1, 30);
     }
-    else
+    else if(state == RUN)
     {
         ImGui::Text("Current State: Run");
+    }
+    
+    else if (state == BUILD)
+    {
+        ImGui::Text("Current State: Edit");
+        ImGui::Text("Add some particles with your mouse.");
     }
 
     // ... more ImGui widgets ...
@@ -71,6 +78,10 @@ void Editor::HandleStates(RenderWindow& window, Event event)
     {
         state = RUN;
         //resetButtonClicked = false;
+    }
+    else if (buildButtonClicked)
+    {
+        state = BUILD;
     }
 }
 

@@ -54,7 +54,8 @@ void Application::Input()
     /*This feels off...*/
     InteractSceneByEditor();
 
-    if (editor->state == Editor::State::RUN && !editor->MouseIsOnUI())
+    if (editor->state == Editor::State::BUILD && !editor->MouseIsOnUI()) // this should be like this to add particles and lines.
+                                                                         // but this makes cloth uninteractable
     {
         scene->InteractByInput(eventHandler);
     }
@@ -77,8 +78,10 @@ void Application::Update()
         InitFrame();
 
         Input();
-
-        scene->Update(dt, editor->editorConstraintsIterationCount);
+        if (editor->state == Editor::State::RUN)
+        {
+            scene->Update(dt, editor->editorConstraintsIterationCount);
+        }
         
         Render();
     }
