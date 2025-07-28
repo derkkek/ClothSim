@@ -6,7 +6,7 @@ public:
 	EmptyScene();
 	~EmptyScene() = default;
 
-	void InteractByInput(EventHandler& eventHandler) override;
+	void InteractByInput(EventHandler& eventHandler, Editor::State state) override;
 	void Update(float dt, int constraintIteration) override;
 	IScene* Recreate() override;
 	void ConstructUniqueLines() override;

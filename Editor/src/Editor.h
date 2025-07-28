@@ -3,11 +3,18 @@
 #include <imgui.h>
 #pragma once
 using namespace sf;
+
 class Editor
 {
+
 	friend class Application;
 
 public:
+	enum State
+	{
+		EDIT, RUN, ADDPARTICLES, ADDLINES
+	};
+
 	Editor(sf::RenderWindow& window);
 	~Editor() = default;
 
@@ -17,10 +24,7 @@ public:
 	
 
 private:
-	enum State
-	{
-		EDIT, RUN, BUILD
-	};
+
 
 	State state;
 	Vector3f editorGravity;
@@ -29,7 +33,9 @@ private:
 	bool editButtonClicked;
 	bool runButtonClicked;
 	bool resetButtonClicked;
-	bool buildButtonClicked;
+	bool addParticlesButtonClicked;
+	bool addLinesButtonClicked;
+	
 
 	ImGuiIO* io;
 	bool gravityChanged;

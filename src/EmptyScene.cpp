@@ -8,17 +8,33 @@ EmptyScene::EmptyScene()
 
 }
 
-void EmptyScene::InteractByInput(EventHandler& eventHandler)
+void EmptyScene::InteractByInput(EventHandler& eventHandler, Editor::State state)
 {
 	static bool prevMouseLeftPressed = false;
 
 	if (eventHandler.mouseLeftPressed && !prevMouseLeftPressed)
 	{
-		AddDynamicParticle(sf::Vector3f(eventHandler.mouseWorld.x, eventHandler.mouseWorld.y, 0.0f));
-
-		if (particles.size() > 1)
+		if (state == Editor::State::ADDPARTICLES)
 		{
-			ConstructUniqueLines();
+
+			AddDynamicParticle(sf::Vector3f(eventHandler.mouseWorld.x, eventHandler.mouseWorld.y, 0.0f));
+
+			if (particles.size() > 1)
+			{
+				ConstructUniqueLines();
+			}
+
+		}
+
+		if (state == Editor::State::ADDLINES)
+		{
+			//choose nearest particle relative to the mouse pos.
+			//create a line from that to mouse position
+			//update it's VAO accordingly to mouse pos
+			//render the line in each frame
+			//after second particle choose create a new line from first to that one
+			//add that line to it's geometries' lines.
+			//delete the previous line.
 		}
 	}
 

@@ -8,11 +8,12 @@ class Line
 {
 public:
 	Line(Particle* p1, Particle* p2, float length);
+	Line(Particle* p, Vector3f end, float length);
 	~Line() = default;
 
 	VertexArray GetVAO();
 	void Update();
-	void UpdateVAO();
+	void UpdateVAO(Vector3f& start, Vector3f& end);
 
 	Particle* GetP1();
 	Particle* GetP2();
@@ -22,6 +23,8 @@ public:
 private:
 	Particle* p1;
 	Particle* p2;
+	Vector3f startPos;
+	Vector3f endPos;
 	VertexArray lineVA{ sf::Lines, 2 };
 	float length;
 	float offsetX;

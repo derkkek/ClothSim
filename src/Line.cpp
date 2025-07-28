@@ -5,7 +5,13 @@ Line::Line(Particle* p1, Particle* p2, float length)
 {
 	lineVA[0] = sf::Vertex(sf::Vector2f(p1->GetPosition().x, p1->GetPosition().y), sf::Color::White);
 	lineVA[1] = sf::Vertex(sf::Vector2f(p2->GetPosition().x, p2->GetPosition().y), sf::Color::White);
+}
 
+Line::Line(Particle* p, Vector3f end, float length)
+	:startPos(p->GetPosition()), endPos(end), length(length), offsetX(0.0f), offsetY(0.0f)
+{
+	lineVA[0] = sf::Vertex(sf::Vector2f(p->GetPosition().x, p->GetPosition().y), sf::Color::Red);
+	lineVA[1] = sf::Vertex(sf::Vector2f(end.x, end.y), sf::Color::Red);
 }
 
 VertexArray Line::GetVAO()
@@ -32,15 +38,13 @@ void Line::Update()
 	p1->SetPosition(p1_Pos.x + offsetX, p1_Pos.y + offsetY, 0.0f);
 	p2->SetPosition(p2_Pos.x - offsetX, p2_Pos.y - offsetY, 0.0f);
 
-	UpdateVAO();
+	UpdateVAO(p1_Pos, p2_Pos);
 }
 
-void Line::UpdateVAO()
+void Line::UpdateVAO(Vector3f& start, Vector3f& end)
 {
-	Vector3f p1Pos = p1->GetPosition();
-	Vector3f p2Pos = p2->GetPosition();
-	lineVA[0] = sf::Vertex(sf::Vector2f(p1Pos.x, p1Pos.y), sf::Color::White);
-	lineVA[1] = sf::Vertex(sf::Vector2f(p2Pos.x, p2Pos.y), sf::Color::White);
+	lineVA[0] = sf::Vertex(sf::Vector2f(start.x, start.y), sf::Color::White);
+	lineVA[1] = sf::Vertex(sf::Vector2f(end.x, end.y), sf::Color::White);
 }
 
 Particle* Line::GetP1()

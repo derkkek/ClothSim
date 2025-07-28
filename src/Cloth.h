@@ -11,7 +11,7 @@ public:
 	~Cloth() =default;
 
 	void Update(float dt, int constraintIteration) override;
-	void InteractByInput(EventHandler& eventHandler) override;
+	void InteractByInput(EventHandler& eventHandler, Editor::State state) override;
 	IScene* Recreate() override;
 private:
 

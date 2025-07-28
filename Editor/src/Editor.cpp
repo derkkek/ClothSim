@@ -12,7 +12,7 @@ void Editor::Init(sf::RenderWindow& window)
 
 Editor::Editor(sf::RenderWindow& window)
     :editorGravity(Vector3f(0.0f, 500.0f, 0.0f)), editorConstraintsIterationCount(10), state(RUN), editButtonClicked(false), runButtonClicked(false)
-    ,gravityChanged(false), resetButtonClicked(false), buildButtonClicked(false), io()
+    ,gravityChanged(false), resetButtonClicked(false), addParticlesButtonClicked(false), addLinesButtonClicked(false), io()
 {
     Init(window);
 }
@@ -30,7 +30,8 @@ void Editor::DrawUI(sf::RenderWindow& window, sf::Clock deltaClock)
     editButtonClicked = ImGui::Button("Edit");
     runButtonClicked = ImGui::Button("Run");
     resetButtonClicked = ImGui::Button("Reset");
-    buildButtonClicked = ImGui::Button("Build");
+    addParticlesButtonClicked = ImGui::Button("Add Particles");
+    addLinesButtonClicked = ImGui::Button("Add Lines");
 
     if (state == EDIT)
     {
@@ -48,10 +49,15 @@ void Editor::DrawUI(sf::RenderWindow& window, sf::Clock deltaClock)
         ImGui::Text("Current State: Run");
     }
     
-    else if (state == BUILD)
+    else if (state == ADDPARTICLES)
     {
-        ImGui::Text("Current State: Edit");
+        ImGui::Text("Current State: Adding Particles");
         ImGui::Text("Add some particles with your mouse.");
+    }
+    else if (state == ADDLINES)
+    {
+        ImGui::Text("Current State: Adding Lines");
+        ImGui::Text("Connect Lines with mouse.");
     }
 
     // ... more ImGui widgets ...
@@ -79,9 +85,13 @@ void Editor::HandleStates(RenderWindow& window, Event event)
         state = RUN;
         //resetButtonClicked = false;
     }
-    else if (buildButtonClicked)
+    else if (addParticlesButtonClicked)
     {
-        state = BUILD;
+        state = ADDPARTICLES;
+    }
+    else if (addLinesButtonClicked)
+    {
+        state = ADDLINES;
     }
 }
 

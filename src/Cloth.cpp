@@ -50,10 +50,13 @@ void  Cloth::Update(float dt, int constraintIteration)
     }
 }
 
-void Cloth::InteractByInput(EventHandler& eventHandler)
+void Cloth::InteractByInput(EventHandler& eventHandler, Editor::State state)
 {
-    ParticleGrabber(EventHandler::mouseLeftPressed);
-    DestroyLineByMouse(EventHandler::mouseRightPressed);
+    if (state == Editor::State::RUN)
+    {
+        ParticleGrabber(EventHandler::mouseLeftPressed);
+        DestroyLineByMouse(EventHandler::mouseRightPressed);
+    }
 }
 IScene* Cloth::Recreate()
 {
