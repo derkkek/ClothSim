@@ -8,7 +8,7 @@ class Line
 {
 public:
 	Line(Particle* p1, Particle* p2, float length);
-	Line(Particle* p, Vector3f end, float length);
+	Line(Particle* p, Vector3f end, float length, bool temporary);
 	~Line() = default;
 
 	VertexArray GetVAO();
@@ -20,6 +20,8 @@ public:
 	float GetLength();
 	float GetOffsetX();
 	float GetOffsetY();
+	bool temporary;
+
 private:
 	Particle* p1;
 	Particle* p2;

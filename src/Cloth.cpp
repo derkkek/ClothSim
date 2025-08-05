@@ -28,7 +28,7 @@ Cloth::Cloth(float left, float right, float top, float bottom, float step)
     ConstructUniqueLines();
 }
 
-void  Cloth::Update(float dt, int constraintIteration)
+void  Cloth::Update(float dt, int constraintIteration, Editor::State state)
 {
     DestroyLineByOffset();
 

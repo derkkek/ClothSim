@@ -78,10 +78,8 @@ void Application::Update()
 
         Input();
 
-        if (editor->state == Editor::State::RUN)
-        {
-            scene->Update(dt, editor->editorConstraintsIterationCount);
-        }
+        scene->Update(dt, editor->editorConstraintsIterationCount, editor->state);
+
         
         Render();
     }

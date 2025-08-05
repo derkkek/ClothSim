@@ -1,14 +1,14 @@
 #include "Line.h"
 
 Line::Line(Particle* p1, Particle* p2, float length)
-	:p1(p1), p2(p2), length(length), offsetX(0.0f), offsetY(0.0f)
+	:p1(p1), p2(p2), length(length), offsetX(0.0f), offsetY(0.0f), temporary(false)
 {
 	lineVA[0] = sf::Vertex(sf::Vector2f(p1->GetPosition().x, p1->GetPosition().y), sf::Color::White);
 	lineVA[1] = sf::Vertex(sf::Vector2f(p2->GetPosition().x, p2->GetPosition().y), sf::Color::White);
 }
 
-Line::Line(Particle* p, Vector3f end, float length)
-	:startPos(p->GetPosition()), endPos(end), length(length), offsetX(0.0f), offsetY(0.0f)
+Line::Line(Particle* p, Vector3f end, float length, bool temporary = false)
+	:p1(p), startPos(p1->GetPosition()), endPos(end), length(length), offsetX(0.0f), offsetY(0.0f), temporary(temporary)
 {
 	lineVA[0] = sf::Vertex(sf::Vector2f(p->GetPosition().x, p->GetPosition().y), sf::Color::Red);
 	lineVA[1] = sf::Vertex(sf::Vector2f(end.x, end.y), sf::Color::Red);

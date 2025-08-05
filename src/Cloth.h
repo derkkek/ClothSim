@@ -10,7 +10,7 @@ public:
 	Cloth(float left, float right, float top, float bottom, float step);
 	~Cloth() =default;
 
-	void Update(float dt, int constraintIteration) override;
+	void Update(float dt, int constraintIteration, Editor::State state) override;
 	void InteractByInput(EventHandler& eventHandler, Editor::State state) override;
 	IScene* Recreate() override;
 private:
