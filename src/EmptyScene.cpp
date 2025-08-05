@@ -31,15 +31,16 @@ void EmptyScene::InteractByInput(EventHandler& eventHandler, Editor::State state
 	if (state == Editor::State::ADDLINES)
 	{
 		static bool foundNearParticle = false;
-		static bool aLineHasCreated = false;
-
+		//static bool aLineHasCreated = false;
+		bool grabbing = false;
 		Particle* nearestParticle;
 		float mouseParticleDistance;
 		Line* temporaryLine;
 		sf::Vector3f mousePos = sf::Vector3f(eventHandler.mouseWorld.x, eventHandler.mouseWorld.y, 0.0f);
 
-		if (prevMouseLeftPressed)
+		if (eventHandler.mouseLeftPressed && !prevMouseLeftPressed)
 		{
+			std::cout << "1.";
 			for (Particle* p : particles)
 			{
 				mouseParticleDistance = Arithmetic::GetMouseDistance(p, eventHandler.mouseWorld);
@@ -49,16 +50,47 @@ void EmptyScene::InteractByInput(EventHandler& eventHandler, Editor::State state
 				{	
 					nearestParticle = p;
 					//create a line from that to mouse position
-					if (!aLineHasCreated)
-					{
-
-						lines.push_back(new Line(nearestParticle, mousePos, mouseParticleDistance, true));
-						aLineHasCreated = true;
-					}
-
+				
+					temporaryLine = new Line(nearestParticle, mousePos, mouseParticleDistance, true);
+					lines.push_back(temporaryLine);
+					
+					//aLineHasCreated = true;
+					grabbing = true;
 					foundNearParticle = true;
 					break;
 				}
+			}
+			if (eventHandler.mouseLeftPressed && !prevMouseLeftPressed && grabbing)
+			{
+				std::cout << "2.";
+				for (Particle* p : particles)
+				{
+					mouseParticleDistance = Arithmetic::GetMouseDistance(p, eventHandler.mouseWorld);
+					if (mouseParticleDistance < 20.0f && nearestParticle && grabbing && nearestParticle != p)
+					{
+						Line* actualLine = new Line(nearestParticle, p, Arithmetic::GetDistance(nearestParticle, p));
+						lines.push_back(actualLine);
+						grabbing = false;
+					}
+
+				}
+
+				//following snippet instantly deletes the temporary line just after being created.
+
+				//for (auto it = lines.begin(); it != lines.end();)
+				//{
+				//	Line* line = (*it);
+
+				//	if (line == temporaryLine)
+				//	{
+				//		delete* it;                // Free memory
+				//		it = lines.erase(it);      // Remove from vector, get next iterator
+				//	}
+				//	else
+				//	{
+				//		++it;
+				//	}
+				//}
 			}
 		}
 
