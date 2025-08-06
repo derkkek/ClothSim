@@ -11,98 +11,69 @@ EmptyScene::EmptyScene()
 void EmptyScene::InteractByInput(EventHandler& eventHandler, Editor::State state)
 {
 	static bool prevMouseLeftPressed = false;
+	static enum { IDLE, GRABBING } lineState = IDLE;
+	static Particle* startingParticle = nullptr;
+	static Line* temporaryLine = nullptr;
 
-	if (eventHandler.mouseLeftPressed && !prevMouseLeftPressed)
+	if (state == Editor::State::ADDPARTICLES)
 	{
-		if (state == Editor::State::ADDPARTICLES)
-		{
-
-			AddDynamicParticle(sf::Vector3f(eventHandler.mouseWorld.x, eventHandler.mouseWorld.y, 0.0f));
-
-			//if (particles.size() > 1)
-			//{
-			//	ConstructUniqueLines();
-			//}
-
-		}
-
-
-	}
-	if (state == Editor::State::ADDLINES)
-	{
-		static bool foundNearParticle = false;
-		//static bool aLineHasCreated = false;
-		bool grabbing = false;
-		Particle* nearestParticle;
-		float mouseParticleDistance;
-		Line* temporaryLine;
-		sf::Vector3f mousePos = sf::Vector3f(eventHandler.mouseWorld.x, eventHandler.mouseWorld.y, 0.0f);
-
 		if (eventHandler.mouseLeftPressed && !prevMouseLeftPressed)
 		{
-			std::cout << "1.";
-			for (Particle* p : particles)
-			{
-				mouseParticleDistance = Arithmetic::GetMouseDistance(p, eventHandler.mouseWorld);
+			AddDynamicParticle(sf::Vector3f(eventHandler.mouseWorld.x, eventHandler.mouseWorld.y, 0.0f));
+		}
+	}
 
-				//choose nearest particle relative to the mouse pos.
-				if (mouseParticleDistance < 20.0f)
-				{	
-					nearestParticle = p;
-					//create a line from that to mouse position
-				
-					temporaryLine = new Line(nearestParticle, mousePos, mouseParticleDistance, true);
-					lines.push_back(temporaryLine);
-					
-					//aLineHasCreated = true;
-					grabbing = true;
-					foundNearParticle = true;
-					break;
-				}
-			}
-			if (eventHandler.mouseLeftPressed && !prevMouseLeftPressed && grabbing)
+	if (state == Editor::State::ADDLINES)
+	{
+		sf::Vector3f mousePos = sf::Vector3f(eventHandler.mouseWorld.x, eventHandler.mouseWorld.y, 0.0f);
+
+		if (lineState == IDLE)
+		{
+			if (eventHandler.mouseLeftPressed && !prevMouseLeftPressed)
 			{
-				std::cout << "2.";
 				for (Particle* p : particles)
 				{
-					mouseParticleDistance = Arithmetic::GetMouseDistance(p, eventHandler.mouseWorld);
-					if (mouseParticleDistance < 20.0f && nearestParticle && grabbing && nearestParticle != p)
+					if (Arithmetic::GetMouseDistance(p, eventHandler.mouseWorld) < 20.0f)
 					{
-						Line* actualLine = new Line(nearestParticle, p, Arithmetic::GetDistance(nearestParticle, p));
-						lines.push_back(actualLine);
-						grabbing = false;
+						startingParticle = p;
+						temporaryLine = new Line(startingParticle, mousePos, 0, true);
+						lines.push_back(temporaryLine);
+						lineState = GRABBING;
+						break;
 					}
-
 				}
-
-				//following snippet instantly deletes the temporary line just after being created.
-
-				//for (auto it = lines.begin(); it != lines.end();)
-				//{
-				//	Line* line = (*it);
-
-				//	if (line == temporaryLine)
-				//	{
-				//		delete* it;                // Free memory
-				//		it = lines.erase(it);      // Remove from vector, get next iterator
-				//	}
-				//	else
-				//	{
-				//		++it;
-				//	}
-				//}
 			}
 		}
-
-
-		//after second particle choose create a new line from first to that one
-		//add that line to it's geometries' lines.
-		//delete the previous line.
+		else if (lineState == GRABBING)
+		{
+			// On mouse press, try to finish the line
+			if (eventHandler.mouseLeftPressed && !prevMouseLeftPressed)
+			{
+				for (Particle* p : particles)
+				{
+					if (p != startingParticle && Arithmetic::GetMouseDistance(p, eventHandler.mouseWorld) < 20.0f)
+					{
+						// Create the actual line
+						lines.push_back(new Line(startingParticle, p, Arithmetic::GetDistance(startingParticle, p)));
+						// Remove and delete the temporary line
+						auto it = std::find(lines.begin(), lines.end(), temporaryLine);
+						if (it != lines.end())
+						{
+							delete* it;
+							lines.erase(it);
+						}
+						// Reset state
+						startingParticle = nullptr;
+						temporaryLine = nullptr;
+						lineState = IDLE;
+						break;
+					}
+				}
+			}
+		}
 	}
-	// Update previous state for next frame
+
 	prevMouseLeftPressed = eventHandler.mouseLeftPressed;
-	static bool foundNearParticle = false;
-	static bool aLineHasCreated = false;
 }
 
 void EmptyScene::Update(float dt, int constraintIteration, Editor::State state)
