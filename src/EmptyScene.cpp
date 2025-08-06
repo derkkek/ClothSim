@@ -4,7 +4,7 @@
 #include <algorithm>
 
 EmptyScene::EmptyScene()
-	: lineDrawingState(IDLE), lineStartingParticle(nullptr), temporaryLine(nullptr), prevMouseLeftPressed(false)
+	: lineDrawingState(IDLE), lineStartingParticle(nullptr), temporaryLine(nullptr), prevMouseLeftPressed(false), prevMouseRightPressed(false)
 {
 
 }
@@ -19,21 +19,44 @@ void EmptyScene::InteractByInput(EventHandler& eventHandler, Editor::State state
 		}
 
 	}
-	else if (state == Editor::State::RUN)
+	else if (state == Editor::State::RUN) // feels off this shouldn't be in here..
 	{
-		auto it = std::find(lines.begin(), lines.end(), temporaryLine);
-		if (it != lines.end())
+		if (temporaryLine != nullptr)
 		{
-			delete* it;
-			lines.erase(it);
+			DeleteTemporaryLine();
 		}
 	}
 
 	else if (state == Editor::State::ADDLINES)
 	{
 		DrawLines(eventHandler);
+
+		if (eventHandler.mouseRightPressed && !prevMouseRightPressed)
+		{
+			if (temporaryLine != nullptr)
+			{
+				DeleteTemporaryLine();
+				lineDrawingState = IDLE;
+				lineStartingParticle = nullptr;
+				temporaryLine = nullptr;
+			}
+			else
+			{
+				if (!lines.empty())
+				{
+					Line* lastLine = lines.back();
+					delete lastLine;
+					lines.pop_back();
+				}
+				lineDrawingState = IDLE;
+				lineStartingParticle = nullptr;
+				temporaryLine = nullptr;
+			}
+		}
 	}
+
 	prevMouseLeftPressed = eventHandler.mouseLeftPressed;
+	prevMouseRightPressed = eventHandler.mouseRightPressed;
 }
 
 void EmptyScene::Update(float dt, int constraintIteration, Editor::State state)
@@ -72,8 +95,6 @@ void EmptyScene::Update(float dt, int constraintIteration, Editor::State state)
 			}
 		}
 	}
-
-	
 
 
 }
@@ -174,12 +195,7 @@ void EmptyScene::CompleteDrawingLine(EventHandler& eventHandler)
 				lines.push_back(new Line(lineStartingParticle, p, Arithmetic::GetDistance(lineStartingParticle, p)));
 
 				// Remove and delete the temporary 
-				auto it = std::find(lines.begin(), lines.end(), temporaryLine);
-				if (it != lines.end())
-				{
-					delete* it;
-					lines.erase(it);
-				}
+				DeleteTemporaryLine();
 
 				// Reset state
 				lineStartingParticle = p;
@@ -208,12 +224,7 @@ void EmptyScene::ChainLine(EventHandler& eventHandler)
 			{
 				lines.push_back(new Line(lineStartingParticle, p, Arithmetic::GetDistance(lineStartingParticle, p)));
 
-				auto it = std::find(lines.begin(), lines.end(), temporaryLine);
-				if (it != lines.end())
-				{
-					delete* it;
-					lines.erase(it);
-				}
+				DeleteTemporaryLine();
 
 				// Reset state
 				lineStartingParticle = p;
@@ -222,6 +233,16 @@ void EmptyScene::ChainLine(EventHandler& eventHandler)
 				break;
 			}
 		}
+	}
+}
+
+void EmptyScene::DeleteTemporaryLine()
+{
+	auto it = std::find(lines.begin(), lines.end(), temporaryLine);
+	if (it != lines.end())
+	{
+		delete* it;
+		lines.erase(it);
 	}
 }
 

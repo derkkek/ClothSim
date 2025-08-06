@@ -17,10 +17,12 @@ private:
 	Particle* lineStartingParticle;
 	Line* temporaryLine;
 	bool prevMouseLeftPressed;
+	bool prevMouseRightPressed;
 
 	std::vector<Particle*> GetNeighbors(Particle* particle);
 	void DrawLines(EventHandler& eventHandler);
 	void StartDrawingLine(EventHandler& eventHandler);
 	void CompleteDrawingLine(EventHandler& eventHandler);
 	void ChainLine(EventHandler& eventHandler);
+	void DeleteTemporaryLine();
 };
