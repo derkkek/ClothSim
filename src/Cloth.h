@@ -8,7 +8,7 @@ class Cloth : public IScene
 {
 public:
 	Cloth(float left, float right, float top, float bottom, float step);
-	~Cloth() =default;
+	~Cloth();
 
 	void Update(float dt, int constraintIteration, Editor::State state) override;
 	void InteractByInput(EventHandler& eventHandler, Editor::State state) override;

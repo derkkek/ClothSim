@@ -27,6 +27,19 @@ void Application::InteractSceneByEditor()
         delete oldScene;
         editor->resetButtonClicked = false;
     }
+    else if (editor->sceneChanged)
+    {
+        delete scene;
+        if (editor->currentSceneType == 1)
+        {
+            scene = new EmptyScene();
+        }
+        else
+        {
+            scene = new Cloth(50.0f, 1870.0f, 50.0f, 580.0f, 10.0f);
+        }
+        editor->sceneChanged = false;
+    }
 }
 
 void Application::Init()
@@ -34,8 +47,7 @@ void Application::Init()
     window.setFramerateLimit(165);
 
     clock;{}
-
-    //scene = new Cloth(50.0f, 1870.0f, 50.0f, 580.0f, 10.0f);
+    
     scene = new EmptyScene();
 }
 
@@ -80,7 +92,6 @@ void Application::Update()
 
         scene->Update(dt, editor->editorConstraintsIterationCount, editor->state);
 
-        
         Render();
     }
 }

@@ -4,7 +4,7 @@ class EmptyScene : public IScene
 {
 public:
 	EmptyScene();
-	~EmptyScene() = default;
+	~EmptyScene();
 
 	void InteractByInput(EventHandler& eventHandler, Editor::State state) override;
 	void Update(float dt, int constraintIteration, Editor::State state) override;

@@ -9,7 +9,7 @@ class IScene
 {
 public:
 	IScene();
-	~IScene() = default;
+	virtual ~IScene() = 0;
 
 	virtual void InteractByInput(EventHandler& eventHandler, Editor::State state) = 0; 
 	virtual void Update(float dt, int constraintIteration, Editor::State state) = 0;

@@ -28,6 +28,12 @@ Cloth::Cloth(float left, float right, float top, float bottom, float step)
     ConstructUniqueLines();
 }
 
+Cloth::~Cloth()
+{
+    particles.clear();
+    lines.clear();
+}
+
 void  Cloth::Update(float dt, int constraintIteration, Editor::State state)
 {
     DestroyLineByOffset();

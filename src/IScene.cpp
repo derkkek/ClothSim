@@ -4,6 +4,9 @@ IScene::IScene()
 	:gravity(sf::Vector3f(0.0f, 500.0f, 0.0f))
 {
 }
+IScene::~IScene()
+{
+}
 void IScene::SetGravity(sf::Vector3f& gravity)
 {
 	this->gravity = gravity;

@@ -36,6 +36,8 @@ private:
 	bool addParticlesButtonClicked;
 	bool addLinesButtonClicked;
 	
+	int currentSceneType;    // 0 = Cloth, 1 = Empty Scene
+	bool sceneChanged;       // Flag to detect when scene type changes
 
 	ImGuiIO* io;
 	bool gravityChanged;

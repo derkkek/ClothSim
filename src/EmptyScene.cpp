@@ -9,6 +9,17 @@ EmptyScene::EmptyScene()
 
 }
 
+EmptyScene::~EmptyScene()
+{
+	lines.clear();
+	particles.clear();
+	lineStartingParticle = nullptr;
+	temporaryLine = nullptr;
+	lineDrawingState = IDLE;
+	prevMouseLeftPressed = false;
+	prevMouseRightPressed = false;
+}
+
 void EmptyScene::InteractByInput(EventHandler& eventHandler, Editor::State state)
 {
 	if (state == Editor::State::ADDPARTICLES)
@@ -107,6 +118,7 @@ IScene* EmptyScene::Recreate()
 	temporaryLine = nullptr;
 	lineDrawingState = IDLE;
 	prevMouseLeftPressed = false;
+	prevMouseRightPressed = false;
 	return new EmptyScene();
 }
 

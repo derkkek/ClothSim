@@ -12,7 +12,7 @@ void Editor::Init(sf::RenderWindow& window)
 
 Editor::Editor(sf::RenderWindow& window)
     :editorGravity(Vector3f(0.0f, 500.0f, 0.0f)), editorConstraintsIterationCount(10), state(RUN), editButtonClicked(false), runButtonClicked(false)
-    ,gravityChanged(false), resetButtonClicked(false), addParticlesButtonClicked(false), addLinesButtonClicked(false), io()
+    ,gravityChanged(false), resetButtonClicked(false), addParticlesButtonClicked(false), addLinesButtonClicked(false), io(), currentSceneType(1), sceneChanged(false)
 {
     Init(window);
 }
@@ -24,9 +24,19 @@ void Editor::Terminate()
 void Editor::DrawUI(sf::RenderWindow& window, sf::Clock deltaClock)
 {
     ImGui::SFML::Update(window, deltaClock.restart());
-    
+
     ImGui::Begin("Editor Panel");
     ImGui::Text("Hello from the Editor library!");
+
+    // Scene Type Dropdown
+    const char* sceneTypes[] = { "Cloth", "Empty Scene" };
+    if (ImGui::Combo("Scene Type", &currentSceneType, sceneTypes, IM_ARRAYSIZE(sceneTypes)))
+    {
+        sceneChanged = true;
+    }
+
+    ImGui::Separator(); // Add a visual separator
+
     editButtonClicked = ImGui::Button("Edit");
     runButtonClicked = ImGui::Button("Run");
     resetButtonClicked = ImGui::Button("Reset");
@@ -36,19 +46,16 @@ void Editor::DrawUI(sf::RenderWindow& window, sf::Clock deltaClock)
     if (state == EDIT)
     {
         ImGui::Text("Current State: Edit");
-
         if (ImGui::SliderFloat("Gravity", &editorGravity.y, 0.0f, 2000.0f))
         {
             gravityChanged = true;
         }
-
         ImGui::SliderInt("Constraint Iteration:", &editorConstraintsIterationCount, 1, 30);
     }
-    else if(state == RUN)
+    else if (state == RUN)
     {
         ImGui::Text("Current State: Run");
     }
-    
     else if (state == ADDPARTICLES)
     {
         ImGui::Text("Current State: Adding Particles");
@@ -59,6 +66,10 @@ void Editor::DrawUI(sf::RenderWindow& window, sf::Clock deltaClock)
         ImGui::Text("Current State: Adding Lines");
         ImGui::Text("Connect Lines with mouse.");
     }
+
+    // Display current scene type
+    ImGui::Separator();
+    ImGui::Text("Current Scene: %s", sceneTypes[currentSceneType]);
 
     // ... more ImGui widgets ...
     ImGui::End();
