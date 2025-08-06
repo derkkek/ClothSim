@@ -4,75 +4,35 @@
 #include <algorithm>
 
 EmptyScene::EmptyScene()
+	: lineDrawingState(IDLE), lineStartingParticle(nullptr), temporaryLine(nullptr), prevMouseLeftPressed(false)
 {
 
 }
 
 void EmptyScene::InteractByInput(EventHandler& eventHandler, Editor::State state)
 {
-	static bool prevMouseLeftPressed = false;
-	static enum { IDLE, GRABBING } lineState = IDLE;
-	static Particle* startingParticle = nullptr;
-	static Line* temporaryLine = nullptr;
-
 	if (state == Editor::State::ADDPARTICLES)
 	{
 		if (eventHandler.mouseLeftPressed && !prevMouseLeftPressed)
 		{
 			AddDynamicParticle(sf::Vector3f(eventHandler.mouseWorld.x, eventHandler.mouseWorld.y, 0.0f));
 		}
-	}
 
-	if (state == Editor::State::ADDLINES)
+	}
+	else if (state == Editor::State::RUN)
 	{
-		sf::Vector3f mousePos = sf::Vector3f(eventHandler.mouseWorld.x, eventHandler.mouseWorld.y, 0.0f);
-
-		if (lineState == IDLE)
+		auto it = std::find(lines.begin(), lines.end(), temporaryLine);
+		if (it != lines.end())
 		{
-			if (eventHandler.mouseLeftPressed && !prevMouseLeftPressed)
-			{
-				for (Particle* p : particles)
-				{
-					if (Arithmetic::GetMouseDistance(p, eventHandler.mouseWorld) < 20.0f)
-					{
-						startingParticle = p;
-						temporaryLine = new Line(startingParticle, mousePos, 0, true);
-						lines.push_back(temporaryLine);
-						lineState = GRABBING;
-						break;
-					}
-				}
-			}
-		}
-		else if (lineState == GRABBING)
-		{
-			// On mouse press, try to finish the line
-			if (eventHandler.mouseLeftPressed && !prevMouseLeftPressed)
-			{
-				for (Particle* p : particles)
-				{
-					if (p != startingParticle && Arithmetic::GetMouseDistance(p, eventHandler.mouseWorld) < 20.0f)
-					{
-						// Create the actual line
-						lines.push_back(new Line(startingParticle, p, Arithmetic::GetDistance(startingParticle, p)));
-						// Remove and delete the temporary line
-						auto it = std::find(lines.begin(), lines.end(), temporaryLine);
-						if (it != lines.end())
-						{
-							delete* it;
-							lines.erase(it);
-						}
-						// Reset state
-						startingParticle = nullptr;
-						temporaryLine = nullptr;
-						lineState = IDLE;
-						break;
-					}
-				}
-			}
+			delete* it;
+			lines.erase(it);
 		}
 	}
 
+	else if (state == Editor::State::ADDLINES)
+	{
+		DrawLines(eventHandler);
+	}
 	prevMouseLeftPressed = eventHandler.mouseLeftPressed;
 }
 
@@ -122,6 +82,10 @@ IScene* EmptyScene::Recreate()
 {
 	lines.clear();
 	particles.clear();
+	lineStartingParticle = nullptr;
+	temporaryLine = nullptr;
+	lineDrawingState = IDLE;
+	prevMouseLeftPressed = false;
 	return new EmptyScene();
 }
 
@@ -159,3 +123,106 @@ std::vector<Particle*> EmptyScene::GetNeighbors(Particle* particle)
 {
 	return particles;
 }
+
+void EmptyScene::DrawLines(EventHandler& eventHandler)
+{
+	sf::Vector3f mousePos = sf::Vector3f(eventHandler.mouseWorld.x, eventHandler.mouseWorld.y, 0.0f);
+
+	if (lineDrawingState == IDLE)
+	{
+		StartDrawingLine(eventHandler);
+	}
+	else if (lineDrawingState == GRABBING)
+	{
+		CompleteDrawingLine(eventHandler);
+	}
+
+	else if (lineDrawingState == CHAIN)
+	{
+		ChainLine(eventHandler);
+	}
+}
+
+void EmptyScene::StartDrawingLine(EventHandler& eventHandler)
+{
+	if (eventHandler.mouseLeftPressed && !prevMouseLeftPressed)
+	{
+		for (Particle* p : particles)
+		{
+			if (Arithmetic::GetMouseDistance(p, eventHandler.mouseWorld) < 20.0f)
+			{
+				lineStartingParticle = p;
+				temporaryLine = new Line(lineStartingParticle, sf::Vector3f(eventHandler.mouseWorld.x, eventHandler.mouseWorld.y, 0.0f), 0, true);
+				lines.push_back(temporaryLine);
+				lineDrawingState = GRABBING;
+				break;
+			}
+		}
+	}
+}
+
+void EmptyScene::CompleteDrawingLine(EventHandler& eventHandler)
+{
+	// On mouse press, try to finish the line
+	if (eventHandler.mouseLeftPressed && !prevMouseLeftPressed)
+	{
+		for (Particle* p : particles)
+		{
+			if (p != lineStartingParticle && Arithmetic::GetMouseDistance(p, eventHandler.mouseWorld) < 20.0f)
+			{
+				// Create the actual line
+				lines.push_back(new Line(lineStartingParticle, p, Arithmetic::GetDistance(lineStartingParticle, p)));
+
+				// Remove and delete the temporary 
+				auto it = std::find(lines.begin(), lines.end(), temporaryLine);
+				if (it != lines.end())
+				{
+					delete* it;
+					lines.erase(it);
+				}
+
+				// Reset state
+				lineStartingParticle = p;
+				temporaryLine = nullptr;
+				//chainParticle = p;
+				lineDrawingState = CHAIN;
+				break;
+			}
+		}
+	}
+}
+
+void EmptyScene::ChainLine(EventHandler& eventHandler)
+{
+	if (temporaryLine == nullptr && lineStartingParticle != nullptr)
+	{
+		// Create another temporary.
+		temporaryLine = new Line(lineStartingParticle, sf::Vector3f(eventHandler.mouseWorld.x, eventHandler.mouseWorld.y, 0.0f), 0, true);
+		lines.push_back(temporaryLine);
+	}
+	if (eventHandler.mouseLeftPressed && !prevMouseLeftPressed)
+	{
+		for (Particle* p : particles)
+		{
+			if (p != lineStartingParticle && Arithmetic::GetMouseDistance(p, eventHandler.mouseWorld) < 20.0f)
+			{
+				lines.push_back(new Line(lineStartingParticle, p, Arithmetic::GetDistance(lineStartingParticle, p)));
+
+				auto it = std::find(lines.begin(), lines.end(), temporaryLine);
+				if (it != lines.end())
+				{
+					delete* it;
+					lines.erase(it);
+				}
+
+				// Reset state
+				lineStartingParticle = p;
+				temporaryLine = nullptr;
+				lineDrawingState = CHAIN;
+				break;
+			}
+		}
+	}
+}
+
+

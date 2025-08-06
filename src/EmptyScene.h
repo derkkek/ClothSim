@@ -12,5 +12,15 @@ public:
 	void ConstructUniqueLines() override;
 
 private:
+	enum LineDrawingState { IDLE, GRABBING, CHAIN };
+	LineDrawingState lineDrawingState;
+	Particle* lineStartingParticle;
+	Line* temporaryLine;
+	bool prevMouseLeftPressed;
+
 	std::vector<Particle*> GetNeighbors(Particle* particle);
+	void DrawLines(EventHandler& eventHandler);
+	void StartDrawingLine(EventHandler& eventHandler);
+	void CompleteDrawingLine(EventHandler& eventHandler);
+	void ChainLine(EventHandler& eventHandler);
 };

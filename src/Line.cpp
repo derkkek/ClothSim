@@ -8,7 +8,7 @@ Line::Line(Particle* p1, Particle* p2, float length)
 }
 
 Line::Line(Particle* p, Vector3f end, float length, bool temporary = false)
-	:p1(p), startPos(p1->GetPosition()), endPos(end), length(length), offsetX(0.0f), offsetY(0.0f), temporary(temporary)
+	:p1(p), p2(nullptr), startPos(p1->GetPosition()), endPos(end), length(length), offsetX(0.0f), offsetY(0.0f), temporary(temporary)
 {
 	lineVA[0] = sf::Vertex(sf::Vector2f(p->GetPosition().x, p->GetPosition().y), sf::Color::Red);
 	lineVA[1] = sf::Vertex(sf::Vector2f(end.x, end.y), sf::Color::Red);

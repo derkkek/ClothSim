@@ -4,6 +4,7 @@
 #include "Particle.h"
 #include "Editor.h"
 #include "EventHandler.h"
+#include <SFML/Graphics.hpp>
 class IScene
 {
 public:
