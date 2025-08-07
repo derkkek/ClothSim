@@ -8,9 +8,20 @@ json SaveManager::ToJson(IScene* scene)
 {
     json j;
     j["type"] = "EmptyScene";
+
+    // Get particles and lines
+    auto particles = scene->Particles();
+    auto lines = scene->Lines();
+
+    // Create a map from particle pointer to index for reliable lookup
+    std::unordered_map<Particle*, int> particleToIndex;
+    for (int i = 0; i < particles.size(); ++i) {
+        particleToIndex[particles[i]] = i;
+    }
+
     // Save particles
     j["particles"] = json::array();
-    for (const auto& p : scene->Particles()) {
+    for (const auto& p : particles) {
         json particle;
         particle["position"] = { p->GetPosition().x, p->GetPosition().y, p->GetPosition().z };
         particle["stable"] = p->stable;
@@ -18,22 +29,26 @@ json SaveManager::ToJson(IScene* scene)
         j["particles"].push_back(particle);
     }
 
-
-
     // Save lines (only non-temporary ones)
     j["lines"] = json::array();
-    for (const auto& line : scene->Lines()) {
+    for (const auto& line : lines) {
         if (!line->temporary) {
             json lineData;
-            // Find indices of particles
-            auto p1_it = std::find(scene->Particles().begin(), scene->Particles().end(), line->GetP1());
-            auto p2_it = std::find(scene->Particles().begin(), scene->Particles().end(), line->GetP2());
 
-            if (p1_it != scene->Particles().end() && p2_it != scene->Particles().end()) {
-                lineData["p1_index"] = std::distance(scene->Particles().begin(), p1_it);
-                lineData["p2_index"] = std::distance(scene->Particles().begin(), p2_it);
+            // Use the map to find indices
+            auto p1_iter = particleToIndex.find(line->GetP1());
+            auto p2_iter = particleToIndex.find(line->GetP2());
+
+            if (p1_iter != particleToIndex.end() && p2_iter != particleToIndex.end()) {
+                lineData["p1_index"] = p1_iter->second;
+                lineData["p2_index"] = p2_iter->second;
                 lineData["length"] = line->GetLength();
                 j["lines"].push_back(lineData);
+            }
+            else {
+                // Debug output to help identify the issue
+                std::cout << "Warning: Could not find particle index for line. ";
+                std::cout << "P1: " << line->GetP1() << ", P2: " << line->GetP2() << std::endl;
             }
         }
     }

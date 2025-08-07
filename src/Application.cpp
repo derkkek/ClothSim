@@ -44,12 +44,10 @@ void Application::InteractSceneByEditor()
     else if (editor->saveSceneButtonClicked)
     {
         saveManager.SaveToFile(scene, "C:/dev/SFML/ClothSimulation/saves/save.json");
-        editor->saveSceneButtonClicked = false; // Add this to reset the flag
     }
     else if (editor->loadSceneButtonClicked)
     {
         LoadScene("C:/dev/SFML/ClothSimulation/saves/save.json");
-        editor->loadSceneButtonClicked = false; // Add this to reset the flag
     }
 }
 

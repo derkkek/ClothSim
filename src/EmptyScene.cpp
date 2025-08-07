@@ -11,8 +11,16 @@ EmptyScene::EmptyScene()
 
 EmptyScene::~EmptyScene()
 {
-	lines.clear();
+	for (Particle* particle : particles)
+	{
+		delete particle;
+	}
 	particles.clear();
+	for (Line* line : lines)
+	{
+		delete line;
+	}
+	lines.clear();
 	lineStartingParticle = nullptr;
 	temporaryLine = nullptr;
 	lineDrawingState = IDLE;
@@ -112,6 +120,15 @@ void EmptyScene::Update(float dt, int constraintIteration, Editor::State state)
 
 IScene* EmptyScene::Recreate()
 {
+	for (Particle* particle : particles)
+	{
+		delete particle;
+	}
+	particles.clear();
+	for (Line* line : lines)
+	{
+		delete line;
+	}
 	lines.clear();
 	particles.clear();
 	lineStartingParticle = nullptr;

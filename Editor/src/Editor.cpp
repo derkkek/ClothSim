@@ -107,6 +107,10 @@ void Editor::HandleStates(RenderWindow& window, Event event)
     {
         state = ADDLINES;
     }
+    else if (loadSceneButtonClicked)
+    {
+        state = EDIT;
+    }
 }
 
 bool Editor::MouseIsOnUI()
