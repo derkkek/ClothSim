@@ -44,10 +44,12 @@ void Application::InteractSceneByEditor()
     else if (editor->saveSceneButtonClicked)
     {
         saveManager.SaveToFile(scene, "C:/dev/SFML/ClothSimulation/saves/save.json");
+        editor->saveSceneButtonClicked = false; // Add this to reset the flag
     }
     else if (editor->loadSceneButtonClicked)
     {
-        saveManager.LoadFromFile("C:/dev/SFML/ClothSimulation/saves/save.json");
+        LoadScene("C:/dev/SFML/ClothSimulation/saves/save.json");
+        editor->loadSceneButtonClicked = false; // Add this to reset the flag
     }
 }
 
@@ -101,15 +103,14 @@ void Application::LoadScene(const std::string& filename)
 
         // Create new empty scene
         scene = new EmptyScene();
-        scene->PopulateScene(loadedData.particles, loadedData.lines);
-        // This is a bit tricky - we need to properly transfer the loaded data to the scene
-        // For now, let's manually rebuild the scene
 
-        // Note: This requires modifying your IScene to have methods to accept loaded data
-        // Alternative approach is to create a new constructor or load method
+        // Transfer ownership of both particles and lines at once
+        auto [rawParticles, rawLines] = loadedData.transferOwnership();
 
-        std::cout << "Loaded " << loadedData.particles.size() << " particles and "
-            << loadedData.lines.size() << " lines" << std::endl;
+        scene->PopulateScene(rawParticles, rawLines);
+
+        std::cout << "Loaded " << rawParticles.size() << " particles and "
+            << rawLines.size() << " lines" << std::endl;
     }
 }
 void Application::Update()

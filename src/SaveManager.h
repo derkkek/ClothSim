@@ -6,14 +6,30 @@
 using json = nlohmann::json;
 struct SaveData
 {
-	std::vector<Particle*> particles;
-	std::vector<Line*> lines;
+    std::vector<std::unique_ptr<Particle>> particles;
+    std::vector<std::unique_ptr<Line>> lines;
 
-	~SaveData() {
-		for (auto* p : particles) delete p;
-		for (auto* l : lines) delete l;
-	}
+    // Transfer ALL ownership at once to avoid dangling references
+    std::pair<std::vector<Particle*>, std::vector<Line*>> transferOwnership() {
+        std::vector<Particle*> rawParticles;
+        std::vector<Line*> rawLines;
+
+        // Transfer particles first
+        for (auto& p : particles) {
+            rawParticles.push_back(p.release());
+        }
+        particles.clear();
+
+        // Transfer lines second
+        for (auto& l : lines) {
+            rawLines.push_back(l.release());
+        }
+        lines.clear();
+
+        return { rawParticles, rawLines };
+    }
 };
+
 #pragma once
 class SaveManager
 {

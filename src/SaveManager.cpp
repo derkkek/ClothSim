@@ -18,6 +18,8 @@ json SaveManager::ToJson(IScene* scene)
         j["particles"].push_back(particle);
     }
 
+
+
     // Save lines (only non-temporary ones)
     j["lines"] = json::array();
     for (const auto& line : scene->Lines()) {
@@ -41,9 +43,6 @@ json SaveManager::ToJson(IScene* scene)
 
 SaveData SaveManager::FromJson(const json& j)
 {
-    // Clear current scene
-    //ClearScene();
-
     SaveData data{};
 
     // Load particles
@@ -56,11 +55,11 @@ SaveData SaveManager::FromJson(const json& j)
             );
             bool stable = particleData["stable"];
 
-            Particle* particle = new Particle(pos, stable);
+            auto particle = std::make_unique<Particle>(pos, stable);
             if (particleData.contains("selected")) {
                 particle->selected = particleData["selected"];
             }
-            data.particles.push_back(particle);
+            data.particles.push_back(std::move(particle));
         }
     }
 
@@ -72,19 +71,17 @@ SaveData SaveManager::FromJson(const json& j)
             float length = lineData["length"];
 
             if (p1_index < data.particles.size() && p2_index < data.particles.size()) {
-                Line* line = new Line(data.particles[p1_index], data.particles[p2_index], length);
-                data.lines.push_back(line);
+                auto line = std::make_unique<Line>(
+                    data.particles[p1_index].get(),
+                    data.particles[p2_index].get(),
+                    length
+                );
+                data.lines.push_back(std::move(line));
             }
         }
     }
 
-    // Reset state
-    //lineDrawingState = IDLE;
-    //lineStartingParticle = nullptr;
-    //temporaryLine = nullptr;
-
     return data;
-
 }
 
 void SaveManager::SaveToFile(IScene* scene, const std::string& filename)
