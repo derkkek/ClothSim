@@ -12,6 +12,7 @@
 #include "Editor.h"
 #include "IScene.h"
 #include "EmptyScene.h"
+#include "SaveManager.h"
 
 using namespace std::chrono_literals;
 
@@ -32,6 +33,7 @@ private:
 	void InitFrame();
 	void Input();
 	void Render();
+	void LoadScene(const std::string& filename);
 
 	sf::RenderWindow window;
 	sf::Clock deltaClock;
@@ -41,6 +43,7 @@ private:
 	Editor* editor;
 	Renderer* renderer;
 	EventHandler eventHandler;
+	SaveManager saveManager;
 
 	sf::Clock clock;
 	float width;

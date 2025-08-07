@@ -1,0 +1,63 @@
+{
+    "lines": [
+        {
+            "length": 219.92044067382813,
+            "p1_index": -186,
+            "p2_index": -113
+        },
+        {
+            "length": 327.3438415527344,
+            "p1_index": 7,
+            "p2_index": -76
+        },
+        {
+            "length": 235.21267700195313,
+            "p1_index": -70,
+            "p2_index": 15
+        },
+        {
+            "length": 308.0065002441406,
+            "p1_index": -111,
+            "p2_index": 222
+        }
+    ],
+    "particles": [
+        {
+            "position": [
+                479.0,
+                301.0,
+                0.0
+            ],
+            "selected": false,
+            "stable": false
+        },
+        {
+            "position": [
+                450.0,
+                519.0,
+                0.0
+            ],
+            "selected": false,
+            "stable": false
+        },
+        {
+            "position": [
+                777.0,
+                534.0,
+                0.0
+            ],
+            "selected": false,
+            "stable": false
+        },
+        {
+            "position": [
+                787.0,
+                299.0,
+                0.0
+            ],
+            "selected": false,
+            "stable": false
+        }
+    ],
+    "type": "EmptyScene"
+}

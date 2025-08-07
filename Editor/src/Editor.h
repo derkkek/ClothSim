@@ -35,6 +35,8 @@ private:
 	bool resetButtonClicked;
 	bool addParticlesButtonClicked;
 	bool addLinesButtonClicked;
+	bool saveSceneButtonClicked;
+	bool loadSceneButtonClicked;
 	
 	int currentSceneType;    // 0 = Cloth, 1 = Empty Scene
 	bool sceneChanged;       // Flag to detect when scene type changes

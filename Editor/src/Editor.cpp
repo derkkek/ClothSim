@@ -13,6 +13,7 @@ void Editor::Init(sf::RenderWindow& window)
 Editor::Editor(sf::RenderWindow& window)
     :editorGravity(Vector3f(0.0f, 500.0f, 0.0f)), editorConstraintsIterationCount(10), state(RUN), editButtonClicked(false), runButtonClicked(false)
     ,gravityChanged(false), resetButtonClicked(false), addParticlesButtonClicked(false), addLinesButtonClicked(false), io(), currentSceneType(1), sceneChanged(false)
+    ,saveSceneButtonClicked(false)
 {
     Init(window);
 }
@@ -42,6 +43,8 @@ void Editor::DrawUI(sf::RenderWindow& window, sf::Clock deltaClock)
     resetButtonClicked = ImGui::Button("Reset");
     addParticlesButtonClicked = ImGui::Button("Add Particles");
     addLinesButtonClicked = ImGui::Button("Add Lines");
+    saveSceneButtonClicked = ImGui::Button("Save Scene");
+    loadSceneButtonClicked = ImGui::Button("Load Scene");
 
     if (state == EDIT)
     {

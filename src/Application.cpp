@@ -2,7 +2,7 @@
 Application::Application(float width, float height)
     :width(width), height(height),
     renderer(new Renderer), window(sf::RenderWindow(sf::VideoMode({ static_cast<unsigned int>(width), static_cast<unsigned int>(height) }), "Cloth Simulation")),
-    deltaClock(), dt(0.0f), editor(new Editor(window)), eventHandler()
+    deltaClock(), dt(0.0f), editor(new Editor(window)), eventHandler(), saveManager()
 {
     Init();
 }
@@ -39,6 +39,15 @@ void Application::InteractSceneByEditor()
             scene = new Cloth(50.0f, 1870.0f, 50.0f, 580.0f, 10.0f);
         }
         editor->sceneChanged = false;
+    }
+
+    else if (editor->saveSceneButtonClicked)
+    {
+        saveManager.SaveToFile(scene, "C:/dev/SFML/ClothSimulation/saves/save.json");
+    }
+    else if (editor->loadSceneButtonClicked)
+    {
+        saveManager.LoadFromFile("C:/dev/SFML/ClothSimulation/saves/save.json");
     }
 }
 
@@ -81,6 +90,27 @@ void Application::Render()
     editor->DrawUI(window, deltaClock);
 
     window.display();
+}
+void Application::LoadScene(const std::string& filename)
+{
+    SaveData loadedData = saveManager.LoadFromFile(filename);
+
+    if (!loadedData.particles.empty()) {
+        // Clear current scene
+        delete scene;
+
+        // Create new empty scene
+        scene = new EmptyScene();
+        scene->PopulateScene(loadedData.particles, loadedData.lines);
+        // This is a bit tricky - we need to properly transfer the loaded data to the scene
+        // For now, let's manually rebuild the scene
+
+        // Note: This requires modifying your IScene to have methods to accept loaded data
+        // Alternative approach is to create a new constructor or load method
+
+        std::cout << "Loaded " << loadedData.particles.size() << " particles and "
+            << loadedData.lines.size() << " lines" << std::endl;
+    }
 }
 void Application::Update()
 {

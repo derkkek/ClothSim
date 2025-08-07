@@ -11,6 +11,12 @@ FetchContent_Declare(SFML
     GIT_TAG 2.6.x)
 FetchContent_MakeAvailable(SFML)
 
+FetchContent_Declare(nlohmann_json
+    GIT_REPOSITORY https://github.com/nlohmann/json.git
+    GIT_TAG v3.11.3)
+
+FetchContent_MakeAvailable(SFML nlohmann_json)
+
 # Add ImGui
 file(GLOB IMGUI_SRC "Editor/vendor/imgui/*.cpp")
 add_library(imgui STATIC ${IMGUI_SRC})
@@ -48,10 +54,12 @@ add_library(Simulation STATIC
     src/IScene.h
     src/EmptyScene.cpp
     src/EmptyScene.h
+    src/SaveManager.cpp
+    src/SaveManager.h
 )
 
 target_include_directories(Simulation PUBLIC "src" "Editor/src" "Editor/vendor/imgui")
 target_compile_features(Simulation PUBLIC cxx_std_17)
 
-target_link_libraries(Simulation PUBLIC sfml-graphics sfml-window sfml-system)
+target_link_libraries(Simulation PUBLIC sfml-graphics sfml-window sfml-system nlohmann_json::nlohmann_json)
 target_link_libraries(EditorApp PRIVATE Simulation)

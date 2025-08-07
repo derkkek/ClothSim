@@ -152,6 +152,7 @@ void EmptyScene::ConstructUniqueLines()
 	//lines.push_back(new Line(particles.back(), particles.at(particles.size() - 2), Arithmetic::GetDistance(particles.back(), particles.at(particles.size() - 2))));
 }
 
+
 std::vector<Particle*> EmptyScene::GetNeighbors(Particle* particle)
 {
 	return particles;

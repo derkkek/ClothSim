@@ -21,6 +21,8 @@ public:
 	void SetGravity(sf::Vector3f& Gravity);
 	std::vector<Line*> Lines();
 	std::vector<Particle*> Particles();
+	void PopulateScene(std::vector<Particle*>& particles, std::vector<Line*>& lines);
+
 
 protected:
 	std::vector<Particle*> particles;

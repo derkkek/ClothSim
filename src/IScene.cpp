@@ -30,3 +30,14 @@ void IScene::AddStaticParticle(sf::Vector3f position)
 {
 	this->particles.push_back(new Particle(position, true));
 }
+void IScene::PopulateScene(std::vector<Particle*>& particles, std::vector<Line*>& lines)
+{
+	for (Particle* p : particles)
+	{
+		this->particles.push_back(p);
+	}
+	for (Line* l : lines)
+	{
+		this->lines.push_back(l);
+	}
+}
