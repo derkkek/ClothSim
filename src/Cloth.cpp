@@ -144,6 +144,22 @@ void Cloth::InteractByInput(EventHandler& eventHandler, Editor::State state)
 }
 IScene* Cloth::Recreate()
 {
+    for (Particle* particle : particles)
+    {
+        delete particle;
+    }
+    particles.clear();
+    for (Line* line : lines)
+    {
+        delete line;
+    }
+    lines.clear();
+    particles.clear();
+    lineStartingParticle = nullptr;
+    temporaryLine = nullptr;
+    lineDrawingState = IDLE;
+    prevMouseLeftPressed = false;
+    prevMouseRightPressed = false;
     return new Cloth(50.0f, 1870.0f, 50.0f, 580.0f, 10.0f);
 }
 
