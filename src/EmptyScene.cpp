@@ -44,6 +44,35 @@ void EmptyScene::InteractByInput(EventHandler& eventHandler, Editor::State state
 		{
 			DeleteTemporaryLine();
 		}
+		
+		static Particle* grabbedParticle = nullptr;
+
+		if (eventHandler.mouseLeftPressed)
+		{
+
+			if (grabbedParticle == nullptr)
+			{
+				for (Particle* particle : particles)
+				{
+					float mouseDistance = Arithmetic::GetMouseDistance(particle, EventHandler::mouseWorld);
+
+					if (mouseDistance <= 20.0f)
+					{
+						grabbedParticle = particle;
+						grabbedParticle->selected = true;
+						break;
+					}
+				}
+			}
+			if(grabbedParticle)
+			grabbedParticle->SetPosition(EventHandler::mouseWorld.x, EventHandler::mouseWorld.y, 0.0f);
+
+		}
+		else if(grabbedParticle)
+		{
+			grabbedParticle->selected = false;
+			grabbedParticle = nullptr;
+		}
 	}
 
 	else if (state == Editor::State::ADDLINES)
