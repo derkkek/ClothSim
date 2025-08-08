@@ -16,8 +16,8 @@ public:
 	virtual IScene* Recreate() = 0;
 	virtual void ConstructUniqueLines() = 0;
 
-	void AddDynamicParticle(sf::Vector3f position);
-	void AddStaticParticle(sf::Vector3f position);
+	void AddDynamicParticle(sf::Vector3f position, float radius);
+	void AddStaticParticle(sf::Vector3f position, float radius);
 	void SetGravity(sf::Vector3f& Gravity);
 	std::vector<Line*> Lines();
 	std::vector<Particle*> Particles();

@@ -26,6 +26,7 @@ json SaveManager::ToJson(IScene* scene)
         particle["position"] = { p->GetPosition().x, p->GetPosition().y, p->GetPosition().z };
         particle["stable"] = p->stable;
         particle["selected"] = p->selected;
+        particle["radius"] = p->radius;
         j["particles"].push_back(particle);
     }
 
@@ -69,8 +70,8 @@ SaveData SaveManager::FromJson(const json& j)
                 particleData["position"][2]
             );
             bool stable = particleData["stable"];
-
-            auto particle = std::make_unique<Particle>(pos, stable);
+            float radius = particleData["radius"];
+            auto particle = std::make_unique<Particle>(pos, radius, stable);
             if (particleData.contains("selected")) {
                 particle->selected = particleData["selected"];
             }

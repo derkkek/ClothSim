@@ -6,7 +6,7 @@ using namespace sf;
 class Particle
 {
 public:
-	Particle(Vector3f position, bool stable);
+	Particle(Vector3f position, float radius,bool stable);
 	~Particle();
 
 	void Update(float dt);
@@ -26,6 +26,7 @@ public:
 	Vector3f acceleration;
 	bool stable;
 	bool selected;
+	float radius;
 
 private:
 	Vector3f position;
@@ -34,7 +35,6 @@ private:
 	Vector3f force;
 	CircleShape shape;
 
-	float radius = 1.75f;
 	float mass;
 
 	Color color = Color::White;

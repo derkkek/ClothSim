@@ -14,11 +14,11 @@ Cloth::Cloth(float left, float right, float top, float bottom, float step)
             float y = top + col * step;
             if (col == 0 && row % 6 == 0)
             {
-                particles.push_back(new Particle(sf::Vector3f(x, y, 0.0f), true));
+                particles.push_back(new Particle(sf::Vector3f(x, y, 0.0f), 1.75f, true));
             }
             else
             {
-                particles.push_back(new Particle(sf::Vector3f(x, y, 0.0f), false));
+                particles.push_back(new Particle(sf::Vector3f(x, y, 0.0f), 1.75f, false));
 
             }
 

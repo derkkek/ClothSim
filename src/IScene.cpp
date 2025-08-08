@@ -21,14 +21,14 @@ std::vector<Particle*> IScene::Particles()
 {
 	return particles;
 }
-void IScene::AddDynamicParticle(sf::Vector3f position)
+void IScene::AddDynamicParticle(sf::Vector3f position, float radius)
 {
-	this->particles.push_back(new Particle(position, false));
+	this->particles.push_back(new Particle(position, radius, false));
 }
 
-void IScene::AddStaticParticle(sf::Vector3f position)
+void IScene::AddStaticParticle(sf::Vector3f position, float radius)
 {
-	this->particles.push_back(new Particle(position, true));
+	this->particles.push_back(new Particle(position, radius, true));
 }
 void IScene::PopulateScene(std::vector<Particle*>& particles, std::vector<Line*>& lines)
 {

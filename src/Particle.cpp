@@ -1,8 +1,8 @@
 #include "Particle.h"
 #include <iostream>
 
-Particle::Particle(Vector3f pos, bool stable = false)
-	:position(pos), oldPosition(pos), initPos(position), mass(1.0f), stable(stable), selected(false)
+Particle::Particle(Vector3f pos, float radius,bool stable = false)
+	:position(pos), oldPosition(pos), initPos(position), mass(1.0f), radius(radius), stable(stable), selected(false)
 {
 	
 	this->shape.setPosition(Vector2f(this->position.x, this->position.y));

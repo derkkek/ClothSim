@@ -34,7 +34,7 @@ void EmptyScene::InteractByInput(EventHandler& eventHandler, Editor::State state
 	{
 		if (eventHandler.mouseLeftPressed && !prevMouseLeftPressed)
 		{
-			AddDynamicParticle(sf::Vector3f(eventHandler.mouseWorld.x, eventHandler.mouseWorld.y, 0.0f));
+			AddDynamicParticle(sf::Vector3f(eventHandler.mouseWorld.x, eventHandler.mouseWorld.y, 0.0f), 5.0f);
 		}
 
 	}
