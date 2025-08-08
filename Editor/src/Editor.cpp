@@ -7,61 +7,61 @@
 void Editor::Init(sf::RenderWindow& window)
 {
     ImGui::SFML::Init(window);
-    
-    // Set professional theme colors with whitish background
+
+    // Set professional theme colors with transparent background
     ImGuiStyle& style = ImGui::GetStyle();
     ImVec4* colors = style.Colors;
-    
-    // Main colors - Light theme with creamy background
-    colors[ImGuiCol_Text]                   = ImVec4(0.15f, 0.15f, 0.15f, 1.00f);  // Dark gray text
-    colors[ImGuiCol_TextDisabled]           = ImVec4(0.60f, 0.60f, 0.60f, 1.00f);  // Disabled text
-    colors[ImGuiCol_WindowBg]               = ImVec4(0.98f, 0.96f, 0.92f, 1.00f);  // Creamy background
-    colors[ImGuiCol_ChildBg]                = ImVec4(0.99f, 0.97f, 0.93f, 1.00f);  // Child windows - lighter cream
-    colors[ImGuiCol_PopupBg]                = ImVec4(0.99f, 0.97f, 0.93f, 0.98f);  // Popups - light cream
-    colors[ImGuiCol_Border]                 = ImVec4(0.25f, 0.65f, 0.25f, 0.50f);  // Green borders
-    colors[ImGuiCol_BorderShadow]           = ImVec4(0.00f, 0.00f, 0.00f, 0.00f);  // Border shadow
-    colors[ImGuiCol_FrameBg]                = ImVec4(0.94f, 0.92f, 0.88f, 1.00f);  // Frame backgrounds - cream
-    colors[ImGuiCol_FrameBgHovered]         = ImVec4(0.87f, 0.93f, 0.85f, 1.00f);  // Frame hovered - light green
-    colors[ImGuiCol_FrameBgActive]          = ImVec4(0.77f, 0.88f, 0.75f, 1.00f);  // Frame active - green
-    colors[ImGuiCol_TitleBg]                = ImVec4(0.92f, 0.90f, 0.86f, 1.00f);  // Title background - darker cream
-    colors[ImGuiCol_TitleBgActive]          = ImVec4(0.77f, 0.88f, 0.75f, 1.00f);  // Active title - green
-    colors[ImGuiCol_TitleBgCollapsed]       = ImVec4(0.87f, 0.85f, 0.81f, 1.00f);  // Collapsed title
-    colors[ImGuiCol_MenuBarBg]              = ImVec4(0.96f, 0.94f, 0.90f, 1.00f);  // Menu bar - light cream
-    colors[ImGuiCol_ScrollbarBg]            = ImVec4(0.90f, 0.88f, 0.84f, 1.00f);  // Scrollbar background - cream
-    colors[ImGuiCol_ScrollbarGrab]          = ImVec4(0.70f, 0.70f, 0.70f, 1.00f);  // Scrollbar grab
-    colors[ImGuiCol_ScrollbarGrabHovered]   = ImVec4(0.60f, 0.60f, 0.60f, 1.00f);  // Scrollbar grab hovered
-    colors[ImGuiCol_ScrollbarGrabActive]    = ImVec4(0.50f, 0.50f, 0.50f, 1.00f);  // Scrollbar grab active
-    colors[ImGuiCol_CheckMark]              = ImVec4(0.25f, 0.70f, 0.25f, 1.00f);  // Checkmark - green
-    colors[ImGuiCol_SliderGrab]             = ImVec4(0.30f, 0.70f, 0.30f, 1.00f);  // Slider grab - green
-    colors[ImGuiCol_SliderGrabActive]       = ImVec4(0.25f, 0.65f, 0.25f, 1.00f);  // Slider grab active - green
-    colors[ImGuiCol_Button]                 = ImVec4(0.90f, 0.88f, 0.84f, 1.00f);  // Button - cream
-    colors[ImGuiCol_ButtonHovered]          = ImVec4(0.75f, 0.90f, 0.75f, 1.00f);  // Button hovered - light green
-    colors[ImGuiCol_ButtonActive]           = ImVec4(0.65f, 0.85f, 0.65f, 1.00f);  // Button active - green
-    colors[ImGuiCol_Header]                 = ImVec4(0.80f, 0.90f, 0.80f, 1.00f);  // Header - light green
-    colors[ImGuiCol_HeaderHovered]          = ImVec4(0.75f, 0.88f, 0.75f, 1.00f);  // Header hovered - green
-    colors[ImGuiCol_HeaderActive]           = ImVec4(0.70f, 0.85f, 0.70f, 1.00f);  // Header active - green
-    colors[ImGuiCol_Separator]              = ImVec4(0.25f, 0.65f, 0.25f, 0.50f);  // Separator - green
-    colors[ImGuiCol_SeparatorHovered]       = ImVec4(0.30f, 0.70f, 0.30f, 0.78f);  // Separator hovered - green
-    colors[ImGuiCol_SeparatorActive]        = ImVec4(0.35f, 0.75f, 0.35f, 1.00f);  // Separator active - green
-    colors[ImGuiCol_ResizeGrip]             = ImVec4(0.25f, 0.65f, 0.25f, 0.25f);  // Resize grip - green
-    colors[ImGuiCol_ResizeGripHovered]      = ImVec4(0.30f, 0.70f, 0.30f, 0.67f);  // Resize grip hovered - green
-    colors[ImGuiCol_ResizeGripActive]       = ImVec4(0.35f, 0.75f, 0.35f, 0.95f);  // Resize grip active - green
-    colors[ImGuiCol_Tab]                    = ImVec4(0.85f, 0.92f, 0.85f, 1.00f);  // Tab - light green
-    colors[ImGuiCol_TabHovered]             = ImVec4(0.75f, 0.88f, 0.75f, 1.00f);  // Tab hovered - green
-    colors[ImGuiCol_TabActive]              = ImVec4(0.70f, 0.85f, 0.70f, 1.00f);  // Tab active - green
-    colors[ImGuiCol_TabUnfocused]           = ImVec4(0.90f, 0.90f, 0.90f, 1.00f);  // Tab unfocused
-    colors[ImGuiCol_TabUnfocusedActive]     = ImVec4(0.85f, 0.88f, 0.85f, 1.00f);  // Tab unfocused active
-    colors[ImGuiCol_PlotLines]              = ImVec4(0.39f, 0.39f, 0.39f, 1.00f);  // Plot lines
-    colors[ImGuiCol_PlotLinesHovered]       = ImVec4(1.00f, 0.43f, 0.35f, 1.00f);  // Plot lines hovered
-    colors[ImGuiCol_PlotHistogram]          = ImVec4(0.90f, 0.70f, 0.00f, 1.00f);  // Plot histogram
-    colors[ImGuiCol_PlotHistogramHovered]   = ImVec4(1.00f, 0.60f, 0.00f, 1.00f);  // Plot histogram hovered
-    colors[ImGuiCol_TextSelectedBg]         = ImVec4(0.75f, 0.90f, 0.75f, 0.50f);  // Text selection - light green
-    colors[ImGuiCol_DragDropTarget]         = ImVec4(1.00f, 1.00f, 0.00f, 0.90f);  // Drag drop target
-    colors[ImGuiCol_NavHighlight]           = ImVec4(0.30f, 0.70f, 0.30f, 1.00f);  // Navigation highlight - green
-    colors[ImGuiCol_NavWindowingHighlight]  = ImVec4(1.00f, 1.00f, 1.00f, 0.70f);  // Nav windowing highlight
-    colors[ImGuiCol_NavWindowingDimBg]      = ImVec4(0.80f, 0.80f, 0.80f, 0.20f);  // Nav windowing dim
-    colors[ImGuiCol_ModalWindowDimBg]       = ImVec4(0.80f, 0.80f, 0.80f, 0.35f);  // Modal window dim
-    
+
+    // Main colors - Light theme with transparent creamy background
+    colors[ImGuiCol_Text] = ImVec4(0.15f, 0.15f, 0.15f, 1.00f);  // Dark gray text
+    colors[ImGuiCol_TextDisabled] = ImVec4(0.60f, 0.60f, 0.60f, 1.00f);  // Disabled text
+    colors[ImGuiCol_WindowBg] = ImVec4(0.98f, 0.96f, 0.92f, 0.85f);  // Creamy background - TRANSPARENT
+    colors[ImGuiCol_ChildBg] = ImVec4(0.99f, 0.97f, 0.93f, 0.70f);  // Child windows - lighter cream - TRANSPARENT
+    colors[ImGuiCol_PopupBg] = ImVec4(0.99f, 0.97f, 0.93f, 0.90f);  // Popups - light cream - TRANSPARENT
+    colors[ImGuiCol_Border] = ImVec4(0.25f, 0.65f, 0.25f, 0.40f);  // Green borders - TRANSPARENT
+    colors[ImGuiCol_BorderShadow] = ImVec4(0.00f, 0.00f, 0.00f, 0.00f);  // Border shadow
+    colors[ImGuiCol_FrameBg] = ImVec4(0.94f, 0.92f, 0.88f, 0.70f);  // Frame backgrounds - cream - TRANSPARENT
+    colors[ImGuiCol_FrameBgHovered] = ImVec4(0.87f, 0.93f, 0.85f, 0.80f);  // Frame hovered - light green - TRANSPARENT
+    colors[ImGuiCol_FrameBgActive] = ImVec4(0.77f, 0.88f, 0.75f, 0.90f);  // Frame active - green - TRANSPARENT
+    colors[ImGuiCol_TitleBg] = ImVec4(0.92f, 0.90f, 0.86f, 0.75f);  // Title background - darker cream - TRANSPARENT
+    colors[ImGuiCol_TitleBgActive] = ImVec4(0.77f, 0.88f, 0.75f, 0.85f);  // Active title - green - TRANSPARENT
+    colors[ImGuiCol_TitleBgCollapsed] = ImVec4(0.87f, 0.85f, 0.81f, 0.60f);  // Collapsed title - TRANSPARENT
+    colors[ImGuiCol_MenuBarBg] = ImVec4(0.96f, 0.94f, 0.90f, 0.75f);  // Menu bar - light cream - TRANSPARENT
+    colors[ImGuiCol_ScrollbarBg] = ImVec4(0.90f, 0.88f, 0.84f, 0.60f);  // Scrollbar background - cream - TRANSPARENT
+    colors[ImGuiCol_ScrollbarGrab] = ImVec4(0.70f, 0.70f, 0.70f, 0.80f);  // Scrollbar grab - TRANSPARENT
+    colors[ImGuiCol_ScrollbarGrabHovered] = ImVec4(0.60f, 0.60f, 0.60f, 0.90f);  // Scrollbar grab hovered - TRANSPARENT
+    colors[ImGuiCol_ScrollbarGrabActive] = ImVec4(0.50f, 0.50f, 0.50f, 1.00f);  // Scrollbar grab active
+    colors[ImGuiCol_CheckMark] = ImVec4(0.25f, 0.70f, 0.25f, 1.00f);  // Checkmark - green
+    colors[ImGuiCol_SliderGrab] = ImVec4(0.30f, 0.70f, 0.30f, 0.80f);  // Slider grab - green - TRANSPARENT
+    colors[ImGuiCol_SliderGrabActive] = ImVec4(0.25f, 0.65f, 0.25f, 1.00f);  // Slider grab active - green
+    colors[ImGuiCol_Button] = ImVec4(0.90f, 0.88f, 0.84f, 0.70f);  // Button - cream - TRANSPARENT
+    colors[ImGuiCol_ButtonHovered] = ImVec4(0.75f, 0.90f, 0.75f, 0.85f);  // Button hovered - light green - TRANSPARENT
+    colors[ImGuiCol_ButtonActive] = ImVec4(0.65f, 0.85f, 0.65f, 0.95f);  // Button active - green - TRANSPARENT
+    colors[ImGuiCol_Header] = ImVec4(0.80f, 0.90f, 0.80f, 0.70f);  // Header - light green - TRANSPARENT
+    colors[ImGuiCol_HeaderHovered] = ImVec4(0.75f, 0.88f, 0.75f, 0.85f);  // Header hovered - green - TRANSPARENT
+    colors[ImGuiCol_HeaderActive] = ImVec4(0.70f, 0.85f, 0.70f, 0.95f);  // Header active - green - TRANSPARENT
+    colors[ImGuiCol_Separator] = ImVec4(0.25f, 0.65f, 0.25f, 0.40f);  // Separator - green - TRANSPARENT
+    colors[ImGuiCol_SeparatorHovered] = ImVec4(0.30f, 0.70f, 0.30f, 0.60f);  // Separator hovered - green - TRANSPARENT
+    colors[ImGuiCol_SeparatorActive] = ImVec4(0.35f, 0.75f, 0.35f, 0.80f);  // Separator active - green - TRANSPARENT
+    colors[ImGuiCol_ResizeGrip] = ImVec4(0.25f, 0.65f, 0.25f, 0.20f);  // Resize grip - green - TRANSPARENT
+    colors[ImGuiCol_ResizeGripHovered] = ImVec4(0.30f, 0.70f, 0.30f, 0.50f);  // Resize grip hovered - green - TRANSPARENT
+    colors[ImGuiCol_ResizeGripActive] = ImVec4(0.35f, 0.75f, 0.35f, 0.75f);  // Resize grip active - green - TRANSPARENT
+    colors[ImGuiCol_Tab] = ImVec4(0.85f, 0.92f, 0.85f, 0.70f);  // Tab - light green - TRANSPARENT
+    colors[ImGuiCol_TabHovered] = ImVec4(0.75f, 0.88f, 0.75f, 0.85f);  // Tab hovered - green - TRANSPARENT
+    colors[ImGuiCol_TabActive] = ImVec4(0.70f, 0.85f, 0.70f, 0.90f);  // Tab active - green - TRANSPARENT
+    colors[ImGuiCol_TabUnfocused] = ImVec4(0.90f, 0.90f, 0.90f, 0.60f);  // Tab unfocused - TRANSPARENT
+    colors[ImGuiCol_TabUnfocusedActive] = ImVec4(0.85f, 0.88f, 0.85f, 0.70f);  // Tab unfocused active - TRANSPARENT
+    colors[ImGuiCol_PlotLines] = ImVec4(0.39f, 0.39f, 0.39f, 1.00f);  // Plot lines
+    colors[ImGuiCol_PlotLinesHovered] = ImVec4(1.00f, 0.43f, 0.35f, 1.00f);  // Plot lines hovered
+    colors[ImGuiCol_PlotHistogram] = ImVec4(0.90f, 0.70f, 0.00f, 1.00f);  // Plot histogram
+    colors[ImGuiCol_PlotHistogramHovered] = ImVec4(1.00f, 0.60f, 0.00f, 1.00f);  // Plot histogram hovered
+    colors[ImGuiCol_TextSelectedBg] = ImVec4(0.75f, 0.90f, 0.75f, 0.40f);  // Text selection - light green - TRANSPARENT
+    colors[ImGuiCol_DragDropTarget] = ImVec4(1.00f, 1.00f, 0.00f, 0.70f);  // Drag drop target - TRANSPARENT
+    colors[ImGuiCol_NavHighlight] = ImVec4(0.30f, 0.70f, 0.30f, 0.80f);  // Navigation highlight - green - TRANSPARENT
+    colors[ImGuiCol_NavWindowingHighlight] = ImVec4(1.00f, 1.00f, 1.00f, 0.50f);  // Nav windowing highlight - TRANSPARENT
+    colors[ImGuiCol_NavWindowingDimBg] = ImVec4(0.80f, 0.80f, 0.80f, 0.15f);  // Nav windowing dim - TRANSPARENT
+    colors[ImGuiCol_ModalWindowDimBg] = ImVec4(0.80f, 0.80f, 0.80f, 0.25f);  // Modal window dim - TRANSPARENT
+
     // Style settings
     style.WindowRounding = 0.0f;  // Sharp corners for docked window
     style.ChildRounding = 4.0f;
@@ -82,12 +82,15 @@ void Editor::Init(sf::RenderWindow& window)
     style.IndentSpacing = 20.0f;
     style.ScrollbarSize = 12.0f;
     style.GrabMinSize = 10.0f;
+
+    // Enable alpha blending for transparency
+    style.Alpha = 1.0f;  // Global alpha multiplier (keep at 1.0f for individual control)
 }
 
 Editor::Editor(sf::RenderWindow& window)
     :editorGravity(Vector3f(0.0f, 500.0f, 0.0f)), editorConstraintsIterationCount(10), state(RUN), editButtonClicked(false), runButtonClicked(false)
-    ,gravityChanged(false), resetButtonClicked(false), addParticlesButtonClicked(false), addLinesButtonClicked(false), io(), currentSceneType(1), sceneChanged(false)
-    ,saveSceneButtonClicked(false)
+    , gravityChanged(false), resetButtonClicked(false), addParticlesButtonClicked(false), addLinesButtonClicked(false), io(), currentSceneType(1), sceneChanged(false)
+    , saveSceneButtonClicked(false)
 {
     Init(window);
 }
@@ -104,18 +107,19 @@ void Editor::DrawUI(sf::RenderWindow& window, sf::Clock deltaClock)
     // Get window dimensions
     sf::Vector2u windowSize = window.getSize();
     float panelWidth = 300.0f;
-    
-    // Set window flags for docked panel
-    ImGuiWindowFlags window_flags = ImGuiWindowFlags_NoCollapse | 
-                                   ImGuiWindowFlags_NoResize | 
-                                   ImGuiWindowFlags_NoMove |
-                                   ImGuiWindowFlags_NoScrollbar |
-                                   ImGuiWindowFlags_NoScrollWithMouse;
-    
-    // Dock to right side of screen
+
+    // Set window flags for auto-resizing panel
+    ImGuiWindowFlags window_flags = ImGuiWindowFlags_NoCollapse |
+        ImGuiWindowFlags_NoResize |
+        ImGuiWindowFlags_NoMove |
+        ImGuiWindowFlags_NoScrollbar |
+        ImGuiWindowFlags_NoScrollWithMouse |
+        ImGuiWindowFlags_AlwaysAutoResize;
+
+    // Position at top-right, let height auto-resize
     ImGui::SetNextWindowPos(ImVec2(windowSize.x - panelWidth, 0), ImGuiCond_Always);
-    ImGui::SetNextWindowSize(ImVec2(panelWidth, windowSize.y), ImGuiCond_Always);
-    
+    ImGui::SetNextWindowSize(ImVec2(panelWidth, 0), ImGuiCond_Always); // Height = 0 for auto-resize
+
     if (ImGui::Begin("Physics Editor", nullptr, window_flags))
     {
         // Header section with title styling
@@ -124,7 +128,7 @@ void Editor::DrawUI(sf::RenderWindow& window, sf::Clock deltaClock)
         ImGui::TextWrapped("Physics Simulation Editor");
         ImGui::SetWindowFontScale(1.0f);
         ImGui::PopStyleColor();
-        
+
         ImGui::Spacing();
         ImGui::Separator();
         ImGui::Spacing();
@@ -133,7 +137,7 @@ void Editor::DrawUI(sf::RenderWindow& window, sf::Clock deltaClock)
         ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.1f, 0.1f, 0.1f, 1.0f)); // Dark text
         ImGui::Text("Scene Configuration");
         ImGui::PopStyleColor();
-        
+
         ImGui::PushItemWidth(-1); // Full width
         const char* sceneTypes[] = { "Cloth Simulation", "Empty Scene" };
         if (ImGui::Combo("##SceneType", &currentSceneType, sceneTypes, IM_ARRAYSIZE(sceneTypes)))
@@ -141,68 +145,68 @@ void Editor::DrawUI(sf::RenderWindow& window, sf::Clock deltaClock)
             sceneChanged = true;
         }
         ImGui::PopItemWidth();
-        
+
         ImGui::Separator();
 
         // Control Buttons Section
         ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.1f, 0.1f, 0.1f, 1.0f)); // Dark text
         ImGui::Text("Simulation Controls");
         ImGui::PopStyleColor();
-        
+
         // Row 1: Edit and Run buttons
         float buttonWidth = (ImGui::GetContentRegionAvail().x - ImGui::GetStyle().ItemSpacing.x) * 0.5f;
-        
+
         // Edit button with special styling
         if (state == EDIT) {
-            ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.65f, 0.85f, 0.65f, 1.0f));
-            ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.70f, 0.88f, 0.70f, 1.0f));
+            ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.65f, 0.85f, 0.65f, 0.90f));  // More opaque when active
+            ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.70f, 0.88f, 0.70f, 0.95f));
         }
         editButtonClicked = ImGui::Button("Edit", ImVec2(buttonWidth, 32));
         if (state == EDIT) {
             ImGui::PopStyleColor(2);
         }
-        
+
         ImGui::SameLine();
-        
+
         // Run button with special styling
         if (state == RUN) {
-            ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.65f, 0.85f, 0.65f, 1.0f));
-            ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.70f, 0.88f, 0.70f, 1.0f));
+            ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.65f, 0.85f, 0.65f, 0.90f));  // More opaque when active
+            ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.70f, 0.88f, 0.70f, 0.95f));
         }
         runButtonClicked = ImGui::Button("Run", ImVec2(buttonWidth, 32));
         if (state == RUN) {
             ImGui::PopStyleColor(2);
         }
-        
+
         // Row 2: Reset button (full width)
         resetButtonClicked = ImGui::Button("Reset Scene", ImVec2(-1, 28));
-        
+
         // Row 3: Add Particles and Add Lines
         if (state == ADDPARTICLES) {
-            ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.65f, 0.85f, 0.65f, 1.0f));
-            ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.70f, 0.88f, 0.70f, 1.0f));
+            ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.65f, 0.85f, 0.65f, 0.90f));  // More opaque when active
+            ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.70f, 0.88f, 0.70f, 0.95f));
         }
         addParticlesButtonClicked = ImGui::Button("Add Particles", ImVec2(buttonWidth, 28));
         if (state == ADDPARTICLES) {
             ImGui::PopStyleColor(2);
         }
-        
+
         ImGui::SameLine();
-        
+
         if (state == ADDLINES) {
-            ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.65f, 0.85f, 0.65f, 1.0f));
-            ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.70f, 0.88f, 0.70f, 1.0f));
+            ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.65f, 0.85f, 0.65f, 0.90f));  // More opaque when active
+            ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.70f, 0.88f, 0.70f, 0.95f));
         }
         addLinesButtonClicked = ImGui::Button("Add Lines", ImVec2(buttonWidth, 28));
         if (state == ADDLINES) {
             ImGui::PopStyleColor(2);
         }
-        
+
         // Row 4: Save and Load
         saveSceneButtonClicked = ImGui::Button("Save Scene", ImVec2(buttonWidth, 28));
         ImGui::SameLine();
         loadSceneButtonClicked = ImGui::Button("Load Scene", ImVec2(buttonWidth, 28));
-        
+
         ImGui::Separator();
 
         // Physics Parameters Section (only in Edit mode)
@@ -211,7 +215,7 @@ void Editor::DrawUI(sf::RenderWindow& window, sf::Clock deltaClock)
             ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.1f, 0.1f, 0.1f, 1.0f)); // Dark text
             ImGui::Text("Physics Parameters");
             ImGui::PopStyleColor();
-            
+
             // Gravity slider
             ImGui::Text("Gravity Force:");
             ImGui::PushItemWidth(-1);
@@ -220,13 +224,13 @@ void Editor::DrawUI(sf::RenderWindow& window, sf::Clock deltaClock)
                 gravityChanged = true;
             }
             ImGui::PopItemWidth();
-            
+
             // Constraint iterations slider
             ImGui::Text("Constraint Iterations:");
             ImGui::PushItemWidth(-1);
             ImGui::SliderInt("##ConstraintIterations", &editorConstraintsIterationCount, 1, 30, "%d");
             ImGui::PopItemWidth();
-            
+
             ImGui::Separator();
         }
 
@@ -234,7 +238,7 @@ void Editor::DrawUI(sf::RenderWindow& window, sf::Clock deltaClock)
         ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.1f, 0.1f, 0.1f, 1.0f)); // Dark text
         ImGui::Text("Status Information");
         ImGui::PopStyleColor();
-        
+
         // Current state display
         ImGui::Text("Current Mode:");
         ImGui::SameLine();
@@ -268,9 +272,9 @@ void Editor::DrawUI(sf::RenderWindow& window, sf::Clock deltaClock)
             ImGui::PopStyleColor();
         }
         ImGui::PopStyleColor();
-        
+
         ImGui::Separator();
-        
+
         // Scene info
         ImGui::Text("Active Scene:");
         ImGui::SameLine();
