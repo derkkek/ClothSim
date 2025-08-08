@@ -14,7 +14,6 @@ public:
 	virtual void InteractByInput(EventHandler& eventHandler, Editor::State state) = 0; 
 	virtual void Update(float dt, int constraintIteration, Editor::State state) = 0;
 	virtual IScene* Recreate() = 0;
-	virtual void ConstructUniqueLines() = 0;
 
 	void AddDynamicParticle(sf::Vector3f position, float radius);
 	void AddStaticParticle(sf::Vector3f position, float radius);

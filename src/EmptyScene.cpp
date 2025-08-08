@@ -146,43 +146,6 @@ IScene* EmptyScene::Recreate()
 	return new EmptyScene();
 }
 
-void EmptyScene::ConstructUniqueLines()
-{
-	std::set<std::pair<Particle*, Particle*>> existingLines;
-	for (Particle* particle : particles)
-	{
-		for (Particle* other : particles)
-		{
-			if (other != particle)
-			{
-				auto linePair = std::minmax(particle, other);
-				if (existingLines.find(linePair) == existingLines.end()) //if the unique pair doesn't exists in our set. 
-				{
-					float distance = Arithmetic::GetDistance(particle, other);
-					if (distance < 500.0f)
-					{
-						lines.push_back(new Line(particle, other, distance));
-						existingLines.insert(linePair);
-					}
-
-				}
-			}
-
-		}
-
-	}
-	existingLines.clear();
-
-	//lines.push_back(new Line(particles.back(), particles.at(particles.size() - 2), Arithmetic::GetDistance(particles.back(), particles.at(particles.size() - 2))));
-}
-
-
-std::vector<Particle*> EmptyScene::GetNeighbors(Particle* particle)
-{
-	return particles;
-}
-
-
 
 void EmptyScene::ParticleGrabber()
 {
