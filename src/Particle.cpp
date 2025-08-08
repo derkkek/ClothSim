@@ -9,6 +9,8 @@ Particle::Particle(Vector3f pos, bool stable = false)
 	this->shape.setRadius(this->radius);
 	this->shape.setOrigin(this->radius, this->radius);
 	this->shape.setFillColor(this->color);
+	this->shape.setOutlineThickness(1.5f);
+	this->shape.setOutlineColor(sf::Color::Black);
 }
 
 Particle::~Particle()
