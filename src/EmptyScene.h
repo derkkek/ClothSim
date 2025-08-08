@@ -19,5 +19,5 @@ private:
 
 	std::vector<Particle*> GetNeighbors(Particle* particle);
 
-	void ParticleGrabber();
+	void ParticleGrabber() override;
 };

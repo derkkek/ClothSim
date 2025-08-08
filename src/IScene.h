@@ -42,4 +42,5 @@ protected:
 	void CompleteDrawingLine(EventHandler& eventHandler);
 	void ChainLine(EventHandler& eventHandler);
 	void DeleteTemporaryLine();
+	virtual void ParticleGrabber() = 0;
 };

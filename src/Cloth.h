@@ -17,7 +17,7 @@ private:
 	
 	std::vector<Particle*> grabbedParticles;
 	
-	void ParticleGrabber();
+	void ParticleGrabber() override;
 	void DestroyLineByMouse();
 	void DestroyLineByOffset();
 	void DestroyUnreferencedParticles();
