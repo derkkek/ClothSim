@@ -4,7 +4,7 @@
 #include <algorithm>
 
 EmptyScene::EmptyScene()
-	: lineDrawingState(IDLE), lineStartingParticle(nullptr), temporaryLine(nullptr), prevMouseLeftPressed(false), prevMouseRightPressed(false)
+	: lineDrawingState(IDLE), lineStartingParticle(nullptr), temporaryLine(nullptr), prevMouseLeftPressed(false), prevMouseRightPressed(false), grabbedParticle(nullptr)
 {
 
 }
@@ -38,41 +38,19 @@ void EmptyScene::InteractByInput(EventHandler& eventHandler, Editor::State state
 		}
 
 	}
-	else if (state == Editor::State::RUN) // feels off this shouldn't be in here..
+	else if (state == Editor::State::RUN)
 	{
 		if (temporaryLine != nullptr)
 		{
 			DeleteTemporaryLine();
 		}
 		
-		static Particle* grabbedParticle = nullptr;
 
 		if (eventHandler.mouseLeftPressed)
 		{
-
-			if (grabbedParticle == nullptr)
-			{
-				for (Particle* particle : particles)
-				{
-					float mouseDistance = Arithmetic::GetMouseDistance(particle, EventHandler::mouseWorld);
-
-					if (mouseDistance <= 20.0f)
-					{
-						grabbedParticle = particle;
-						grabbedParticle->selected = true;
-						break;
-					}
-				}
-			}
-			if(grabbedParticle)
-			grabbedParticle->SetPosition(EventHandler::mouseWorld.x, EventHandler::mouseWorld.y, 0.0f);
-
+			ParticleGrabber();
 		}
-		else if(grabbedParticle)
-		{
-			grabbedParticle->selected = false;
-			grabbedParticle = nullptr;
-		}
+
 	}
 
 	else if (state == Editor::State::ADDLINES)
@@ -302,6 +280,34 @@ void EmptyScene::DeleteTemporaryLine()
 	{
 		delete* it;
 		lines.erase(it);
+	}
+}
+
+void EmptyScene::ParticleGrabber()
+{
+	if (grabbedParticle == nullptr)
+	{
+		for (Particle* particle : particles)
+		{
+			float mouseDistance = Arithmetic::GetMouseDistance(particle, EventHandler::mouseWorld);
+
+			if (mouseDistance <= 20.0f)
+			{
+				grabbedParticle = particle;
+				grabbedParticle->selected = true;
+				break;
+			}
+		}
+	}
+	if (grabbedParticle)
+	{
+		grabbedParticle->SetPosition(EventHandler::mouseWorld.x, EventHandler::mouseWorld.y, 0.0f);
+	}
+
+	else if (grabbedParticle)
+	{
+			grabbedParticle->selected = false;
+			grabbedParticle = nullptr;
 	}
 }
 

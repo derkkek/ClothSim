@@ -15,6 +15,7 @@ private:
 	enum LineDrawingState { IDLE, GRABBING, CHAIN };
 	LineDrawingState lineDrawingState;
 	Particle* lineStartingParticle;
+	Particle* grabbedParticle;
 	Line* temporaryLine;
 	bool prevMouseLeftPressed;
 	bool prevMouseRightPressed;
@@ -25,4 +26,5 @@ private:
 	void CompleteDrawingLine(EventHandler& eventHandler);
 	void ChainLine(EventHandler& eventHandler);
 	void DeleteTemporaryLine();
+	void ParticleGrabber();
 };
