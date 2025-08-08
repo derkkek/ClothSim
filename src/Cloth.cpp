@@ -34,26 +34,45 @@ Cloth::~Cloth()
     lines.clear();
 }
 
-void  Cloth::Update(float dt, int constraintIteration, Editor::State state)
+void Cloth::Update(float dt, int constraintIteration, Editor::State state)
 {
-    DestroyLineByOffset();
-
-    for (Particle* particle : particles)
+    if (state == Editor::State::RUN)
     {
+        DestroyLineByOffset();
 
-        particle->AddForce(gravity);
-        particle->Update(dt);
-        particle->ZeroForce();
-        
-    }
-
-    for (int i = 0; i < constraintIteration; i++)
-    {
-        for (Line* line : lines)
+        for (Particle* particle : particles)
         {
-            line->Update();
+
+            particle->AddForce(gravity);
+            particle->Update(dt);
+            particle->ZeroForce();
+
+        }
+
+        for (int i = 0; i < constraintIteration; i++)
+        {
+            for (Line* line : lines)
+            {
+                if (!line->temporary)
+                {
+                    line->Update();
+                }
+            }
         }
     }
+    else if (state == Editor::State::ADDLINES)
+    {
+
+        for (Line* line : lines)
+        {
+
+            if (line->temporary)
+            {
+                line->UpdateVAO(line->GetP1()->GetPosition(), sf::Vector3f(EventHandler::mouseWorld.x, EventHandler::mouseWorld.y, 0.0f));
+            }
+        }
+    }
+
 }
 
 void Cloth::InteractByInput(EventHandler& eventHandler, Editor::State state)
@@ -79,6 +98,44 @@ void Cloth::InteractByInput(EventHandler& eventHandler, Editor::State state)
         {
             DestroyLineByMouse();
         }
+    }
+
+    else if (state == Editor::State::ADDPARTICLES)
+    {
+        if (eventHandler.mouseLeftPressed && !prevMouseLeftPressed)
+        {
+            AddDynamicParticle(sf::Vector3f(eventHandler.mouseWorld.x, eventHandler.mouseWorld.y, 0.0f), 1.75f);
+        }
+    }
+
+    else if (state == Editor::State::ADDLINES)
+    {
+
+        DrawLines(eventHandler);
+
+        if (eventHandler.mouseRightPressed && !prevMouseRightPressed)
+        {
+            if (temporaryLine != nullptr)
+            {
+                DeleteTemporaryLine();
+                lineDrawingState = IDLE;
+                lineStartingParticle = nullptr;
+                temporaryLine = nullptr;
+            }
+            else
+            {
+                if (!lines.empty())
+                {
+                    Line* lastLine = lines.back();
+                    delete lastLine;
+                    lines.pop_back();
+                }
+                lineDrawingState = IDLE;
+                lineStartingParticle = nullptr;
+                temporaryLine = nullptr;
+            }
+        }
+
     }
 
 

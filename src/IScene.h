@@ -31,4 +31,15 @@ protected:
 
 	bool prevMouseLeftPressed;
 	bool prevMouseRightPressed;
+
+	enum LineDrawingState { IDLE, GRABBING, CHAIN };
+	LineDrawingState lineDrawingState;
+	Particle* lineStartingParticle;
+	Line* temporaryLine;
+
+	void DrawLines(EventHandler& eventHandler);
+	void StartDrawingLine(EventHandler& eventHandler);
+	void CompleteDrawingLine(EventHandler& eventHandler);
+	void ChainLine(EventHandler& eventHandler);
+	void DeleteTemporaryLine();
 };
