@@ -58,11 +58,32 @@ void  Cloth::Update(float dt, int constraintIteration, Editor::State state)
 
 void Cloth::InteractByInput(EventHandler& eventHandler, Editor::State state)
 {
+
     if (state == Editor::State::RUN)
     {
-        ParticleGrabber(EventHandler::mouseLeftPressed);
-        DestroyLineByMouse(EventHandler::mouseRightPressed);
+        if (eventHandler.mouseLeftPressed)
+        {
+            ParticleGrabber();
+        }
+
+        if (!eventHandler.mouseLeftPressed)
+        {
+            for (Particle* particle : grabbedParticles)
+            {
+                particle->selected = false;
+            }
+            grabbedParticles.clear();
+        }
+
+        if (eventHandler.mouseRightPressed)
+        {
+            DestroyLineByMouse();
+        }
     }
+
+
+    prevMouseLeftPressed = eventHandler.mouseLeftPressed;
+    prevMouseRightPressed = eventHandler.mouseRightPressed;
 }
 IScene* Cloth::Recreate()
 {
@@ -71,14 +92,8 @@ IScene* Cloth::Recreate()
 
 
 
-void Cloth::ParticleGrabber(bool grab)
+void Cloth::ParticleGrabber()
 {
-    static std::vector<Particle*> grabbedParticles;
-    float offsetX;
-    float offsetY;
-
-    if (grab)
-    {
 
         if (grabbedParticles.empty())
         {
@@ -101,22 +116,11 @@ void Cloth::ParticleGrabber(bool grab)
             //offsetY = particle->GetPosition().y - EventHandler::mouseWorld.y;
             particle->SetPosition(EventHandler::mouseWorld.x, EventHandler::mouseWorld.y, 0.0f);
         }
-    }
-    else
-    {
-        // Release all grabbed particles
-        for (Particle* particle : grabbedParticles)
-        {
-            particle->selected = false;
-        }
-        grabbedParticles.clear();
-    }
+
 }
 
-void Cloth::DestroyLineByMouse(bool destroy)
+void Cloth::DestroyLineByMouse()
 {
-    if (destroy)
-    {
         // 1. Delete lines based on distance condition
         for (auto it = lines.begin(); it != lines.end();)
         {
@@ -140,7 +144,7 @@ void Cloth::DestroyLineByMouse(bool destroy)
             To improve performance just don't render particles
         */
         //DestroyUnreferencedParticles();
-    }
+
 }
 
 void Cloth::DestroyLineByOffset()

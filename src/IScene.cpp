@@ -1,7 +1,7 @@
 #include "IScene.h"
 #include <iostream>
 IScene::IScene()
-	:gravity(sf::Vector3f(0.0f, 500.0f, 0.0f))
+	:gravity(sf::Vector3f(0.0f, 500.0f, 0.0f)), prevMouseLeftPressed(false), prevMouseRightPressed(false)
 {
 }
 IScene::~IScene()

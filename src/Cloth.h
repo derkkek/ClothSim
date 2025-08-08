@@ -14,9 +14,11 @@ public:
 	void InteractByInput(EventHandler& eventHandler, Editor::State state) override;
 	IScene* Recreate() override;
 private:
-
-	void ParticleGrabber(bool grab); // passing bool to a function is bad practice..
-	void DestroyLineByMouse(bool destroy);
+	
+	std::vector<Particle*> grabbedParticles;
+	
+	void ParticleGrabber();
+	void DestroyLineByMouse();
 	void DestroyLineByOffset();
 	void DestroyUnreferencedParticles();
 

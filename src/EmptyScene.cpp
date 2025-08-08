@@ -4,7 +4,7 @@
 #include <algorithm>
 
 EmptyScene::EmptyScene()
-	: lineDrawingState(IDLE), lineStartingParticle(nullptr), temporaryLine(nullptr), prevMouseLeftPressed(false), prevMouseRightPressed(false), grabbedParticle(nullptr)
+	: lineDrawingState(IDLE), lineStartingParticle(nullptr), temporaryLine(nullptr), grabbedParticle(nullptr)
 {
 
 }

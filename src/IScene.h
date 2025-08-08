@@ -29,5 +29,6 @@ protected:
 	std::vector<Line*> lines;
 	sf::Vector3f gravity;
 
-
+	bool prevMouseLeftPressed;
+	bool prevMouseRightPressed;
 };

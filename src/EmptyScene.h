@@ -17,8 +17,7 @@ private:
 	Particle* lineStartingParticle;
 	Particle* grabbedParticle;
 	Line* temporaryLine;
-	bool prevMouseLeftPressed;
-	bool prevMouseRightPressed;
+
 
 	std::vector<Particle*> GetNeighbors(Particle* particle);
 	void DrawLines(EventHandler& eventHandler);
