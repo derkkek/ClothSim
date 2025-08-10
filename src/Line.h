@@ -12,14 +12,15 @@ public:
 	~Line() = default;
 
 	VertexArray GetVAO();
-	void Update();
+	void Update(float dt);
 	void UpdateVAO(Vector3f& start, Vector3f& end);
 
 	Particle* GetP1();
 	Particle* GetP2();
 	float GetLength();
-	float GetOffsetX();
-	float GetOffsetY();
+	float GetCorrectionX();
+	float GetCorrectionY();
+
 	bool temporary;
 
 private:
@@ -29,6 +30,7 @@ private:
 	Vector3f endPos;
 	VertexArray lineVA{ sf::Lines, 2 };
 	float length;
-	float offsetX;
-	float offsetY;
+	float correctionX;
+	float correctionY;
+	float stiffness;
 };

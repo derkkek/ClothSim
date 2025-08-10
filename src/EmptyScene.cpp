@@ -103,7 +103,7 @@ void EmptyScene::Update(float dt, int constraintIteration, Editor::State state)
 			{
 				if (!line->temporary)
 				{
-					line->Update();
+					line->Update(dt);
 				}
 			}
 		}

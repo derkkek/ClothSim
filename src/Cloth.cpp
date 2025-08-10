@@ -55,7 +55,7 @@ void Cloth::Update(float dt, int constraintIteration, Editor::State state)
             {
                 if (!line->temporary)
                 {
-                    line->Update();
+                    line->Update(dt);
                 }
             }
         }
@@ -222,8 +222,8 @@ void Cloth::DestroyLineByOffset()
     for (auto it = lines.begin(); it != lines.end();)
     {
         Line* line = (*it);
-        float offsetX = line->GetOffsetX();
-        float offsetY = line->GetOffsetY();
+        float offsetX = line->GetCorrectionX();
+        float offsetY = line->GetCorrectionY();
         if (offsetX > 5.0f || offsetX < -5.0f || offsetY > 5.0f || offsetY < -5.0f)
         {
             delete line;

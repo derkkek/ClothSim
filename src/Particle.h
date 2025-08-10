@@ -27,6 +27,8 @@ public:
 	bool stable;
 	bool selected;
 	float radius;
+	float mass;
+
 
 private:
 	Vector3f position;
@@ -35,7 +37,6 @@ private:
 	Vector3f force;
 	CircleShape shape;
 
-	float mass;
 
 	Color color = Color::White;
 };
