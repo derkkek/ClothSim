@@ -138,7 +138,6 @@ void Cloth::InteractByInput(EventHandler& eventHandler, Editor::State state)
 
     }
 
-
     prevMouseLeftPressed = eventHandler.mouseLeftPressed;
     prevMouseRightPressed = eventHandler.mouseRightPressed;
 }
@@ -185,8 +184,6 @@ void Cloth::ParticleGrabber()
         // Move all grabbed particles
         for (Particle* particle : grabbedParticles)
         {
-            //offsetX = particle->GetPosition().x - EventHandler::mouseWorld.x;
-            //offsetY = particle->GetPosition().y - EventHandler::mouseWorld.y;
             particle->SetPosition(EventHandler::mouseWorld.x, EventHandler::mouseWorld.y, 0.0f);
         }
 

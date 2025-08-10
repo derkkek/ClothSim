@@ -86,7 +86,18 @@ void Application::Render()
     //renderer->DrawGeometry(cloth->Particles(), cloth->Lines(), window);
     //renderer->DrawLines(scene->Lines(), window);
     window.clear(sf::Color(89.0f, 101.0f, 111.0f, 255.0f));
-    renderer->DrawGeometry(scene->Particles(), scene->Lines(), window);
+    if (editor->renderState == Editor::RenderState::LINES)
+    {
+        renderer->DrawLines(scene->Lines(), window);
+    }
+    else if (editor->renderState == Editor::RenderState::PARTICLES)
+    {
+        renderer->DrawParticles(scene->Particles(), window);
+    }
+    else
+    {
+        renderer->DrawGeometry(scene->Particles(), scene->Lines(), window);
+    }
 
     editor->DrawUI(window, deltaClock);
 

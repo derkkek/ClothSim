@@ -12,9 +12,17 @@ void Renderer::DrawLine(Line* line, sf::RenderWindow& window)
 
 void Renderer::DrawLines(std::vector<Line*>& lines, sf::RenderWindow& window)
 {
-	for each(Line * line in lines)
+	for each(Line* line in lines)
 	{
 		DrawLine(line, window);
+	}
+}
+
+void Renderer::DrawParticles(std::vector<Particle*>& particles, sf::RenderWindow& window)
+{
+	for each(Particle * particle in particles)
+	{
+		DrawParticle(particle, window);
 	}
 }
 

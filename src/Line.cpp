@@ -1,4 +1,4 @@
-#include "Line.h"
+﻿#include "Line.h"
 
 Line::Line(Particle* p1, Particle* p2, float length)
 	:p1(p1), p2(p2), length(length), offsetX(0.0f), offsetY(0.0f), temporary(false)
@@ -22,12 +22,12 @@ VertexArray Line::GetVAO()
 void Line::Update()
 {
 	sf::Vector2f diff = Arithmetic::GetDifference(GetP1(), GetP2());
-	float diffFactor = (GetLength() - Arithmetic::GetLength(diff)) / Arithmetic::GetLength(diff) * 0.5f;
+	float diffFactor = (GetLength() - Arithmetic::GetLength(diff)) / Arithmetic::GetLength(diff);
 
-	//float softness = 0.5f;
+	float softness = 0.5f;
 
-	offsetX = diff.x * diffFactor;
-	offsetY = diff.y * diffFactor;
+	offsetX = diff.x * diffFactor * softness;
+	offsetY = diff.y * diffFactor * softness;
 
 	Particle* p1 = GetP1();
 	Particle* p2 = GetP2();

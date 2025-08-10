@@ -88,9 +88,9 @@ void Editor::Init(sf::RenderWindow& window)
 }
 
 Editor::Editor(sf::RenderWindow& window)
-    :editorGravity(Vector3f(0.0f, 500.0f, 0.0f)), editorConstraintsIterationCount(10), state(RUN), editButtonClicked(false), runButtonClicked(false)
+    :editorGravity(Vector3f(0.0f, 500.0f, 0.0f)), editorConstraintsIterationCount(10), state(RUN), renderState(GEOMETRY), editButtonClicked(false), runButtonClicked(false)
     , gravityChanged(false), resetButtonClicked(false), addParticlesButtonClicked(false), addLinesButtonClicked(false), io(), currentSceneType(1), sceneChanged(false)
-    , saveSceneButtonClicked(false)
+    , saveSceneButtonClicked(false), onlyLinesButtonClicked(false), onlyParticlesButtonClicked(false), geometryButtonClicked(false)
 {
     Init(window);
 }
@@ -207,6 +207,40 @@ void Editor::DrawUI(sf::RenderWindow& window, sf::Clock deltaClock)
         ImGui::SameLine();
         loadSceneButtonClicked = ImGui::Button("Load Scene", ImVec2(buttonWidth, 28));
 
+        if (renderState == PARTICLES)
+        {
+            ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.65f, 0.85f, 0.65f, 0.90f));  // More opaque when active
+            ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.70f, 0.88f, 0.70f, 0.95f));
+        }
+        onlyParticlesButtonClicked = ImGui::Button("Render Particles", ImVec2(buttonWidth, 28));
+        if (renderState == PARTICLES) {
+            ImGui::PopStyleColor(2);
+        }
+
+        ImGui::SameLine();
+
+        if (renderState == LINES)
+        {
+            ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.65f, 0.85f, 0.65f, 0.90f));  // More opaque when active
+            ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.70f, 0.88f, 0.70f, 0.95f));
+        }
+        onlyLinesButtonClicked = ImGui::Button("Render Lines", ImVec2(buttonWidth, 28));
+
+        if (renderState == LINES) {
+            ImGui::PopStyleColor(2);
+        }
+        if (renderState == GEOMETRY)
+        {
+            ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.65f, 0.85f, 0.65f, 0.90f));  // More opaque when active
+            ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.70f, 0.88f, 0.70f, 0.95f));
+        }
+
+        geometryButtonClicked = ImGui::Button("Render Whole Geometry", ImVec2(buttonWidth * 2.0f, 28));
+
+        if (renderState == GEOMETRY) {
+            ImGui::PopStyleColor(2);
+        }
+
         ImGui::Separator();
 
         // Physics Parameters Section (only in Edit mode)
@@ -315,6 +349,18 @@ void Editor::HandleStates(RenderWindow& window, Event event)
     else if (loadSceneButtonClicked)
     {
         state = EDIT;
+    }
+    else if (onlyLinesButtonClicked)
+    {
+        renderState = LINES;
+    }
+    else if (onlyParticlesButtonClicked)
+    {
+        renderState = PARTICLES;
+    }
+    else if (geometryButtonClicked)
+    {
+        renderState = GEOMETRY;
     }
 }
 

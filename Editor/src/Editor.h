@@ -14,6 +14,10 @@ public:
 	{
 		EDIT, RUN, ADDPARTICLES, ADDLINES
 	};
+	enum RenderState
+	{
+		LINES, PARTICLES, GEOMETRY
+	};
 
 	Editor(sf::RenderWindow& window);
 	~Editor() = default;
@@ -27,6 +31,7 @@ private:
 
 
 	State state;
+	RenderState renderState;
 	Vector3f editorGravity;
 	int editorConstraintsIterationCount;
 
@@ -37,6 +42,9 @@ private:
 	bool addLinesButtonClicked;
 	bool saveSceneButtonClicked;
 	bool loadSceneButtonClicked;
+	bool onlyLinesButtonClicked;
+	bool onlyParticlesButtonClicked;
+	bool geometryButtonClicked;
 	
 	int currentSceneType;    // 0 = Cloth, 1 = Empty Scene
 	bool sceneChanged;       // Flag to detect when scene type changes

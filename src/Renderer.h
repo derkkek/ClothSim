@@ -10,6 +10,7 @@ public:
 	void DrawLine(Line* line, sf::RenderWindow& window);
 	void DrawGeometry(std::vector<Particle*> &particles, std::vector<Line*> &lines, sf::RenderWindow& window);
 	void DrawLines(std::vector<Line*>& lines, sf::RenderWindow& window);
+	void DrawParticles(std::vector<Particle*>& particles, sf::RenderWindow& window);
 private:
 
 };
