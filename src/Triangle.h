@@ -2,6 +2,7 @@
 #include <array>
 #include "Particle.h"
 #include "Line.h"
+#include "Arithmetic.h"
 
 class Triangle {
 public:

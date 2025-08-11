@@ -154,25 +154,32 @@ void IScene::UpdateAdjacencyList() {
 	}
 }
 
-void IScene::FindAndCreateAllTriangles() {
+void IScene::FindAndCreateAllTriangles() 
+{
 	// Clear existing triangles
 	ClearTriangles();
 
 	UpdateAdjacencyList();
 	std::set<std::set<Particle*>> processedTriangles;
 
-	for (auto& [particle, neighbors] : adjacencyList) {
+	for (auto& [particle, neighbors] : adjacencyList) 
+	{
 		std::vector<Particle*> neighborVec(neighbors.begin(), neighbors.end());
 
-		for (size_t i = 0; i < neighborVec.size(); ++i) {
-			for (size_t j = i + 1; j < neighborVec.size(); ++j) {
+		for (size_t i = 0; i < neighborVec.size(); ++i) 
+		{
+			for (size_t j = i + 1; j < neighborVec.size(); ++j) 
+			{
 				Particle* n1 = neighborVec[i];
 				Particle* n2 = neighborVec[j];
 
-				if (adjacencyList[n1].count(n2) > 0) {
-					std::set<Particle*> triangleSet = { particle, n1, n2 };
+				if (adjacencyList[n1].count(n2) > 0) //if neighbors are connected
+				{
+					// we found a triangle because a vertex is already connected to it's neighbors and neighbors are also connected to each other.
+					std::set<Particle*> triangleSet = { particle, n1, n2 }; 
 
-					if (processedTriangles.find(triangleSet) == processedTriangles.end()) {
+					if (processedTriangles.find(triangleSet) == processedTriangles.end()) //if it isn't a duplicate
+					{
 						processedTriangles.insert(triangleSet);
 						triangles.push_back(new Triangle(particle, n1, n2));
 					}

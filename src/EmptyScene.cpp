@@ -108,6 +108,10 @@ void EmptyScene::Update(float dt, int constraintIteration, Editor::State state)
 				}
 			}
 		}
+		for (Triangle* triangle : triangles)
+		{
+			triangle->RelaxationUpdate();
+		}
 	}
 
 	else if (state == Editor::State::ADDLINES)
