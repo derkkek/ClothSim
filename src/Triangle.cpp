@@ -1,7 +1,8 @@
 ﻿#include "Triangle.h"
 
 Triangle::Triangle(Particle* p1, Particle* p2, Particle* p3)
-    : vertices{ p1, p2, p3 } {
+    : vertices{ p1, p2, p3 } , areaStiffness(0.1f)
+{
     CalculateArea();
     UpdateRenderData();
 }
@@ -10,24 +11,22 @@ Triangle::~Triangle() {
     // Don't delete particles - they're owned by the scene
 }
 
-float Triangle::CalculateArea() 
+float Triangle::CalculateArea()
 {
-    float area = 0.0f;
-    if (!vertices[0] || !vertices[1] || !vertices[2]) 
-    {
-        area = 0.0f;
-        return area;
+    if (!vertices[0] || !vertices[1] || !vertices[2]) {
+        return 0.0f;
     }
 
     sf::Vector3f p1 = vertices[0]->GetPosition();
     sf::Vector3f p2 = vertices[1]->GetPosition();
     sf::Vector3f p3 = vertices[2]->GetPosition();
 
-     area = abs((p1.x * (p2.y - p3.y) +
-        p2.x * (p3.y - p1.y) +
-        p3.x * (p1.y - p2.y)) / 2.0f);
+    // Use cross product method for better numerical stability
+    sf::Vector2f v1(p2.x - p1.x, p2.y - p1.y);
+    sf::Vector2f v2(p3.x - p1.x, p3.y - p1.y);
 
-     return area;
+    float crossProduct = v1.x * v2.y - v1.y * v2.x;
+    return abs(crossProduct) * 0.5f;
 }
 
 sf::Vector3f Triangle::GetCentroid() const {
@@ -60,40 +59,45 @@ void Triangle::UpdateRenderData() {
 void Triangle::RelaxationUpdate()
 {
     float currentArea = CalculateArea();
-    float C = currentArea - area;
-    if (abs(C) > 20.0f)
+    float C = area - currentArea;
+
+    if (abs(C) > 10.0f)
     {
-        /*
-        d. Compute gradients ∇C for each vertex
-        e. Calculate correction scaling: λ = C / (|∇C₁|² + |∇C₂|² + |∇C₃|²)
-        f. Apply position corrections: Δpᵢ = -λ * ∇Cᵢ / mᵢ    
-        */
-
-        // For triangle with vertices p1, p2, p3
-        Particle* p1 = vertices[0];
-        Particle* p2 = vertices[1];
+        // Get vertex positions and calculate gradients (same as before)
+        Particle* p1 = vertices[1];
+        Particle* p2 = vertices[0];
         Particle* p3 = vertices[2];
-        sf::Vector2f edge_12 = Arithmetic::GetDifference(p2, p1);
-        sf::Vector2f edge_23 = Arithmetic::GetDifference(p3, p2);
-        sf::Vector2f edge_31 = Arithmetic::GetDifference(p1, p3);
 
-        // Gradients (perpendicular to opposite edges)
-        sf::Vector2f grad1 = 0.5f * sf::Vector2f(-edge_23.y, edge_23.x);  // perpendicular to p2-p3
-        sf::Vector2f grad2 = 0.5f * sf::Vector2f(-edge_31.y, edge_31.x);  // perpendicular to p3-p1  
-        sf::Vector2f grad3 = 0.5f * sf::Vector2f(-edge_12.y, edge_12.x);  // perpendicular to p1-p2
+        sf::Vector3f pos1 = p1->GetPosition();
+        sf::Vector3f pos2 = p2->GetPosition();
+        sf::Vector3f pos3 = p3->GetPosition();
 
-        float lambda = C / (Arithmetic::GetLength(grad1) * Arithmetic::GetLength(grad1) + Arithmetic::GetLength(grad2) * Arithmetic::GetLength(grad2) + Arithmetic::GetLength(grad3) * Arithmetic::GetLength(grad3));
-        float correction1X = -lambda * grad1.x / p1->mass;
-        float correction1Y = -lambda * grad1.y / p1->mass;
+        sf::Vector2f edge_23 = sf::Vector2f(pos3.x - pos2.x, pos3.y - pos2.y);
+        sf::Vector2f grad1 = 0.5f * sf::Vector2f(-edge_23.y, edge_23.x);
 
-        float correction2X = -lambda * grad2.x / p2->mass;
-        float correction2Y = -lambda * grad2.y / p2->mass;
+        sf::Vector2f edge_31 = sf::Vector2f(pos1.x - pos3.x, pos1.y - pos3.y);
+        sf::Vector2f grad2 = 0.5f * sf::Vector2f(-edge_31.y, edge_31.x);
 
-        float correction3X = -lambda * grad3.x / p3->mass;
-        float correction3Y = -lambda * grad3.y / p3->mass;
-        p1->SetPosition(p1->GetPosition().x - correction1X, p1->GetPosition().y - correction1Y, 0.0f);
-        p2->SetPosition(p2->GetPosition().x - correction2X, p2->GetPosition().y - correction2Y, 0.0f);
-        p3->SetPosition(p3->GetPosition().x - correction3X, p3->GetPosition().y - correction3Y, 0.0f);
+        sf::Vector2f edge_12 = sf::Vector2f(pos2.x - pos1.x, pos2.y - pos1.y);
+        sf::Vector2f grad3 = 0.5f * sf::Vector2f(-edge_12.y, edge_12.x);
 
+        float gradMagSqr1 = grad1.x * grad1.x + grad1.y * grad1.y;
+        float gradMagSqr2 = grad2.x * grad2.x + grad2.y * grad2.y;
+        float gradMagSqr3 = grad3.x * grad3.x + grad3.y * grad3.y;
+
+        float denominator = gradMagSqr1 / p1->mass + gradMagSqr2 / p2->mass + gradMagSqr3 / p3->mass;
+
+        if (denominator < 1e-6f) return;
+
+        float lambda = C / denominator;
+
+        // APPLY STIFFNESS - this is the key change!
+        sf::Vector2f correction1 = lambda * grad1 * areaStiffness / p1->mass;
+        sf::Vector2f correction2 = lambda * grad2 * areaStiffness / p2->mass;
+        sf::Vector2f correction3 = lambda * grad3 * areaStiffness / p3->mass;
+
+        p1->SetPosition(pos1.x + correction1.x, pos1.y + correction1.y, 0.0f);
+        p2->SetPosition(pos2.x + correction2.x, pos2.y + correction2.y, 0.0f);
+        p3->SetPosition(pos3.x + correction3.x, pos3.y + correction3.y, 0.0f);
     }
 }

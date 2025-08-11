@@ -23,6 +23,7 @@ public:
 private:
     std::array<Particle*, 3> vertices;
     float area;
+    float areaStiffness;
     sf::VertexArray triangleVA{ sf::Triangles, 3 };
 
     float CalculateArea();
