@@ -6,6 +6,8 @@
 #include "EventHandler.h"
 #include <SFML/Graphics.hpp>
 #include "Triangle.h"
+#include <set>
+#include <unordered_map>
 class IScene
 {
 public:
@@ -23,11 +25,17 @@ public:
 	std::vector<Particle*> Particles();
 	void PopulateScene(std::vector<Particle*>& particles, std::vector<Line*>& lines);
 
+	void UpdateAdjacencyList();
+	void FindAndCreateAllTriangles(); // Creates Triangle objects
+	void ClearTriangles(); // Delete all Triangle objects
+	std::vector<Triangle*> GetTriangles() const { return triangles; } // Use existing triangles vector
 
 protected:
 	std::vector<Particle*> particles;
 	std::vector<Line*> lines;
+
 	std::vector<Triangle*> triangles;
+	std::unordered_map<Particle*, std::set<Particle*>> adjacencyList;
 
 	sf::Vector3f gravity;
 

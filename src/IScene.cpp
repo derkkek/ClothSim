@@ -142,3 +142,51 @@ void IScene::DeleteTemporaryLine()
 		lines.erase(it);
 	}
 }
+
+void IScene::UpdateAdjacencyList() {
+	adjacencyList.clear();
+
+	for (Line* line : lines) {
+		if (!line->temporary && line->GetP1() && line->GetP2()) {
+			adjacencyList[line->GetP1()].insert(line->GetP2());
+			adjacencyList[line->GetP2()].insert(line->GetP1());
+		}
+	}
+}
+
+void IScene::FindAndCreateAllTriangles() {
+	// Clear existing triangles
+	ClearTriangles();
+
+	UpdateAdjacencyList();
+	std::set<std::set<Particle*>> processedTriangles;
+
+	for (auto& [particle, neighbors] : adjacencyList) {
+		std::vector<Particle*> neighborVec(neighbors.begin(), neighbors.end());
+
+		for (size_t i = 0; i < neighborVec.size(); ++i) {
+			for (size_t j = i + 1; j < neighborVec.size(); ++j) {
+				Particle* n1 = neighborVec[i];
+				Particle* n2 = neighborVec[j];
+
+				if (adjacencyList[n1].count(n2) > 0) {
+					std::set<Particle*> triangleSet = { particle, n1, n2 };
+
+					if (processedTriangles.find(triangleSet) == processedTriangles.end()) {
+						processedTriangles.insert(triangleSet);
+						triangles.push_back(new Triangle(particle, n1, n2));
+					}
+				}
+			}
+		}
+	}
+
+	std::cout << "Created " << triangles.size() << " triangle objects" << std::endl;
+}
+
+void IScene::ClearTriangles() {
+	for (Triangle* tri : triangles) {
+		delete tri;
+	}
+	triangles.clear();
+}

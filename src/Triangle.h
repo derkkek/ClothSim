@@ -1,13 +1,28 @@
 #pragma once
-#include <vector>
+#include <array>
 #include "Particle.h"
-class Triangle
-{
+#include "Line.h"
+
+class Triangle {
 public:
-	Triangle();
-	~Triangle();
+    Triangle(Particle* p1, Particle* p2, Particle* p3);
+    ~Triangle();
+
+    std::array<Particle*, 3> GetVertices() const { return vertices; }
+    float GetArea() const { return area; }
+    sf::Vector3f GetCentroid() const;
+    bool IsValid() const;
+
+    // For rendering (optional)
+    sf::VertexArray GetRenderData();
+    void UpdateRenderData();
+
+    void RelaxationUpdate();
 
 private:
-	std::vector<Particle*> vertices;
-	std::vector<Line*> lines;
+    std::array<Particle*, 3> vertices;
+    float area;
+    sf::VertexArray triangleVA{ sf::Triangles, 3 };
+
+    float CalculateArea();
 };

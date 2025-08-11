@@ -79,6 +79,7 @@ void EmptyScene::InteractByInput(EventHandler& eventHandler, Editor::State state
 				temporaryLine = nullptr;
 			}
 		}
+		FindAndCreateAllTriangles();
 	}
 
 	prevMouseLeftPressed = eventHandler.mouseLeftPressed;
