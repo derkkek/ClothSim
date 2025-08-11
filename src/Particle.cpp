@@ -2,7 +2,7 @@
 #include <iostream>
 
 Particle::Particle(Vector3f pos, float radius,bool stable = false)
-	:position(pos), oldPosition(pos), initPos(position), mass(1.0f), radius(radius), stable(stable), selected(false)
+	:position(pos), oldPosition(pos), initPos(position), mass(1.0f), radius(radius), stable(stable), selected(false), velocity(Vector3f(0.0f, 0.0f, 0.0f))
 {
 	
 	this->shape.setPosition(Vector2f(this->position.x, this->position.y));
@@ -26,6 +26,7 @@ void Particle::Update(float dt)
 	}
 	else
 	{
+		//Euler(dt);
 		Verlet(dt);
 	}
 	KeepInside(1080.0f); // WINDOW HEIGT
@@ -65,12 +66,19 @@ void Particle::Verlet(float dt)
 
 }
 
+void Particle::Euler(float dt)
+{
+	velocity += force * dt;
+	position += velocity * dt;
+}
+
 void Particle::KeepInside(float bound_y)
 {
 	if (GetPosition().y > bound_y) 
 	{
 	    SetPosition(GetPosition().x, bound_y, 0.0f);
 		acceleration = sf::Vector3f(0.0f, 0.0f, 0.0f);
+		velocity = sf::Vector3f(0.0f, 0.0f, 0.0f); // for euler.
 	}
 	else if (GetPosition().y < 0.0f)
 	{

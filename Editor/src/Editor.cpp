@@ -88,7 +88,7 @@ void Editor::Init(sf::RenderWindow& window)
 }
 
 Editor::Editor(sf::RenderWindow& window)
-    :editorGravity(Vector3f(0.0f, 500.0f, 0.0f)), editorConstraintsIterationCount(10), state(RUN), renderState(GEOMETRY), editButtonClicked(false), runButtonClicked(false)
+    :editorGravity(Vector3f(0.0f, 500.0f, 0.0f)), stiffness(1.0f), editorConstraintsIterationCount(10), state(RUN), renderState(GEOMETRY), editButtonClicked(false), runButtonClicked(false)
     , gravityChanged(false), resetButtonClicked(false), addParticlesButtonClicked(false), addLinesButtonClicked(false), io(), currentSceneType(1), sceneChanged(false)
     , saveSceneButtonClicked(false), onlyLinesButtonClicked(false), onlyParticlesButtonClicked(false), geometryButtonClicked(false)
 {
@@ -259,6 +259,11 @@ void Editor::DrawUI(sf::RenderWindow& window, sf::Clock deltaClock)
             }
             ImGui::PopItemWidth();
 
+            ImGui::Text("Stiffness:");
+            ImGui::PushItemWidth(-1);
+            if (stiffnessChanged = ImGui::SliderFloat("##Stiffness", &stiffness, 0.0001f, 1.0f, "%.1f"));
+            ImGui::PopItemWidth();
+
             // Constraint iterations slider
             ImGui::Text("Constraint Iterations:");
             ImGui::PushItemWidth(-1);
@@ -367,4 +372,9 @@ void Editor::HandleStates(RenderWindow& window, Event event)
 bool Editor::MouseIsOnUI()
 {
     return io->WantCaptureMouse;
+}
+
+float Editor::GetStiffness()
+{
+    return stiffness;
 }

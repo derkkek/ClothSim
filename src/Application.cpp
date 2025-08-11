@@ -27,6 +27,13 @@ void Application::InteractSceneByEditor()
         delete oldScene;
         editor->resetButtonClicked = false;
     }
+    else if (editor->stiffnessChanged)
+    {
+        for (Line* line : scene->Lines())
+        {
+            line->stiffness = editor->stiffness;
+        }
+    }
     else if (editor->sceneChanged)
     {
         delete scene;

@@ -8,6 +8,7 @@ class Editor
 {
 
 	friend class Application;
+	friend class Line;
 
 public:
 	enum State
@@ -25,7 +26,8 @@ public:
 	void DrawUI(sf::RenderWindow& window, sf::Clock deltaClock);
 	void HandleStates(RenderWindow& window, Event event);
 	bool MouseIsOnUI();
-	
+	float GetStiffness();
+
 
 private:
 
@@ -34,6 +36,9 @@ private:
 	RenderState renderState;
 	Vector3f editorGravity;
 	int editorConstraintsIterationCount;
+
+	float stiffness;
+
 
 	bool editButtonClicked;
 	bool runButtonClicked;
@@ -51,6 +56,7 @@ private:
 
 	ImGuiIO* io;
 	bool gravityChanged;
+	bool stiffnessChanged;
 
 
 	void Init(sf::RenderWindow& window);

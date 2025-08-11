@@ -1,14 +1,14 @@
 ﻿#include "Line.h"
 
 Line::Line(Particle* p1, Particle* p2, float length)
-	:p1(p1), p2(p2), length(length), correctionX(0.0f), correctionY(0.0f), temporary(false), stiffness(0.1f)
+	:p1(p1), p2(p2), length(length), correctionX(0.0f), correctionY(0.0f), temporary(false), stiffness(1.0f)
 {
 	lineVA[0] = sf::Vertex(sf::Vector2f(p1->GetPosition().x, p1->GetPosition().y), sf::Color::White);
 	lineVA[1] = sf::Vertex(sf::Vector2f(p2->GetPosition().x, p2->GetPosition().y), sf::Color::White);
 }
 
 Line::Line(Particle* p, Vector3f end, float length, bool temporary = false)
-	:p1(p), p2(nullptr), startPos(p1->GetPosition()), endPos(end), length(length), correctionX(0.0f), correctionY(0.0f), stiffness(0.1f),temporary(temporary)
+	:p1(p), p2(nullptr), startPos(p1->GetPosition()), endPos(end), length(length), correctionX(0.0f), correctionY(0.0f), stiffness(1.0f),temporary(temporary)
 {
 	lineVA[0] = sf::Vertex(sf::Vector2f(p->GetPosition().x, p->GetPosition().y), sf::Color::Red);
 	lineVA[1] = sf::Vertex(sf::Vector2f(end.x, end.y), sf::Color::Red);
@@ -38,6 +38,11 @@ void Line::Update(float dt)
     float C = current_length - length;
     Vector2f constraintGradient = l / current_length;
     float a = 1.0f / stiffness;
+
+    if (stiffness == 1.0f)
+    {
+        a = 0.0f;
+    }
 
     float lambda = C / (w1 * Arithmetic::GetLength(constraintGradient) * Arithmetic::GetLength(constraintGradient) + w2 * Arithmetic::GetLength(constraintGradient) * Arithmetic::GetLength(constraintGradient) + (a / dt * dt));
 

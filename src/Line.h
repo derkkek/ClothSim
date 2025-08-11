@@ -22,6 +22,7 @@ public:
 	float GetCorrectionY();
 
 	bool temporary;
+	float stiffness;
 
 private:
 	Particle* p1;
@@ -32,5 +33,4 @@ private:
 	float length;
 	float correctionX;
 	float correctionY;
-	float stiffness;
 };

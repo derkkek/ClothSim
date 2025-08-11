@@ -17,6 +17,7 @@ public:
 	void ZeroForce();
 
 	void Verlet(float dt);
+	void Euler(float dt);
 	void KeepInside(float bound_y);
 
 	const CircleShape& Shape();
@@ -36,6 +37,7 @@ private:
 	Vector3f initPos;
 	Vector3f force;
 	CircleShape shape;
+	Vector3f velocity;
 
 
 	Color color = Color::White;
