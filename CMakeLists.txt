@@ -56,6 +56,8 @@ add_library(Simulation STATIC
     src/EmptyScene.h
     src/SaveManager.cpp
     src/SaveManager.h
+    src/Triangle.h
+    src/Triangle.cpp
 )
 
 target_include_directories(Simulation PUBLIC "src" "Editor/src" "Editor/vendor/imgui")

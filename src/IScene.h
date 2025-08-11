@@ -5,6 +5,7 @@
 #include "Editor.h"
 #include "EventHandler.h"
 #include <SFML/Graphics.hpp>
+#include "Triangle.h"
 class IScene
 {
 public:
@@ -26,6 +27,8 @@ public:
 protected:
 	std::vector<Particle*> particles;
 	std::vector<Line*> lines;
+	std::vector<Triangle*> triangles;
+
 	sf::Vector3f gravity;
 
 	bool prevMouseLeftPressed;
