@@ -26,7 +26,7 @@ public:
 	void DrawUI(sf::RenderWindow& window, sf::Clock deltaClock);
 	void HandleStates(RenderWindow& window, Event event);
 	bool MouseIsOnUI();
-	float GetStiffness();
+	static float GetStiffness();
 
 
 private:
@@ -37,7 +37,7 @@ private:
 	Vector3f editorGravity;
 	int editorConstraintsIterationCount;
 
-	float stiffness;
+	static float stiffness;
 
 
 	bool editButtonClicked;

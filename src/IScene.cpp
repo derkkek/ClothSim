@@ -70,7 +70,7 @@ void IScene::StartDrawingLine(EventHandler& eventHandler)
 			if (Arithmetic::GetMouseDistance(p, eventHandler.mouseWorld) < 20.0f)
 			{
 				lineStartingParticle = p;
-				temporaryLine = new Line(lineStartingParticle, sf::Vector3f(eventHandler.mouseWorld.x, eventHandler.mouseWorld.y, 0.0f), 0, true);
+				temporaryLine = new Line(lineStartingParticle, sf::Vector3f(eventHandler.mouseWorld.x, eventHandler.mouseWorld.y, 0.0f), 0, Editor::GetStiffness(), true);
 				lines.push_back(temporaryLine);
 				lineDrawingState = GRABBING;
 				break;
@@ -110,7 +110,7 @@ void IScene::ChainLine(EventHandler& eventHandler)
 	if (temporaryLine == nullptr && lineStartingParticle != nullptr)
 	{
 		// Create another temporary.
-		temporaryLine = new Line(lineStartingParticle, sf::Vector3f(eventHandler.mouseWorld.x, eventHandler.mouseWorld.y, 0.0f), 0, true);
+		temporaryLine = new Line(lineStartingParticle, sf::Vector3f(eventHandler.mouseWorld.x, eventHandler.mouseWorld.y, 0.0f), 0, Editor::GetStiffness(), true);
 		lines.push_back(temporaryLine);
 	}
 	if (eventHandler.mouseLeftPressed && !prevMouseLeftPressed)

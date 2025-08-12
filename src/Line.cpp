@@ -7,8 +7,8 @@ Line::Line(Particle* p1, Particle* p2, float length)
 	lineVA[1] = sf::Vertex(sf::Vector2f(p2->GetPosition().x, p2->GetPosition().y), sf::Color::White);
 }
 
-Line::Line(Particle* p, Vector3f end, float length, bool temporary = false)
-	:p1(p), p2(nullptr), startPos(p1->GetPosition()), endPos(end), length(length), correctionX(0.0f), correctionY(0.0f), stiffness(1.0f),temporary(temporary)
+Line::Line(Particle* p, Vector3f end, float length, float stiffness, bool temporary = false)
+	:p1(p), p2(nullptr), startPos(p1->GetPosition()), endPos(end), length(length), correctionX(0.0f), correctionY(0.0f), stiffness(stiffness),temporary(temporary)
 {
 	lineVA[0] = sf::Vertex(sf::Vector2f(p->GetPosition().x, p->GetPosition().y), sf::Color::Red);
 	lineVA[1] = sf::Vertex(sf::Vector2f(end.x, end.y), sf::Color::Red);

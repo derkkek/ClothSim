@@ -8,7 +8,7 @@ class Line
 {
 public:
 	Line(Particle* p1, Particle* p2, float length);
-	Line(Particle* p, Vector3f end, float length, bool temporary);
+	Line(Particle* p, Vector3f end, float length, float stiffness,bool temporary);
 	~Line() = default;
 
 	VertexArray GetVAO();

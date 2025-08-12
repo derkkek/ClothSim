@@ -51,6 +51,12 @@ void EmptyScene::InteractByInput(EventHandler& eventHandler, Editor::State state
 			ParticleGrabber();
 		}
 
+		if (grabbedParticle)
+		{
+			grabbedParticle->selected = false;
+			grabbedParticle = nullptr;
+		}
+
 	}
 
 	else if (state == Editor::State::ADDLINES)
@@ -108,10 +114,10 @@ void EmptyScene::Update(float dt, int constraintIteration, Editor::State state)
 				}
 			}
 		}
-		for (Triangle* triangle : triangles)
-		{
-			triangle->RelaxationUpdate();
-		}
+		//for (Triangle* triangle : triangles)
+		//{
+		//	triangle->RelaxationUpdate();
+		//}
 	}
 
 	else if (state == Editor::State::ADDLINES)
@@ -171,12 +177,6 @@ void EmptyScene::ParticleGrabber()
 	if (grabbedParticle)
 	{
 		grabbedParticle->SetPosition(EventHandler::mouseWorld.x, EventHandler::mouseWorld.y, 0.0f);
-	}
-
-	else if (grabbedParticle)
-	{
-			grabbedParticle->selected = false;
-			grabbedParticle = nullptr;
 	}
 }
 

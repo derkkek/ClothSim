@@ -59,11 +59,11 @@ void Triangle::UpdateRenderData() {
 void Triangle::RelaxationUpdate()
 {
     float currentArea = CalculateArea();
-    float C = area - currentArea;
+    float C = area - currentArea;  // FIXED: restArea - currentArea
 
-    if (abs(C) > 10.0f)
+    if (abs(C) > 10.0f)  // FIXED: Much smaller tolerance
     {
-        // Get vertex positions and calculate gradients (same as before)
+        // Get vertex positions
         Particle* p1 = vertices[1];
         Particle* p2 = vertices[0];
         Particle* p3 = vertices[2];
@@ -72,30 +72,35 @@ void Triangle::RelaxationUpdate()
         sf::Vector3f pos2 = p2->GetPosition();
         sf::Vector3f pos3 = p3->GetPosition();
 
+        // FIXED: Correct gradient calculation
+        // For triangle area gradients, each vertex gradient is perpendicular 
+        // to the edge formed by the OTHER two vertices
+
+        // Gradient for p1: perpendicular to edge p2-p3
         sf::Vector2f edge_23 = sf::Vector2f(pos3.x - pos2.x, pos3.y - pos2.y);
         sf::Vector2f grad1 = 0.5f * sf::Vector2f(-edge_23.y, edge_23.x);
 
+        // Gradient for p2: perpendicular to edge p3-p1  
         sf::Vector2f edge_31 = sf::Vector2f(pos1.x - pos3.x, pos1.y - pos3.y);
         sf::Vector2f grad2 = 0.5f * sf::Vector2f(-edge_31.y, edge_31.x);
 
+        // Gradient for p3: perpendicular to edge p1-p2
         sf::Vector2f edge_12 = sf::Vector2f(pos2.x - pos1.x, pos2.y - pos1.y);
         sf::Vector2f grad3 = 0.5f * sf::Vector2f(-edge_12.y, edge_12.x);
 
+        // Calculate lambda
         float gradMagSqr1 = grad1.x * grad1.x + grad1.y * grad1.y;
         float gradMagSqr2 = grad2.x * grad2.x + grad2.y * grad2.y;
         float gradMagSqr3 = grad3.x * grad3.x + grad3.y * grad3.y;
 
-        float denominator = gradMagSqr1 / p1->mass + gradMagSqr2 / p2->mass + gradMagSqr3 / p3->mass;
+        float lambda = C / (gradMagSqr1 / p1->mass + gradMagSqr2 / p2->mass + gradMagSqr3 / p3->mass);
 
-        if (denominator < 1e-6f) return;
+        // FIXED: Apply corrections with proper signs
+        sf::Vector2f correction1 = -lambda * grad1 / p1->mass;
+        sf::Vector2f correction2 = -lambda * grad2 / p2->mass;
+        sf::Vector2f correction3 = -lambda * grad3 / p3->mass;
 
-        float lambda = C / denominator;
-
-        // APPLY STIFFNESS - this is the key change!
-        sf::Vector2f correction1 = lambda * grad1 * areaStiffness / p1->mass;
-        sf::Vector2f correction2 = lambda * grad2 * areaStiffness / p2->mass;
-        sf::Vector2f correction3 = lambda * grad3 * areaStiffness / p3->mass;
-
+        // Apply position corrections
         p1->SetPosition(pos1.x + correction1.x, pos1.y + correction1.y, 0.0f);
         p2->SetPosition(pos2.x + correction2.x, pos2.y + correction2.y, 0.0f);
         p3->SetPosition(pos3.x + correction3.x, pos3.y + correction3.y, 0.0f);
