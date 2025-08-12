@@ -187,8 +187,6 @@ void IScene::FindAndCreateAllTriangles()
 			}
 		}
 	}
-
-	std::cout << "Created " << triangles.size() << " triangle objects" << std::endl;
 }
 
 void IScene::ClearTriangles() {

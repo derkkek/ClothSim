@@ -39,10 +39,16 @@ void Application::InteractSceneByEditor()
         delete scene;
         if (editor->currentSceneType == 1)
         {
+            editor->stiffness = 0.1f;
+            editor->editorConstraintsIterationCount = 1.0f;
+            editor->renderState = Editor::RenderState::GEOMETRY;
             scene = new EmptyScene();
         }
         else
         {
+            editor->stiffness = 1.0f;
+            editor->editorConstraintsIterationCount = 10.0f;
+            editor->renderState = Editor::RenderState::LINES;
             scene = new Cloth(50.0f, 1870.0f, 50.0f, 580.0f, 10.0f);
         }
         editor->sceneChanged = false;
@@ -90,8 +96,6 @@ void Application::Input()
 
 void Application::Render()
 {
-    //renderer->DrawGeometry(cloth->Particles(), cloth->Lines(), window);
-    //renderer->DrawLines(scene->Lines(), window);
     window.clear(sf::Color(89.0f, 101.0f, 111.0f, 255.0f));
     if (editor->renderState == Editor::RenderState::LINES)
     {

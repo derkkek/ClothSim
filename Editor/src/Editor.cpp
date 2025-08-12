@@ -3,7 +3,7 @@
 #include <imgui.h>
 #include <imgui-SFML.h>
 #include <EventHandler.h>
-float Editor::stiffness = 1.0f;
+float Editor::stiffness = 0.1f;
 
 void Editor::Init(sf::RenderWindow& window)
 {
@@ -90,7 +90,7 @@ void Editor::Init(sf::RenderWindow& window)
 }
 
 Editor::Editor(sf::RenderWindow& window)
-    :editorGravity(Vector3f(0.0f, 500.0f, 0.0f)), editorConstraintsIterationCount(10), state(RUN), renderState(GEOMETRY), editButtonClicked(false), runButtonClicked(false)
+    :editorGravity(Vector3f(0.0f, 500.0f, 0.0f)), editorConstraintsIterationCount(1), state(RUN), renderState(GEOMETRY), editButtonClicked(false), runButtonClicked(false)
     , gravityChanged(false), resetButtonClicked(false), addParticlesButtonClicked(false), addLinesButtonClicked(false), io(), currentSceneType(1), sceneChanged(false)
     , saveSceneButtonClicked(false), onlyLinesButtonClicked(false), onlyParticlesButtonClicked(false), geometryButtonClicked(false)
 {
