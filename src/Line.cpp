@@ -1,7 +1,7 @@
 ﻿#include "Line.h"
 
-Line::Line(Particle* p1, Particle* p2, float length)
-	:p1(p1), p2(p2), length(length), correctionX(0.0f), correctionY(0.0f), temporary(false), stiffness(1.0f)
+Line::Line(Particle* p1, Particle* p2, float length, float stiffness)
+	:p1(p1), p2(p2), length(length), correctionX(0.0f), correctionY(0.0f), temporary(false), stiffness(stiffness)
 {
 	lineVA[0] = sf::Vertex(sf::Vector2f(p1->GetPosition().x, p1->GetPosition().y), sf::Color::White);
 	lineVA[1] = sf::Vertex(sf::Vector2f(p2->GetPosition().x, p2->GetPosition().y), sf::Color::White);

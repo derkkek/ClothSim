@@ -281,7 +281,7 @@ void Cloth::ConstructUniqueLines()
                 auto linePair = std::minmax(a, b);
                 if (existingLines.find(linePair) == existingLines.end()) //if the unique pair doesn't exists in our set. 
                 {
-                    lines.push_back(new Line(a, b, Arithmetic::GetDistance(a, b)));
+                    lines.push_back(new Line(a, b, Arithmetic::GetDistance(a, b), Editor::GetStiffness()));
                     existingLines.insert(linePair);
                 }
             }

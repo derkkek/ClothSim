@@ -59,9 +59,9 @@ void Triangle::UpdateRenderData() {
 void Triangle::RelaxationUpdate()
 {
     float currentArea = CalculateArea();
-    float C = area - currentArea;  // FIXED: restArea - currentArea
-
-    if (abs(C) > 10.0f)  // FIXED: Much smaller tolerance
+    float C = area - currentArea;  
+    
+    if (abs(C) > 100.0f) 
     {
         // Get vertex positions
         Particle* p1 = vertices[1];
@@ -71,10 +71,6 @@ void Triangle::RelaxationUpdate()
         sf::Vector3f pos1 = p1->GetPosition();
         sf::Vector3f pos2 = p2->GetPosition();
         sf::Vector3f pos3 = p3->GetPosition();
-
-        // FIXED: Correct gradient calculation
-        // For triangle area gradients, each vertex gradient is perpendicular 
-        // to the edge formed by the OTHER two vertices
 
         // Gradient for p1: perpendicular to edge p2-p3
         sf::Vector2f edge_23 = sf::Vector2f(pos3.x - pos2.x, pos3.y - pos2.y);
@@ -95,12 +91,10 @@ void Triangle::RelaxationUpdate()
 
         float lambda = C / (gradMagSqr1 / p1->mass + gradMagSqr2 / p2->mass + gradMagSqr3 / p3->mass);
 
-        // FIXED: Apply corrections with proper signs
         sf::Vector2f correction1 = -lambda * grad1 / p1->mass;
         sf::Vector2f correction2 = -lambda * grad2 / p2->mass;
         sf::Vector2f correction3 = -lambda * grad3 / p3->mass;
 
-        // Apply position corrections
         p1->SetPosition(pos1.x + correction1.x, pos1.y + correction1.y, 0.0f);
         p2->SetPosition(pos2.x + correction2.x, pos2.y + correction2.y, 0.0f);
         p3->SetPosition(pos3.x + correction3.x, pos3.y + correction3.y, 0.0f);

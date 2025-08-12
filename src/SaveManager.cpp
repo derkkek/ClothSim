@@ -44,6 +44,7 @@ json SaveManager::ToJson(IScene* scene)
                 lineData["p1_index"] = p1_iter->second;
                 lineData["p2_index"] = p2_iter->second;
                 lineData["length"] = line->GetLength();
+                lineData["stiffness"] = line->stiffness;
                 j["lines"].push_back(lineData);
             }
             else {
@@ -85,12 +86,14 @@ SaveData SaveManager::FromJson(const json& j)
             int p1_index = lineData["p1_index"];
             int p2_index = lineData["p2_index"];
             float length = lineData["length"];
+            float stiffness = lineData["stiffness"];
 
             if (p1_index < data.particles.size() && p2_index < data.particles.size()) {
                 auto line = std::make_unique<Line>(
                     data.particles[p1_index].get(),
                     data.particles[p2_index].get(),
-                    length
+                    length,
+                    stiffness
                 );
                 data.lines.push_back(std::move(line));
             }

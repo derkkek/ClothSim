@@ -7,7 +7,7 @@ using namespace sf;
 class Line
 {
 public:
-	Line(Particle* p1, Particle* p2, float length);
+	Line(Particle* p1, Particle* p2, float length, float stiffness);
 	Line(Particle* p, Vector3f end, float length, float stiffness,bool temporary);
 	~Line() = default;
 

@@ -89,7 +89,7 @@ void IScene::CompleteDrawingLine(EventHandler& eventHandler)
 			if (p != lineStartingParticle && Arithmetic::GetMouseDistance(p, eventHandler.mouseWorld) < 20.0f)
 			{
 				// Create the actual line
-				lines.push_back(new Line(lineStartingParticle, p, Arithmetic::GetDistance(lineStartingParticle, p)));
+				lines.push_back(new Line(lineStartingParticle, p, Arithmetic::GetDistance(lineStartingParticle, p),Editor::GetStiffness()));
 
 				// Remove and delete the temporary 
 				DeleteTemporaryLine();
@@ -119,7 +119,7 @@ void IScene::ChainLine(EventHandler& eventHandler)
 		{
 			if (p != lineStartingParticle && Arithmetic::GetMouseDistance(p, eventHandler.mouseWorld) < 20.0f)
 			{
-				lines.push_back(new Line(lineStartingParticle, p, Arithmetic::GetDistance(lineStartingParticle, p)));
+				lines.push_back(new Line(lineStartingParticle, p, Arithmetic::GetDistance(lineStartingParticle, p), Editor::GetStiffness()));
 
 				DeleteTemporaryLine();
 
