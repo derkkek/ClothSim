@@ -1,1 +1,1 @@
-# ClothSim
+![Demo](demo.gif)
